@@ -30,8 +30,8 @@ DO $$
         uuid_final INT;
         exista INT;
     BEGIN
-        FOR row IN 1..10 LOOP
-            FOR seat IN 1..15 LOOP
+        FOR row IN 1..nr_maxim_linii LOOP
+            FOR seat IN 1..nr_maxim_coloane LOOP
                     INSERT INTO seats VALUES (DEFAULT, row, seat);
             END LOOP;
         END LOOP;

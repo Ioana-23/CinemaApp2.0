@@ -23,16 +23,16 @@ public class MovieScreeningController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/movie_screening")
-    public ResponseEntity<MovieScreening> saveMovieScreening(@RequestBody MovieScreeningDTO movieScreening) {
-        Movie movieFound = movieService.findMovieByUuid(movieScreening.getMovie());
+    public ResponseEntity<MovieScreening> saveMovieScreening(@RequestBody MovieScreeningDTO movieScreeningDTO) {
+        Movie movieFound = movieService.findMovieByUuid(movieScreeningDTO.getMovie_uuid());
         if (movieFound == null) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        MovieHall movieHallFound = movieHallService.findMovieHallByUuid(movieScreening.getMovieHall());
+        MovieHall movieHallFound = movieHallService.findMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid());
         if (movieHallFound == null) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        MovieScreening movieScreeningToSave = new MovieScreening(movieScreening.getId(), movieFound, movieScreening.getDate(), movieScreening.getTime(), movieHallFound, movieScreening.getUuid());
+        MovieScreening movieScreeningToSave = new MovieScreening(movieScreeningDTO.getId(), movieFound, movieScreeningDTO.getDate(), movieScreeningDTO.getTime(), movieHallFound, movieScreeningDTO.getUuid());
         return new ResponseEntity<>(movieScreeningService.saveMovieScreening(movieScreeningToSave), HttpStatus.CREATED);
     }
 
@@ -43,6 +43,12 @@ public class MovieScreeningController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         MovieScreening movieScreeningFinal = modelMapper.map(movieScreeningDTO, MovieScreening.class);
+        MovieHall movieHallToUpdate = movieHallService.findMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid());
+        if(movieHallToUpdate == null)
+        {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        movieScreeningFinal.setMovieHall(movieHallToUpdate);
         movieScreeningService.updateMovieScreening(movieScreeningToUpdate, movieScreeningFinal);
         return new ResponseEntity<>(movieScreeningFinal, HttpStatus.OK);
     }

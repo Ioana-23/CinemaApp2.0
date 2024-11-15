@@ -1,0 +1,1 @@
+INSERT INTO users VALUES (DEFAULT, 'Ioana', 'Baciu', 16589, 'ADMIN', 'baciuioana23@gmail.com', 'a');

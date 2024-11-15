@@ -1,0 +1,28 @@
+name: 'movie_service'
+services:
+  db_1:
+    image: 'postgres'
+    container_name: db_1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=MovieServiceDatabase
+    ports:
+      - "5433:5432"
+
+  app_1:
+    build:
+      context: ../MovieService
+#      dockerfile: Dockerfile
+    container_name: app_1
+    depends_on:
+      - db_1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.0.112:5433/MovieServiceDatabase
+      #      - SPRING_DATASOURCE_USERNAME=$postgres
+      #      - SPRING_DATASOURCE_PASSWORD=$postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    ports:
+      - "8081:8081"

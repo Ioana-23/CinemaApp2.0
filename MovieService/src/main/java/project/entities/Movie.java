@@ -32,7 +32,7 @@ public class Movie {
     @ManyToMany
     @Cascade({CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinTable(name = "movie_actors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actors_id"))
-    private List<Actor> actors = new ArrayList<>();
+    private List<Actor> actors;
 
     @Column(name = "overview")
     private String overview;

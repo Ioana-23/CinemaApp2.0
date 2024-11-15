@@ -13,6 +13,6 @@ public class MovieHallService {
 
     public MovieHall findMovieHallByUuid(int uuid)
     {
-        return movieHallRepository.findByUuid(uuid).orElse(null);
+        return movieHallRepository.findMovieHallByUuid(uuid).orElse(null);
     }
 }

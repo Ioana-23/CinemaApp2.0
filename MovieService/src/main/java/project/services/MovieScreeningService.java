@@ -23,7 +23,7 @@ public class MovieScreeningService {
     @Transactional
     public void updateMovieScreening(MovieScreening movieScreeningToUpdate, MovieScreening movieScreeningFinal)
     {
-//        movieScreeningToUpdate.setMovieHall(movieScreeningFinal.getMovieHall());
+        movieScreeningToUpdate.setMovieHall(movieScreeningFinal.getMovieHall());
         movieScreeningToUpdate.setDate(movieScreeningFinal.getDate());
         movieScreeningToUpdate.setTime(movieScreeningFinal.getTime());
         movieScreeningRepository.save(movieScreeningToUpdate);

@@ -10,5 +10,5 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 public interface MovieScreeningRepository extends JpaRepository<MovieScreening, Integer> {
-    Optional<MovieScreening> findMovieScreeningByUuid(int id);
+    Optional<MovieScreening> findMovieScreeningByUuid(int uuid);
 }

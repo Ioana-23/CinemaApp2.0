@@ -10,9 +10,9 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class MovieScreeningDTO {
     private int id;
-    private int movie;
+    private int movie_uuid;
     private LocalDate date;
     private LocalTime time;
-    private int movieHall;
+    private int movieHall_uuid;
     private int uuid;
 }
