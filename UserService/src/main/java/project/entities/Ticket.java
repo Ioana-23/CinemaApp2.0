@@ -10,16 +10,17 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Table(name = "seats")
-public class Seat {
+@Table(name = "tickets")
+public class Ticket {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "row_number")
-    private int row_number;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ticket_type")
+    private TicketType ticketType;
 
-    @Column(name = "seat_number")
-    private int seat_number;
+    @Column(name = "seat_id")
+    private int seat_id;
 }

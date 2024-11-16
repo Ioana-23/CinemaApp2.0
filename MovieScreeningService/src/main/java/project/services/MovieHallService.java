@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import project.entities.MovieHall;
 import project.repositories.MovieHallRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MovieHallService {
@@ -14,5 +16,10 @@ public class MovieHallService {
     public MovieHall findMovieHallByUuid(int uuid)
     {
         return movieHallRepository.findMovieHallByUuid(uuid).orElse(null);
+    }
+
+    public List<MovieHall> getAllMovieHalls()
+    {
+        return movieHallRepository.findAll();
     }
 }

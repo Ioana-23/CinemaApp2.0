@@ -17,6 +17,30 @@ $$
 
     END;
 $$;
+
+CREATE FUNCTION hardcode_movie_hall(nr_maxim_linii INT, nr_minim_linii INT, nr_maxim_coloane INT, nr_minim_coloane INT)
+    RETURNS VOID
+    LANGUAGE plpgsql
+AS
+$$
+    DECLARE
+        nr_linii INT;
+        nr_coloane INT;
+    BEGIN
+    INSERT INTO movie_halls VALUES (1, 1);
+
+        SELECT INTO nr_linii floor(random() * (nr_maxim_linii-nr_minim_linii+1) + nr_minim_linii)::int;
+        SELECT INTO nr_coloane floor(random() * (nr_maxim_coloane-nr_minim_coloane+1) + nr_minim_coloane)::int;
+
+        FOR i IN 1..nr_linii LOOP
+                FOR j IN 1..nr_coloane LOOP
+                        INSERT INTO seats VALUES (DEFAULT, i, j, 1);
+--                         RAISE NOTICE 'movie_hall: % i: % j: %', movie_hall, i, j;
+                    END LOOP;
+            END LOOP;
+    END;
+$$;
+
 DO $$
     DECLARE
         nr_linii INT;
@@ -26,17 +50,13 @@ DO $$
         nr_maxim_linii INT := 7;
         nr_minim_linii INT := 5;
         nr_movie_halls INT := 5;
-        seat_id INT;
         uuid_final INT;
         exista INT;
     BEGIN
-        FOR row IN 1..nr_maxim_linii LOOP
-            FOR seat IN 1..nr_maxim_coloane LOOP
-                    INSERT INTO seats VALUES (DEFAULT, row, seat);
-            END LOOP;
-        END LOOP;
 
-        FOR movie_hall IN 1..nr_movie_halls LOOP
+        PERFORM hardcode_movie_hall(nr_maxim_linii, nr_minim_linii, nr_maxim_coloane, nr_minim_coloane);
+
+        FOR movie_hall IN 2..nr_movie_halls LOOP
             uuid_final := generate_uuid();
             SELECT COUNT(*) INTO exista  FROM movie_halls WHERE uuid = uuid_final;
             WHILE exista LOOP
@@ -49,12 +69,10 @@ DO $$
             SELECT INTO nr_coloane floor(random() * (nr_maxim_coloane-nr_minim_coloane+1) + nr_minim_coloane)::int;
 
             FOR i IN 1..nr_linii LOOP
-                FOR j IN 1..nr_coloane LOOP
---                         RAISE NOTICE 'movie_hall: % i: % j: %', movie_hall, i, j;
-                        SELECT s.id INTO seat_id FROM seats s WHERE s.row_number = i AND s.seat_number = j;
-                    INSERT INTO movie_hall_configuration VALUES (DEFAULT, movie_hall, seat_id);
+                    FOR j IN 1..nr_coloane LOOP
+                            INSERT INTO seats VALUES (DEFAULT, i, j, movie_hall);
+                        END LOOP;
                 END LOOP;
-            END LOOP;
         END LOOP;
     END;
 $$

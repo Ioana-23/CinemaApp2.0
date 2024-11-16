@@ -27,7 +27,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole user_role;
 
-    @Column(name = "uuid")
+    @Column(name = "uuid", unique = true)
     private int uuid;
 
     @Column(name = "email")

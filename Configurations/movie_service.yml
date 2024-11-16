@@ -1,4 +1,7 @@
-name: 'movie_service'
+name: movie_service
+#networks:
+#  cinema_app_movie:
+#    name: cinema_network
 services:
   db_1:
     image: 'postgres'
@@ -11,16 +14,18 @@ services:
       - "5433:5432"
 
   app_1:
+#    networks:
+#      - cinema_app_movie
     build:
       context: ../MovieService
-#      dockerfile: Dockerfile
+      dockerfile: Dockerfile
     container_name: app_1
     depends_on:
       - db_1
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.0.112:5433/MovieServiceDatabase
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/MovieServiceDatabase
       #      - SPRING_DATASOURCE_USERNAME=$postgres
       #      - SPRING_DATASOURCE_PASSWORD=$postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate

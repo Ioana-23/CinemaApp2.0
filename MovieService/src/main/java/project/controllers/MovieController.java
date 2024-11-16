@@ -7,14 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.controllers.api_dtos.ActorListApiDTO;
-import project.controllers.api_dtos.GenreListApiDTO;
-import project.controllers.api_dtos.MovieApiDTO;
-import project.controllers.api_dtos.ActorApiDTO;
-import project.controllers.api_dtos.ActorListApiDTO;
-import project.controllers.api_dtos.GenreListApiDTO;
-import project.controllers.api_dtos.GenreApiDTO;
-import project.controllers.api_dtos.MovieListApiDTO;
+import project.controllers.api_dtos.*;
 import project.dtos.MovieDTO;
 import project.entities.Actor;
 import project.entities.Gender;
@@ -30,6 +23,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -148,7 +142,10 @@ public class MovieController {
         for (Genre genre : movieFound.getGenres()) {
             Genre genreAux = genreService.getGenreByUuid(genre.getUuid());
             if (genreAux != null) {
-                genreService.removeGenreByUuid(genre.getUuid());
+                List<Movie> moviesWithGenre = movieService.findMoviesByGenre(genreAux);
+                if (moviesWithGenre.isEmpty()) {
+                    genreService.removeGenreByUuid(genre.getUuid());
+                }
             }
         }
     }
@@ -157,25 +154,38 @@ public class MovieController {
         for (Actor actor : movieFound.getActors()) {
             Actor actorAux = actorService.getActorByUuid(actor.getUuid());
             if (actorAux != null) {
-                actorService.removeActorByUuid(actor.getUuid());
+                List<Movie> moviesWithActor = movieService.findMoviesByActor(actorAux);
+                if (moviesWithActor.isEmpty()) {
+                    actorService.removeActorByUuid(actor.getUuid());
+                }
             }
         }
     }
 
     private void saveGenreInfo(Movie movieFound) {
-        for (Genre genre : movieFound.getGenres()) {
-            Genre genreAux = genreService.getGenreByUuid(genre.getUuid());
+        List<Genre> genres = new ArrayList<>(Collections.nCopies(movieFound.getGenres().size(), null));
+        Collections.copy(genres, movieFound.getGenres());
+        for (int i = 0, j = 0; i < genres.size(); i++, j++) {
+            Genre genreAux = genreService.getGenreByUuid(genres.get(i).getUuid());
             if (genreAux != null) {
-                genre.setId(genreAux.getId());
+                movieFound.getGenres().remove(j);
+                movieFound.getGenres().add(genreAux);
+                j--;
             }
         }
     }
 
     private void saveActorsInfo(Movie movieFound) {
-        for (Actor actor : movieFound.getActors()) {
-            Actor actorAux = actorService.getActorByUuid(actor.getUuid());
+        List<Actor> actors = new ArrayList<>(Collections.nCopies(movieFound.getActors().size(), null));
+        Collections.copy(actors, movieFound.getActors());
+        for (int i = 0, j = 0; i < actors.size(); i++, j++) {
+            Actor actorAux = actorService.getActorByUuid(actors.get(i).getUuid());
             if (actorAux != null) {
-                actor.setId(actorAux.getId());
+                movieFound.getActors().remove(j);
+                movieFound.getActors().add(actorAux);
+                j--;
+//                actor = actorAux;
+//                actor.setId(actorAux.getId());
             }
         }
     }

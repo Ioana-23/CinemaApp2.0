@@ -4,14 +4,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-@Profile("normal")
-public class UserApplication {
+public class MovieScreeningApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserApplication.class, args);
+		SpringApplication.run(MovieScreeningApplication.class, args);
 	}
 	@Bean
 	public ModelMapper movieMapper() {

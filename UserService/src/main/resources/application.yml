@@ -1,14 +1,3 @@
 spring:
-  application:
-    name: user_service
-  datasource:
-    password: postgres
-    username: postgres
-    url: jdbc:postgresql://192.168.0.112:5434/UserServiceDatabase
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-server:
-  port: 8082
+  profiles:
+    active: normal

@@ -30,7 +30,7 @@ public class Movie {
     private LocalDate date;
 
     @ManyToMany
-    @Cascade({CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @Cascade({CascadeType.PERSIST})
     @JoinTable(name = "movie_actors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actors_id"))
     private List<Actor> actors;
 
@@ -44,7 +44,7 @@ public class Movie {
     private String language;
 
     @ManyToMany
-    @Cascade({CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @Cascade({CascadeType.PERSIST})
     @JoinTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 

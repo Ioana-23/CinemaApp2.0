@@ -1,13 +1,14 @@
 package project.dtos;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SeatDTO {
+public class ReservationDTO {
     private int id;
-    private int row_number;
-    private int seat_number;
+    private UserDTO user;
+    private int movie_screening_uuid;
+    private int uuid;
+
 }

@@ -20,9 +20,8 @@ public class MovieScreening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @JoinColumn(name = "movie_id")
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Movie.class)
-    private Movie movie;
+    @Column(name = "movie_id")
+    private int movie_id;
 
     @Column(name = "date")
     private LocalDate date;
@@ -31,7 +30,7 @@ public class MovieScreening {
     private LocalTime time;
 
     @JoinColumn(name = "movie_hall_id")
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = MovieHall.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = MovieHall.class)
     private MovieHall movieHall;
 
     @Column(name = "uuid", unique = true)

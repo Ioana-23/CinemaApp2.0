@@ -34,7 +34,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.1'
-	implementation 'org.modelmapper:modelmapper:2.4.2'//
+	implementation 'org.modelmapper:modelmapper:2.4.2'
 	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
