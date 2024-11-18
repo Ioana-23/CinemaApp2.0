@@ -34,7 +34,7 @@ $$
 
         FOR i IN 1..nr_linii LOOP
                 FOR j IN 1..nr_coloane LOOP
-                        INSERT INTO seats VALUES (DEFAULT, i, j, 1);
+                        INSERT INTO seats VALUES (DEFAULT, i, j, 1, 1);
 --                         RAISE NOTICE 'movie_hall: % i: % j: %', movie_hall, i, j;
                     END LOOP;
             END LOOP;
@@ -50,27 +50,34 @@ DO $$
         nr_maxim_linii INT := 7;
         nr_minim_linii INT := 5;
         nr_movie_halls INT := 5;
-        uuid_final INT;
+        movie_hall_uuid INT;
+        seat_uuid INT;
         exista INT;
     BEGIN
 
         PERFORM hardcode_movie_hall(nr_maxim_linii, nr_minim_linii, nr_maxim_coloane, nr_minim_coloane);
 
         FOR movie_hall IN 2..nr_movie_halls LOOP
-            uuid_final := generate_uuid();
-            SELECT COUNT(*) INTO exista  FROM movie_halls WHERE uuid = uuid_final;
+            movie_hall_uuid := generate_uuid();
+            SELECT COUNT(*) INTO exista  FROM movie_halls WHERE uuid = movie_hall_uuid;
             WHILE exista LOOP
-                uuid_final := generate_uuid();
-                SELECT COUNT(*) INTO exista  FROM movie_halls WHERE uuid = uuid_final;
+                movie_hall_uuid := generate_uuid();
+                SELECT COUNT(*) INTO exista  FROM movie_halls WHERE uuid = movie_hall_uuid;
             END LOOP;
-            INSERT INTO movie_halls VALUES (movie_hall, uuid_final);
+            INSERT INTO movie_halls VALUES (movie_hall, movie_hall_uuid);
 
             SELECT INTO nr_linii floor(random() * (nr_maxim_linii-nr_minim_linii+1) + nr_minim_linii)::int;
             SELECT INTO nr_coloane floor(random() * (nr_maxim_coloane-nr_minim_coloane+1) + nr_minim_coloane)::int;
 
             FOR i IN 1..nr_linii LOOP
                     FOR j IN 1..nr_coloane LOOP
-                            INSERT INTO seats VALUES (DEFAULT, i, j, movie_hall);
+                            seat_uuid := generate_uuid();
+                            SELECT COUNT(*) INTO exista  FROM seats WHERE uuid = seat_uuid;
+                            WHILE exista LOOP
+                                    seat_uuid := generate_uuid();
+                                    SELECT COUNT(*) INTO exista  FROM seats WHERE uuid = seat_uuid;
+                                END LOOP;
+                            INSERT INTO seats VALUES (DEFAULT, i, j, movie_hall, seat_uuid);
                         END LOOP;
                 END LOOP;
         END LOOP;

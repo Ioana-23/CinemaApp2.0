@@ -29,4 +29,7 @@ public class Seat {
     @JoinColumn(name = "movie_hall_id")
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = MovieHall.class)
     private MovieHall movieHall;
+
+    @Column(name = "uuid")
+    private int uuid;
 }

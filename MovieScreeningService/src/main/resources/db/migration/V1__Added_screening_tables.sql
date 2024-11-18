@@ -4,7 +4,8 @@ CREATE TABLE seats
     row_number INTEGER,
     seat_number INTEGER,
     movie_hall_id INTEGER,
-    available BOOLEAN DEFAULT true
+    uuid INTEGER,
+    available BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE movie_halls
@@ -12,13 +13,6 @@ CREATE TABLE movie_halls
     id SERIAL,
     uuid INTEGER UNIQUE
 );
-
--- CREATE TABLE movie_hall_configurations
--- (
---     id SERIAL,
---     movie_hall_id INTEGER,
---     seat_id INTEGER
--- );
 
 CREATE TABLE movie_screenings
 (

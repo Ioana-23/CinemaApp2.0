@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User findUserByUuid(int id) {
+    public User getUserByUuid(int id) {
         Optional<User> userFound = userRepository.findUserByUuid(id);
         return userFound.orElse(null);
     }

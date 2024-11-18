@@ -4,31 +4,31 @@ name: user_service
 #    external: true
 #    name: cinema_network
 services:
-  db_2:
+  db_1:
     image: 'postgres'
-    container_name: db_2
+    container_name: db_1
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=UserServiceDatabase
     ports:
-      - "5434:5432"
+      - "5433:5432"
 
-  app_2:
+  app_1:
 #    networks:
 #      - cinema_app_user
     build:
       context: ../UserService
       dockerfile: Dockerfile
-    container_name: app_2
+    container_name: app_1
     depends_on:
-      - db_2
+      - db_1
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5434/UserServiceDatabase
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5433/UserServiceDatabase
       #      - SPRING_DATASOURCE_USERNAME=$postgres
       #      - SPRING_DATASOURCE_PASSWORD=$postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
     ports:
-      - "8082:8082"
+      - "8081:8081"

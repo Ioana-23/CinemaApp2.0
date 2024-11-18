@@ -3,6 +3,8 @@ package project.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class ReservationDTO {
@@ -10,5 +12,5 @@ public class ReservationDTO {
     private UserDTO user;
     private int movie_screening_uuid;
     private int uuid;
-
+    private List<TicketDTO> tickets;
 }

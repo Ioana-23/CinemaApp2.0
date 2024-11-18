@@ -20,7 +20,7 @@ public class ReservationService {
         return reservations.orElse(null);
     }
 
-    public Reservation findReservationByUuid(int id) {
+    public Reservation getReservationByUuid(int id) {
         Optional<Reservation> reservation = reservationRepository.findReservationByUuid(id);
         return reservation.orElse(null);
     }

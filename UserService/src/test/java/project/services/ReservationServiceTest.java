@@ -1,13 +1,12 @@
 package project.services;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import project.entities.Reservation;
 import project.entities.Ticket;
 import project.entities.User;
@@ -20,7 +19,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class ReservationServiceTest {
     @InjectMocks
@@ -29,10 +27,12 @@ public class ReservationServiceTest {
     private ReservationRepository reservationRepository;
     private static final int UUID = 0;
     private static final String EMAIL = "baciuioana23@gmail.com";
-    @Test
-    public void testGetAllReservationsByUser()
-    {
-        User userToFind = User.builder()
+    private static User user;
+    private static Reservation reservation;
+
+    @BeforeAll
+    public static void initializeEntities() {
+        user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
                 .first_name("Ioana")
@@ -41,18 +41,43 @@ public class ReservationServiceTest {
                 .uuid(UUID)
                 .build();
 
-        Reservation reservationToFind = Reservation.builder()
-                .user(userToFind)
+        reservation = Reservation.builder()
+                .user(user)
                 .id(1)
                 .movie_screening_uuid(1)
                 .tickets(List.of(new Ticket()))
                 .build();
+    }
 
-        Mockito.when(reservationRepository.findReservationsByUser(userToFind)).thenReturn(Optional.of(List.of(reservationToFind)));
+    @Test
+    public void getAllReservationsByUserTest() {
+        Mockito.when(reservationRepository.findReservationsByUser(user)).thenReturn(Optional.of(List.of(reservation)));
 
-        List<Reservation> reservationsFound = reservationService.getAllReservationsByUser(userToFind);
+        List<Reservation> reservationsFound = reservationService.getAllReservationsByUser(user);
 
         assertNotNull(reservationsFound);
         assertEquals(reservationsFound.getFirst().getId(), 1);
+    }
+
+    @Test
+    public void getReservationByUuidTest() {
+        Mockito.when(reservationRepository.findReservationByUuid(UUID)).thenReturn(Optional.of(reservation));
+
+        Reservation reservationFound = reservationService.getReservationByUuid(UUID);
+
+        assertNotNull(reservationFound);
+        assertEquals(reservationFound.getUuid(), UUID);
+        assertEquals(reservationFound.getUser().getEmail(), EMAIL);
+    }
+
+    @Test
+    public void saveReservationTest() {
+        Mockito.when(reservationRepository.save(reservation)).thenReturn(reservation);
+
+        Reservation reservationSaved = reservationService.saveReservation(reservation);
+
+        assertNotNull(reservationSaved);
+        assertEquals(reservationSaved.getUuid(), UUID);
+        assertEquals(reservationSaved.getUser().getEmail(), EMAIL);
     }
 }

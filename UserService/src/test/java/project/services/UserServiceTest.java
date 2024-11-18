@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import project.entities.User;
 import project.entities.UserRole;
 import project.repositories.UserRepository;
@@ -18,7 +16,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
     @InjectMocks
@@ -29,7 +26,7 @@ public class UserServiceTest {
     private static final String EMAIL = "baciuioana23@gmail.com";
 
     @Test
-    public void testFindUserById() {
+    public void getUserByIdTest() {
         User userToFind = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
@@ -41,7 +38,7 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findUserByUuid(UUID)).thenReturn(Optional.of(userToFind));
 
-        User userFound = userService.findUserByUuid(UUID);
+        User userFound = userService.getUserByUuid(UUID);
 
         assertNotNull(userFound);
         assertEquals(userToFind.getUuid(), userFound.getUuid());
@@ -49,8 +46,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetAllUsers()
-    {
+    public void getAllUsersTest() {
         User userToFind = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
