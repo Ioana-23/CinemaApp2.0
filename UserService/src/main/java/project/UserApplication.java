@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-@Profile("normal")
 public class UserApplication {
 
 	public static void main(String[] args) {

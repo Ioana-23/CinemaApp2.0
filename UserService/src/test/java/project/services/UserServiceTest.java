@@ -1,5 +1,6 @@
 package project.services;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,10 +25,11 @@ public class UserServiceTest {
     private UserRepository userRepository;
     private static final int UUID = 0;
     private static final String EMAIL = "baciuioana23@gmail.com";
+    private User user;
 
-    @Test
-    public void getUserByIdTest() {
-        User userToFind = User.builder()
+    @BeforeEach
+    public void init() {
+        user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
                 .first_name("Ioana")
@@ -35,33 +37,26 @@ public class UserServiceTest {
                 .password("pass")
                 .uuid(UUID)
                 .build();
+    }
 
-        Mockito.when(userRepository.findUserByUuid(UUID)).thenReturn(Optional.of(userToFind));
+    @Test
+    public void getUserById_returnsUser() {
+        Mockito.when(userRepository.findUserByUuid(UUID)).thenReturn(Optional.of(user));
 
         User userFound = userService.getUserByUuid(UUID);
 
         assertNotNull(userFound);
-        assertEquals(userToFind.getUuid(), userFound.getUuid());
+        assertEquals(userFound.getUuid(), UUID);
         assertEquals(userFound.getEmail(), EMAIL);
     }
 
     @Test
-    public void getAllUsersTest() {
-        User userToFind = User.builder()
-                .user_role(UserRole.ADMIN)
-                .email(EMAIL)
-                .first_name("Ioana")
-                .last_name("Baciu")
-                .password("pass")
-                .uuid(UUID)
-                .build();
-
-        Mockito.when(userRepository.findAll()).thenReturn(List.of(userToFind));
+    public void getAllUsers_returnsUsers() {
+        Mockito.when(userRepository.findAll()).thenReturn(List.of(user));
 
         List<User> users = userService.getAllUsers();
 
         assertEquals(users.size(), 1);
         assertEquals(users.getFirst().getUuid(), UUID);
-
     }
 }

@@ -10,7 +10,7 @@ CREATE TABLE tickets
 (
     id SERIAL,
     ticket_type VARCHAR(255) CHECK ( ticket_type IN ('ADULT', 'CHILD') ),
-    seat_id INTEGER
+    seat_uuid INTEGER
 );
 
 CREATE TABLE reservation_tickets

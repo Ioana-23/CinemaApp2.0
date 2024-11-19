@@ -1,6 +1,7 @@
 package project.controllers;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -41,7 +42,7 @@ public class UserControllerTest {
     private static final String EMAIL = "baciuioana23@gmail.com";
 
     @BeforeAll
-    public static void initializeEntities() {
+    public static void init() {
         user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)

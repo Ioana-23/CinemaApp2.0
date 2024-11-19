@@ -1,42 +1,51 @@
 package project.repositories;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.UserApplication;
 import project.entities.User;
 import project.entities.UserRole;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = UserApplication.class)
+@DirtiesContext
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void saveUserTest()
-    {
-        User userToSave = User.builder()
+    private User user;
+    private static final int UUID = 0;
+
+    @BeforeEach
+    public void init() {
+        user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email("baciuioana23@gmail.com")
                 .first_name("Ioana")
                 .last_name("Baciu")
                 .password("pass")
-                .uuid(1)
+                .uuid(UUID)
                 .build();
-
-        userRepository.save(userToSave);
-
-        assertTrue(userToSave.getId() > 0);
-
     }
+
+    @Test
+    public void findUserById_returnsFound() {
+        userRepository.save(user);
+        User userFound = userRepository.findUserByUuid(UUID).orElse(null);
+        assertNotNull(userFound);
+        assertEquals(userFound.getUuid(), UUID);
+    }
+
+    @Test
+    public void findUserById_returnsUserNotFound() {
+        User userFound = userRepository.findUserByUuid(UUID).orElse(null);
+        assertNull(userFound);
+    }
+
 }

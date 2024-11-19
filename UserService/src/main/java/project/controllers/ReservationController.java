@@ -16,6 +16,7 @@ import project.services.UserService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("project/reservations")
@@ -26,11 +27,27 @@ public class ReservationController {
     private final ModelMapper modelMapper;
     private final MovieControllerProxy movieControllerProxy;
 
+    private Random random = new Random();
+
+    private int generate_uuid() {
+        int final_uuid;
+        do {
+            int no_digits = random.nextInt(4, 7);
+            final_uuid = 1;
+            for (int i = 0; i < no_digits; i++) {
+                int current_digit = random.nextInt(0, 10);
+                final_uuid = final_uuid * 10 + current_digit;
+            }
+        } while (reservationService.getReservationByUuid(final_uuid) != null);
+        return final_uuid;
+
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<List<Reservation>> getAllReservationsByUser(@PathVariable int id) {
+    public ResponseEntity<Object> getAllReservationsByUser(@PathVariable int id) {
         User userToSearch = userService.getUserByUuid(id);
         if (userToSearch == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("User with id " + id + " does not exist", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(reservationService.getAllReservationsByUser(userToSearch), HttpStatus.OK);
     }
@@ -38,28 +55,23 @@ public class ReservationController {
     @PostMapping("/reservation")
     public ResponseEntity<Object> saveReservation(@RequestBody ReservationDTO reservationDTO) {
         Reservation reservationToSave = modelMapper.map(reservationDTO, Reservation.class);
-        Reservation reservationAlreadyExists = reservationService.getReservationByUuid(reservationToSave.getUuid());
-        if (reservationAlreadyExists == null) {
-            try {
-                String message = checkIfMovieScreeningExists(reservationToSave);
-                if(message.isBlank())
-                {
-                    message = checkIfTicketsAreValid(reservationToSave);
-                    if (message.isBlank()) {
-                        return new ResponseEntity<>(reservationService.saveReservation(reservationToSave), HttpStatus.CREATED);
-                    }
-                    if(message.contains("does not exist"))
-                    {
-                        return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
-                    }
-                    return new ResponseEntity<>(message, HttpStatus.EXPECTATION_FAILED);
+        try {
+            String message = checkIfMovieScreeningExists(reservationToSave);
+            if (message.isBlank()) {
+                message = checkIfTicketsAreValid(reservationToSave);
+                if (message.isBlank()) {
+                    reservationToSave.setUuid(generate_uuid());
+                    return new ResponseEntity<>(reservationService.saveReservation(reservationToSave), HttpStatus.CREATED);
                 }
-                return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                if (message.contains("does not exist")) {
+                    return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+                }
+                return new ResponseEntity<>(message, HttpStatus.EXPECTATION_FAILED);
             }
+            return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(reservationAlreadyExists, HttpStatus.ACCEPTED);
     }
 
     private String checkIfTicketsAreValid(Reservation reservationToSave) throws IOException, InterruptedException {
@@ -72,12 +84,12 @@ public class ReservationController {
 
     private String checkIfSeatsAreValid(List<Ticket> tickets) throws IOException, InterruptedException {
         for (Ticket ticket : tickets) {
-            SeatDTO seatFound = movieControllerProxy.getSeatByUuid(ticket.getSeat_id());
+            SeatDTO seatFound = movieControllerProxy.getSeatByUuid(ticket.getSeat_uuid());
             if (seatFound == null) {
-                return "Seat with id " + ticket.getSeat_id() + " does not exist";
+                return "Seat with id " + ticket.getSeat_uuid() + " does not exist";
             }
             if (!seatFound.isAvailable()) {
-                return "Seat with id " + ticket.getSeat_id() + " is not available";
+                return "Seat with id " + ticket.getSeat_uuid() + " is not available";
             }
         }
         return "";
@@ -92,10 +104,10 @@ public class ReservationController {
     }
 
     @DeleteMapping("/reservation/{id}")
-    public ResponseEntity<Reservation> deleteReservation(@PathVariable int id) {
+    public ResponseEntity<Object> deleteReservation(@PathVariable int id) {
         Reservation reservationToDelete = reservationService.getReservationByUuid(id);
         if (reservationToDelete == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Reservation with id " + id + " does not exist", HttpStatus.NO_CONTENT);
         }
         reservationService.deleteReservationByUuid(id);
         return new ResponseEntity<>(reservationToDelete, HttpStatus.OK);

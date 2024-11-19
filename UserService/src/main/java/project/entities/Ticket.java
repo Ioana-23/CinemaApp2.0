@@ -21,6 +21,6 @@ public class Ticket {
     @Column(name = "ticket_type")
     private TicketType ticketType;
 
-    @Column(name = "seat_id")
-    private int seat_id;
+    @Column(name = "seat_uuid")
+    private int seat_uuid;
 }

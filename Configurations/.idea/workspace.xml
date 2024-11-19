@@ -6,25 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/movie_service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user_service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/entities/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/entities/Seat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V1__Added_screening_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V1__Added_screening_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/UserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/UserApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/ReservationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/MovieScreeningDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/MovieScreeningDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/ReservationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/ReservationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/services/ReservationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/services/ReservationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application-normal.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/application-normal.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application-test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/application-test.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/UserApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/integration_tests/ReservationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/UserApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/TicketDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/dtos/TicketDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/Ticket.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/Ticket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application-normal.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application-test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V3__Added_reservations_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V3__Added_reservations_table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/UserApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/UserApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/ReservationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/ReservationControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/UserControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/UserRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/UserRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/services/ReservationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/services/ReservationServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/services/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/services/UserServiceTest.java" afterDir="false" />
@@ -82,26 +75,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "Docker.movie_screening_service.yml.db_3: Compose Deployment.executor": "Run",
-    "Docker.movie_service.yml.db_1: Compose Deployment.executor": "Run",
-    "Docker.movie_service.yml: Compose Deployment.executor": "Run",
-    "Docker.run.executor": "Run",
-    "Docker.user_service.yml.db_2: Compose Deployment.executor": "Run",
-    "Docker.user_service.yml: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/CinemaApp/MovieScreeningService",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_screening_service.yml.db_3: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_service.yml.db_1: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.run.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.user_service.yml.db_2: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.user_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/CinemaApp/MovieScreeningService&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\CinemaApp\Configurations" />
@@ -224,6 +217,7 @@
       <workItem from="1731754448724" duration="5389000" />
       <workItem from="1731768728146" duration="13368000" />
       <workItem from="1731930392795" duration="2603000" />
+      <workItem from="1732050402777" duration="618000" />
     </task>
     <servers />
   </component>

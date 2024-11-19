@@ -10,5 +10,5 @@ public class TicketDTO {
     private int id;
     private int uuid;
     private TicketType ticketType;
-    private int seat_id;
+    private int seat_uuid;
 }
