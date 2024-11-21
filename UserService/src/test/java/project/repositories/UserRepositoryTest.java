@@ -35,16 +35,19 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findUserById_returnsFound() {
+    public void findUserByUuid_returnsFound() {
         userRepository.save(user);
+
         User userFound = userRepository.findUserByUuid(UUID).orElse(null);
+
         assertNotNull(userFound);
         assertEquals(userFound.getUuid(), UUID);
     }
 
     @Test
-    public void findUserById_returnsUserNotFound() {
+    public void findUserByUuid_returnsNotFound() {
         User userFound = userRepository.findUserByUuid(UUID).orElse(null);
+
         assertNull(userFound);
     }
 

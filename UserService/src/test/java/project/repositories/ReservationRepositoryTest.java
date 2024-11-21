@@ -49,23 +49,28 @@ public class ReservationRepositoryTest {
     }
 
     @Test
-    public void findReservationById_returnsFound() {
+    public void findReservationByUuid_returnsFound() {
         reservationRepository.save(reservation);
+
         Reservation reservationFound = reservationRepository.findReservationByUuid(UUID).orElse(null);
+
         assertNotNull(reservationFound);
         assertEquals(reservationFound.getUuid(), UUID);
     }
 
     @Test
-    public void findReservationById_returnsNotFound() {
+    public void findReservationByUuid_returnsNotFound() {
         Reservation reservationFound = reservationRepository.findReservationByUuid(UUID).orElse(null);
+
         assertNull(reservationFound);
     }
 
     @Test
     public void findReservationsByUser_returnsFound() {
         reservationRepository.save(reservation);
+
         List<Reservation> reservationsFound = reservationRepository.findReservationsByUser(user).orElse(null);
+
         assertNotNull(reservationsFound);
         assertEquals(reservationsFound.size(), 1);
         assertEquals(reservationsFound.getFirst().getUuid(), UUID);

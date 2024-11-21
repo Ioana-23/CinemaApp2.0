@@ -24,25 +24,23 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Movie findMovieByUuid(int id) {
+    public Movie getMovieByUuid(int id) {
         Optional<Movie> movieFound = movieRepository.findByUuid(id);
         return movieFound.orElse(null);
     }
 
     @Transactional
-    public void removeMovieByUuid(int id) {
+    public void deleteMovieByUuid(int id) {
         movieRepository.deleteByUuid(id);
     }
 
-    public List<Movie> findMoviesByActor(Actor actor)
-    {
-        Optional<List<Movie>> movies = movieRepository.findMoviesByActors(List.of(actor));
+    public List<Movie> getMoviesByActor(List<Actor> actors) {
+        Optional<List<Movie>> movies = movieRepository.findMoviesByActors(actors);
         return movies.orElse(null);
     }
 
-    public List<Movie> findMoviesByGenre(Genre genre)
-    {
-        Optional<List<Movie>> movies = movieRepository.findMoviesByGenres(List.of(genre));
+    public List<Movie> getMoviesByGenre(List<Genre> genre) {
+        Optional<List<Movie>> movies = movieRepository.findMoviesByGenres(genre);
         return movies.orElse(null);
     }
 }

@@ -46,9 +46,6 @@ public class UserControllerTest {
         user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
-                .first_name("Ioana")
-                .last_name("Baciu")
-                .password("pass")
                 .uuid(UUID)
                 .build();
     }

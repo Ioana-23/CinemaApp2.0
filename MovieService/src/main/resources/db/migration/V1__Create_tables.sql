@@ -1,7 +1,8 @@
 CREATE TABLE actors
 (
     id   SERIAL,
-    name VARCHAR(255),
+    name VARCHAR(255) NOT NULL,
+    uuid INTEGER UNIQUE NOT NULL,
     CONSTRAINT actors_pkey PRIMARY KEY (id)
 );
 
@@ -14,8 +15,9 @@ CREATE TABLE movie_actors
 CREATE TABLE movies
 (
     id   SERIAL,
-    date date,
-    title VARCHAR(255),
+    date date NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    uuid INTEGER UNIQUE NOT NULL,
     CONSTRAINT movies_pkey PRIMARY KEY (id)
 );
 

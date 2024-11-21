@@ -23,6 +23,11 @@ repositories {
 	mavenCentral()
 }
 
+test {
+// previous JVM options
+	jvmArgs("-noverify", "-XX:+EnableDynamicAgentLoading") // add this
+}
+
 dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -37,6 +42,7 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:2.4.2'
 	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

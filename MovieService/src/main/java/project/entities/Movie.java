@@ -23,31 +23,31 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     @ManyToMany
     @Cascade({CascadeType.PERSIST})
-    @JoinTable(name = "movie_actors", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actors_id"))
+    @JoinTable(name = "movie_actors", joinColumns = @JoinColumn(name = "movie_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "actors_id", nullable = false))
     private List<Actor> actors;
 
-    @Column(name = "overview")
+    @Column(name = "overview", nullable = false)
     private String overview;
 
-    @Column(name = "adult", columnDefinition = "boolean default false")
+    @Column(name = "adult", columnDefinition = "boolean default false", nullable = false)
     private boolean adult;
 
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private String language;
 
     @ManyToMany
     @Cascade({CascadeType.PERSIST})
-    @JoinTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    @JoinTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "genre_id",  nullable = false))
     private List<Genre> genres;
 
-    @Column(name = "uuid", unique = true)
+    @Column(name = "uuid", unique = true, nullable = false)
     private int uuid;
 }

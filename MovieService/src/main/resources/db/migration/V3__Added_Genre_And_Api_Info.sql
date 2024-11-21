@@ -1,7 +1,7 @@
 CREATE TABLE genres
 (id   SERIAL,
- name VARCHAR(255),
- uuid INTEGER UNIQUE,
+ name VARCHAR(255) NOT NULL,
+ uuid INTEGER UNIQUE NOT NULL,
  CONSTRAINT genres_pkey PRIMARY KEY (id)
 );
 
@@ -20,15 +20,8 @@ ALTER TABLE movie_genres
     ADD CONSTRAINT movie_genres_pk PRIMARY KEY (genre_id, movie_id);
 
 ALTER TABLE movies
-    ADD COLUMN adult BOOLEAN;
+    ADD COLUMN adult BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE movies
-    ADD COLUMN overview VARCHAR(355);
+    ADD COLUMN overview VARCHAR(355) NOT NULL DEFAULT '';
 ALTER TABLE movies
-    ADD COLUMN language VARCHAR(255);
-ALTER TABLE movies
-    ADD COLUMN uuid INTEGER UNIQUE;
-
-UPDATE movies SET adult = false;
-UPDATE movies SET overview = '';
-UPDATE movies SET language = 'en';
-UPDATE movies SET uuid = 0
+    ADD COLUMN language VARCHAR(255) NOT NULL DEFAULT 'eng';

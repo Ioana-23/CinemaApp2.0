@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.entities.MovieHall;
+import project.controllers.response.Response;
+import project.controllers.response.ResponseType;
 import project.entities.Seat;
-import project.services.MovieHallService;
 import project.services.SeatService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("project/seats")
@@ -21,13 +19,21 @@ public class SeatController {
     private final SeatService seatService;
 
     @GetMapping("/seat/{id}")
-    public ResponseEntity<Seat> findSeatByUuid(@PathVariable int id)
-    {
-        Seat seatFound = seatService.findSeatByUuid(id);
-        if(seatFound == null)
-        {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Response> findSeatByUuid(@PathVariable int id) {
+        Seat seatFound = seatService.getSeatByUuid(id);
+        if (seatFound == null) {
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .message("Seat with id " + id + " doesn't exist")
+                            .responseType(ResponseType.ERROR)
+                            .build(),
+                    HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(seatFound, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseObject(seatFound)
+                        .responseType(ResponseType.SUCCESS)
+                        .build(),
+                HttpStatus.OK);
     }
 }

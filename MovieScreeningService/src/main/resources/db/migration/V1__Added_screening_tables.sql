@@ -17,7 +17,7 @@ CREATE TABLE movie_halls
 CREATE TABLE movie_screenings
 (
     id            SERIAL,
-    movie_id      INTEGER,
+    movie_uuid      INTEGER,
     date          date,
     time          time,
     movie_hall_id INTEGER,

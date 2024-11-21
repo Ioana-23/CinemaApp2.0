@@ -13,13 +13,11 @@ public class MovieHallService {
 
     private final MovieHallRepository movieHallRepository;
 
-    public MovieHall findMovieHallByUuid(int uuid)
-    {
+    public MovieHall getMovieHallByUuid(int uuid) {
         return movieHallRepository.findMovieHallByUuid(uuid).orElse(null);
     }
 
-    public List<MovieHall> getAllMovieHalls()
-    {
+    public List<MovieHall> getAllMovieHalls() {
         return movieHallRepository.findAll();
     }
 }

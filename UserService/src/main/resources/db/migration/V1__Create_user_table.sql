@@ -1,12 +1,12 @@
 CREATE TABLE users
 (
     id SERIAL,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    uuid INTEGER UNIQUE,
-    user_role VARCHAR(255) CHECK ( user_role IN ('GUEST', 'USER', 'ADMIN') ),
-    email VARCHAR(255),
-    password VARCHAR(255)
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    uuid INTEGER UNIQUE NOT NULL,
+    user_role VARCHAR(255) NOT NULL CHECK ( user_role IN ('GUEST', 'USER', 'ADMIN') ),
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE users

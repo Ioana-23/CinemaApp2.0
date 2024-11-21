@@ -12,8 +12,7 @@ import java.util.Optional;
 public class SeatService {
     private final SeatRepository seatRepository;
 
-    public Seat findSeatByUuid(int id)
-    {
+    public Seat getSeatByUuid(int id) {
         Optional<Seat> seatFound = seatRepository.findSeatByUuid(id);
         return seatFound.orElse(null);
     }

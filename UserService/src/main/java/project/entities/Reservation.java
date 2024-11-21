@@ -1,6 +1,7 @@
 package project.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -22,17 +23,17 @@ public class Reservation {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "movie_screening_uuid")
+    @Column(name = "movie_screening_uuid", nullable = false)
     private int movie_screening_uuid;
 
-    @Column(name = "uuid", unique = true)
+    @Column(name = "uuid", unique = true, nullable = false)
     private int uuid;
 
     @ManyToMany
     @Cascade({CascadeType.PERSIST})
-    @JoinTable(name = "reservation_tickets", joinColumns = @JoinColumn(name = "reservation_id"), inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    @JoinTable(name = "reservation_tickets", joinColumns = @JoinColumn(name = "reservation_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "ticket_id", nullable = false))
     private List<Ticket> tickets;
 }

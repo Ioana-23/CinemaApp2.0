@@ -27,7 +27,7 @@ public class MovieControllerProxy {
                 getIpAddress();
             }
         }
-        HttpResponse<String> response = make_call("http://" + ip_address + ":8083/project/movie_screenings/movie_screening/" + uuid);
+        HttpResponse<String> response = make_call("http://" + ip_address + ":8082/project/movie_screenings/movie_screening/" + uuid);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         if (!response.body().isBlank()) {
@@ -62,7 +62,7 @@ public class MovieControllerProxy {
                 getIpAddress();
             }
         }
-        HttpResponse<String> response = make_call("http://" + ip_address + ":8083/project/seats/seat/" + uuid);
+        HttpResponse<String> response = make_call("http://" + ip_address + ":8082/project/seats/seat/" + uuid);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         if (!response.body().isBlank()) {
@@ -75,7 +75,6 @@ public class MovieControllerProxy {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("accept", "application/json")
-//                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMDczYzc2NzQ5MDk0MTQ4NGRiNDhkMzQ3N2FlOTQ5YyIsIm5iZiI6MTczMTQyODk4OS44NDYxMzU5LCJzdWIiOiI2NzMyMTM1MDNhZjhlYjNlMzVhYTI2NDkiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.DTaeru_ecPfxZ5hGGiDuKrjzkn8C6Lu7qlNOgfuflQo")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());

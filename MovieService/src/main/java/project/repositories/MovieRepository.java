@@ -14,6 +14,8 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     Optional<Movie> findByUuid(int uuid);
 
     void deleteByUuid(int uuid);
+
     Optional<List<Movie>> findMoviesByActors(List<Actor> actors);
+
     Optional<List<Movie>> findMoviesByGenres(List<Genre> genres);
 }

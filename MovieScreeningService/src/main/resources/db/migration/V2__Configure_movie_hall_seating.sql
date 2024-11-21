@@ -1,4 +1,4 @@
-CREATE FUNCTION generate_uuid()
+CREATE OR REPLACE FUNCTION generate_uuid()
     RETURNS INT
     LANGUAGE plpgsql
 AS

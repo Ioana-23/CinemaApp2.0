@@ -20,8 +20,8 @@ public class MovieScreening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "movie_id")
-    private int movie_id;
+    @Column(name = "movie_uuid")
+    private int movie_uuid;
 
     @Column(name = "date")
     private LocalDate date;

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Integer> {
-    public Optional<Seat> findSeatByUuid(int uuid);
+    Optional<Seat> findSeatByUuid(int uuid);
 }

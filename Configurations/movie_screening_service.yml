@@ -3,31 +3,31 @@ name: movie_screening_service
 #  cinema_app_movie:
 #    name: cinema_network
 services:
-  db_3:
+  db_2:
     image: 'postgres'
-    container_name: db_3
+    container_name: db_2
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=MovieScreeningServiceDatabase
     ports:
-      - "5435:5432"
+      - "5434:5432"
 
-  app_3:
+  app_2:
 #    networks:
 #      - cinema_app_movie
     build:
       context: ../MovieScreeningService
       dockerfile: Dockerfile
-    container_name: app_3
+    container_name: app_2
     depends_on:
-      - db_3
+      - db_2
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5435/MovieScreeningServiceDatabase
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5434/MovieScreeningServiceDatabase
       #      - SPRING_DATASOURCE_USERNAME=$postgres
       #      - SPRING_DATASOURCE_PASSWORD=$postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
     ports:
-      - "8083:8083"
+      - "8082:8082"

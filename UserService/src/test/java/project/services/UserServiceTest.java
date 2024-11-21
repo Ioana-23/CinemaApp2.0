@@ -32,15 +32,12 @@ public class UserServiceTest {
         user = User.builder()
                 .user_role(UserRole.ADMIN)
                 .email(EMAIL)
-                .first_name("Ioana")
-                .last_name("Baciu")
-                .password("pass")
                 .uuid(UUID)
                 .build();
     }
 
     @Test
-    public void getUserById_returnsUser() {
+    public void getUserByUuid_returnsUser() {
         Mockito.when(userRepository.findUserByUuid(UUID)).thenReturn(Optional.of(user));
 
         User userFound = userService.getUserByUuid(UUID);

@@ -18,8 +18,7 @@ public class MovieHallController {
     private final MovieHallService movieHallService;
 
     @GetMapping
-    public ResponseEntity<List<MovieHall>> getAllMovieHalls()
-    {
+    public ResponseEntity<List<MovieHall>> getAllMovieHalls() {
         return new ResponseEntity<>(movieHallService.getAllMovieHalls(), HttpStatus.OK);
     }
 }

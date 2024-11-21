@@ -17,9 +17,9 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "uuid", unique = true)
+    @Column(name = "uuid", unique = true, nullable = false)
     private int uuid;
 }
