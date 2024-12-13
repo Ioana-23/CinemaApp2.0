@@ -58,7 +58,8 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].email", is(EMAIL)));
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].email", is(EMAIL)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)));
     }
 }

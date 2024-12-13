@@ -92,8 +92,9 @@ public class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].user.email", is(EMAIL)));
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].user.email", is(EMAIL)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -104,7 +105,8 @@ public class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("User with id " + UUID + " does not exist"));
+                .andExpect(jsonPath("$.message", is("User with id " + UUID + " does not exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -118,7 +120,8 @@ public class ReservationControllerTest {
                         .content(objectMapper.writeValueAsString(reservation)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.user.email", is(EMAIL)));
+                .andExpect(jsonPath("$.responseObject.user.email", is(EMAIL)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -133,7 +136,8 @@ public class ReservationControllerTest {
                         .content(objectMapper.writeValueAsString(reservation)))
                 .andDo(print())
                 .andExpect(status().isExpectationFailed())
-                .andExpect(content().string("There are no tickets associated with this reservation"));
+                .andExpect(jsonPath("$.message", is("There are no tickets associated with this reservation")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -146,7 +150,8 @@ public class ReservationControllerTest {
                         .content(objectMapper.writeValueAsString(reservation)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("Seat with id " + UUID + " does not exist"));
+                .andExpect(jsonPath("$.message", is("Seat with id " + UUID + " does not exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -162,7 +167,8 @@ public class ReservationControllerTest {
                         .content(objectMapper.writeValueAsString(reservation)))
                 .andDo(print())
                 .andExpect(status().isExpectationFailed())
-                .andExpect(content().string("Seat with id " + UUID + " is not available"));
+                .andExpect(jsonPath("$.message", is("Seat with id " + UUID + " is not available")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -174,7 +180,8 @@ public class ReservationControllerTest {
                         .content(objectMapper.writeValueAsString(reservation)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("Movie screening with id " + UUID + " does not exist"));
+                .andExpect(jsonPath("$.message", is("Movie screening with id " + UUID + " does not exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -185,8 +192,9 @@ public class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.uuid", is(UUID)))
-                .andExpect(jsonPath("$.user.email", is(EMAIL)));
+                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseObject.user.email", is(EMAIL)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -196,6 +204,7 @@ public class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("Reservation with id " + UUID + " does not exist"));
+                .andExpect(jsonPath("$.message", is("Reservation with id " + UUID + " does not exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 }

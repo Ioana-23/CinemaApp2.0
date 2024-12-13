@@ -6,56 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/movie_service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/FlyWayConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieHallController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieHallController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieScreeningController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieScreeningController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/SeatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/SeatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/MovieDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/MovieDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/entities/MovieScreening.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/entities/MovieScreening.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/MovieScreeningRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/MovieScreeningRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/SeatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/SeatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/MovieHallService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/MovieHallService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/MovieScreeningService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/MovieScreeningService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/SeatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V1__Added_screening_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V1__Added_screening_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/MovieScreeningApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/MovieScreeningApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/FlyWayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/FlyWayConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/controllers/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/controllers/MovieController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Actor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/repositories/ActorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/repositories/ActorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/repositories/MovieRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/repositories/MovieRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/services/MovieService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/services/MovieService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V1__Create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V1__Create_tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V2__Add_data_To_Tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V2__Add_data_To_Tables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V3__Added_Genre_And_Api_Info.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V3__Added_Genre_And_Api_Info.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V4__Added_Actor_Api_Info.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V4__Added_Actor_Api_Info.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/test/java/project/MovieApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/test/java/project/MovieApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/FlyWayConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/MovieControllerProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/MovieControllerProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/Reservation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V1__Create_user_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V1__Create_user_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V3__Added_reservations_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/resources/db/migration/V3__Added_reservations_table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MovieService/src/test/java/project/controller/MovieControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/test/java/project/controller/MovieControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/ReservationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/main/java/project/controllers/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/ReservationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/ReservationControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/controllers/UserControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/ReservationRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/ReservationRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/UserRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/repositories/UserRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/services/ReservationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/services/ReservationServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/java/project/services/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/java/project/services/UserServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserService/src/test/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/src/test/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,30 +67,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "Docker.movie_screening_service.yml.db_2: Compose Deployment.executor": "Run",
-    "Docker.movie_screening_service.yml.db_3: Compose Deployment.executor": "Run",
-    "Docker.movie_screening_service.yml: Compose Deployment.executor": "Run",
-    "Docker.movie_service.yml.db_1: Compose Deployment.executor": "Run",
-    "Docker.movie_service.yml.db_3: Compose Deployment.executor": "Run",
-    "Docker.movie_service.yml: Compose Deployment.executor": "Run",
-    "Docker.run.executor": "Run",
-    "Docker.user_service.yml.db_1: Compose Deployment.executor": "Run",
-    "Docker.user_service.yml.db_2: Compose Deployment.executor": "Run",
-    "Docker.user_service.yml: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Projects/CinemaApp/MovieScreeningService",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_screening_service.yml.db_2: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_screening_service.yml.db_3: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_screening_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_service.yml.db_1: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_service.yml.db_3: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.movie_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.run.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.user_service.yml.db_1: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.user_service.yml.db_2: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.user_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/CinemaApp/MovieScreeningService&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\CinemaApp\Configurations" />
@@ -258,6 +215,8 @@
       <workItem from="1732050402777" duration="618000" />
       <workItem from="1732102278916" duration="2069000" />
       <workItem from="1732182751152" duration="3700000" />
+      <workItem from="1732265505668" duration="602000" />
+      <workItem from="1732895569039" duration="1610000" />
     </task>
     <servers />
   </component>

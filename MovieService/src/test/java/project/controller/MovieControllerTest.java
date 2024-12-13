@@ -78,7 +78,8 @@ public class MovieControllerTest {
                         .content(objectMapper.writeValueAsString(movie)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.uuid", is(UUID)));
+                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -90,7 +91,8 @@ public class MovieControllerTest {
                         .content(objectMapper.writeValueAsString(movie)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("Movie with id " + UUID + " already exists"));
+                .andExpect(jsonPath("$.message", is("Movie with id " + UUID + " already exists")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -101,8 +103,9 @@ public class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].uuid", is(UUID)));
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -113,7 +116,8 @@ public class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.uuid", is(UUID)));
+                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -122,7 +126,8 @@ public class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("Movie with id " + UUID + " doesn't exist"));
+                .andExpect(jsonPath("$.message", is("Movie with id " + UUID + " doesn't exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
     @Test
@@ -133,7 +138,8 @@ public class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.uuid", is(UUID)));
+                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
     @Test
@@ -142,6 +148,7 @@ public class MovieControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent())
-                .andExpect(content().string("Movie with id " + UUID + " doesn't exist"));
+                .andExpect(jsonPath("$.message", is("Movie with id " + UUID + " doesn't exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 }

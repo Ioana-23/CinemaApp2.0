@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.entities.User;
+import project.controllers.response.Response;
+import project.controllers.response.ResponseType;
 import project.services.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("project/users")
@@ -18,8 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<Response> getAllUsers() {
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseObject(userService.getAllUsers())
+                        .responseType(ResponseType.SUCCESS)
+                        .build(),
+                HttpStatus.OK);
     }
 }

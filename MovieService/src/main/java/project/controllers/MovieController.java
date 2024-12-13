@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.controllers.response.Response;
+import project.controllers.response.ResponseType;
 import project.dtos.MovieDTO;
 import project.entities.Actor;
 import project.entities.Genre;
@@ -29,7 +31,7 @@ public class MovieController {
     private final TMDBControllerProxy tmdbControllerProxy;
 
     @GetMapping("/api")
-    public ResponseEntity<List<Movie>> getAllApiExternalApiMovies() throws IOException, InterruptedException {
+    public ResponseEntity<Response> getAllApiExternalApiMovies() throws IOException, InterruptedException {
         tmdbControllerProxy.setModelMapper(modelMapper);
         List<Movie> movies = tmdbControllerProxy.getGeneralMovieInfo();
 
@@ -37,38 +39,67 @@ public class MovieController {
             movie.setActors(tmdbControllerProxy.getMovieActorsInfo(movie));
         }
 
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseType(ResponseType.SUCCESS)
+                        .responseObject(movies)
+                        .build(),
+                HttpStatus.OK);
     }
 
     @PostMapping("/movie")
-    public ResponseEntity<Object> saveMovie(@RequestBody MovieDTO movieDTO) {
+    public ResponseEntity<Response> saveMovie(@RequestBody MovieDTO movieDTO) {
         Movie movieToSave = modelMapper.map(movieDTO, Movie.class);
         Movie movieAlreadyExists = movieService.getMovieByUuid(movieToSave.getUuid());
         if (movieAlreadyExists == null) {
             saveActorsInfo(movieToSave);
             saveGenreInfo(movieToSave);
-            return new ResponseEntity<>(movieService.saveMovie(movieToSave), HttpStatus.CREATED);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .responseObject(movieService.saveMovie(movieToSave))
+                            .responseType(ResponseType.SUCCESS)
+                            .build(),
+                    HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("Movie with id " + movieToSave.getUuid() + " already exists", HttpStatus.OK);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .message("Movie with id " + movieToSave.getUuid() + " already exists")
+                        .responseType(ResponseType.ERROR)
+                        .build(),
+                HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+    public ResponseEntity<Response> getAllMovies() {
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseObject(movieService.getAllMovies())
+                        .responseType(ResponseType.SUCCESS)
+                        .build(),
+                HttpStatus.OK);
     }
 
     @GetMapping("/movie/{id}")
-    public ResponseEntity<Object> getMovieByUuid(@PathVariable int id) {
+    public ResponseEntity<Response> getMovieByUuid(@PathVariable int id) {
         Movie movieFound = movieService.getMovieByUuid(id);
         if (movieFound != null) {
-            return new ResponseEntity<>(movieFound, HttpStatus.OK);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .responseObject(movieFound)
+                            .responseType(ResponseType.SUCCESS)
+                            .build(),
+                    HttpStatus.OK);
         }
-        return new ResponseEntity<>("Movie with id " + id + " doesn't exist", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .message("Movie with id " + id + " doesn't exist")
+                        .responseType(ResponseType.ERROR)
+                        .build(),
+                HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/movie/{id}")
-    public ResponseEntity<Object> deleteMovie(@PathVariable int id) {
+    public ResponseEntity<Response> deleteMovie(@PathVariable int id) {
         Movie movieFound = movieService.getMovieByUuid(id);
         if (movieFound != null) {
             saveActorsInfo(movieFound);
@@ -76,9 +107,19 @@ public class MovieController {
             movieService.deleteMovieByUuid(id);
             deleteActors(movieFound);
             deleteGenres(movieFound);
-            return new ResponseEntity<>(movieFound, HttpStatus.OK);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .responseObject(movieFound)
+                            .responseType(ResponseType.SUCCESS)
+                            .build(),
+                    HttpStatus.OK);
         }
-        return new ResponseEntity<>("Movie with id " + id + " doesn't exist", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseType(ResponseType.ERROR)
+                        .message("Movie with id " + id + " doesn't exist")
+                        .build(),
+                HttpStatus.NO_CONTENT);
     }
 
     private void deleteGenres(Movie movieFound) {
@@ -127,8 +168,6 @@ public class MovieController {
                 movieFound.getActors().remove(j);
                 movieFound.getActors().add(actorAux);
                 j--;
-//                actor = actorAux;
-//                actor.setId(actorAux.getId());
             }
         }
     }

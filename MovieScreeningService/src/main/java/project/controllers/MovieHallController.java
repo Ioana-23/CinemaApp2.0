@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.controllers.response.Response;
+import project.controllers.response.ResponseType;
 import project.entities.MovieHall;
 import project.services.MovieHallService;
 
@@ -18,7 +20,12 @@ public class MovieHallController {
     private final MovieHallService movieHallService;
 
     @GetMapping
-    public ResponseEntity<List<MovieHall>> getAllMovieHalls() {
-        return new ResponseEntity<>(movieHallService.getAllMovieHalls(), HttpStatus.OK);
+    public ResponseEntity<Response> getAllMovieHalls() {
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseType(ResponseType.SUCCESS)
+                        .responseObject(movieHallService.getAllMovieHalls())
+                        .build(),
+                HttpStatus.OK);
     }
 }

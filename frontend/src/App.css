@@ -1,0 +1,138 @@
+
+#root {
+  padding: 0 5rem;
+  text-align: center;
+}
+
+.sign-in-up-container{
+  gap: 3rem;
+}
+
+.log-in-button{
+  color: #767676;
+  background-color: transparent;
+  border: none;
+}
+
+.log-in-button.btn:hover{
+  background-color: transparent;
+  text-underline-offset: 0.3rem;
+  text-decoration: underline #767676;
+  color: #767676;
+  border: none;
+}
+
+.log-in-button.btn:before{
+  color: #767676;
+  background-color: transparent;
+  content: '';
+  height: 1px;
+  position: absolute;
+  bottom: 7px;
+  left: -20px;
+  right: 100%;
+  opacity: 0;
+}
+
+#header {
+  padding: 15px 0;
+  top: 0;
+  z-index: 9999;
+  background: #53354A;
+  box-shadow: 0 0 8px 0px rgba(0, 0, 0, 0.1);
+}
+
+#header .navbar {
+  margin-right: 1rem;
+  padding: 0;
+  justify-content: space-between;
+  background: none !important;
+}
+
+#header .navbar-brand {
+  color: #f64b4b;
+  text-transform: uppercase;
+  font-weight: 600;
+  height: auto;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+#header .navbar-collapse {
+  flex-grow: 0;
+}
+
+#header .navbar-collapse .navbar-nav {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+#header .navbar-collapse a:last-child {
+  padding-right: 0;
+}
+
+#header .navbar-collapse a {
+  color: #767676;
+  position: relative;
+}
+
+#header .navbar-collapse a:hover,
+#header .navbar-collapse a.active {
+  background: none;
+  color: #2B2E4A;
+}
+
+#header .navbar-collapse a:hover:before,
+#header .navbar-collapse a.active:before {
+  right: 7px;
+  left: 8px;
+  opacity: 1;
+}
+
+#header .navbar-collapse a:before {
+  content: '';
+  background: #2B2E4A;
+  height: 1px;
+  position: absolute;
+  bottom: 7px;
+  left: -20px;
+  right: 100%;
+  opacity: 0;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

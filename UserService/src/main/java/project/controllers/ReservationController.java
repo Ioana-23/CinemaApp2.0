@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.controllers.response.Response;
+import project.controllers.response.ResponseType;
 import project.dtos.MovieScreeningDTO;
 import project.dtos.ReservationDTO;
 import project.dtos.SeatDTO;
@@ -44,16 +46,26 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getAllReservationsByUser(@PathVariable int id) {
+    public ResponseEntity<Response> getAllReservationsByUser(@PathVariable int id) {
         User userToSearch = userService.getUserByUuid(id);
         if (userToSearch == null) {
-            return new ResponseEntity<>("User with id " + id + " does not exist", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .message("User with id " + id + " does not exist")
+                            .responseType(ResponseType.ERROR)
+                            .build(),
+                    HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(reservationService.getAllReservationsByUser(userToSearch), HttpStatus.OK);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseType(ResponseType.SUCCESS)
+                        .responseObject(reservationService.getAllReservationsByUser(userToSearch))
+                        .build(),
+                HttpStatus.OK);
     }
 
     @PostMapping("/reservation")
-    public ResponseEntity<Object> saveReservation(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<Response> saveReservation(@RequestBody ReservationDTO reservationDTO) {
         Reservation reservationToSave = modelMapper.map(reservationDTO, Reservation.class);
         try {
             String message = checkIfMovieScreeningExists(reservationToSave);
@@ -61,14 +73,34 @@ public class ReservationController {
                 message = checkIfTicketsAreValid(reservationToSave);
                 if (message.isBlank()) {
                     reservationToSave.setUuid(generate_uuid());
-                    return new ResponseEntity<>(reservationService.saveReservation(reservationToSave), HttpStatus.CREATED);
+                    return new ResponseEntity<>(
+                            Response.builder()
+                                    .responseObject(reservationService.saveReservation(reservationToSave))
+                                    .responseType(ResponseType.SUCCESS)
+                                    .build(),
+                            HttpStatus.CREATED);
                 }
                 if (message.contains("does not exist")) {
-                    return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+                    return new ResponseEntity<>(
+                            Response.builder()
+                                    .responseType(ResponseType.ERROR)
+                                    .message(message)
+                                    .build(),
+                            HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(message, HttpStatus.EXPECTATION_FAILED);
+                return new ResponseEntity<>(
+                        Response.builder()
+                                .message(message)
+                                .responseType(ResponseType.ERROR)
+                                .build(),
+                        HttpStatus.EXPECTATION_FAILED);
             }
-            return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .responseType(ResponseType.ERROR)
+                            .message(message)
+                            .build(),
+                    HttpStatus.NO_CONTENT);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -104,12 +136,22 @@ public class ReservationController {
     }
 
     @DeleteMapping("/reservation/{id}")
-    public ResponseEntity<Object> deleteReservation(@PathVariable int id) {
+    public ResponseEntity<Response> deleteReservation(@PathVariable int id) {
         Reservation reservationToDelete = reservationService.getReservationByUuid(id);
         if (reservationToDelete == null) {
-            return new ResponseEntity<>("Reservation with id " + id + " does not exist", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .message("Reservation with id " + id + " does not exist")
+                            .responseType(ResponseType.ERROR)
+                            .build(),
+                    HttpStatus.NO_CONTENT);
         }
         reservationService.deleteReservationByUuid(id);
-        return new ResponseEntity<>(reservationToDelete, HttpStatus.OK);
+        return new ResponseEntity<>(
+                Response.builder()
+                        .responseObject(reservationToDelete)
+                        .responseType(ResponseType.SUCCESS)
+                        .build(),
+                HttpStatus.OK);
     }
 }
