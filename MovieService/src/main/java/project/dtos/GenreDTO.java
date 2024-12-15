@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GenreDTO {
-    private int id;
     private String name;
     private int uuid;
 }

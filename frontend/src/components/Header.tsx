@@ -5,10 +5,11 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import HomePage from "./HomePage.tsx";
-
+import ProgramPage from "./ProgramPage.tsx";
+import '../css/Header.css';
 function Header() {
     return (
-        <Fragment>
+        <div id="header">
             <Navbar>
                 <Navbar.Brand href="home">Cinema App</Navbar.Brand>
                 <Container className="d-flex justify-content-end sign-in-up-container">
@@ -16,13 +17,13 @@ function Header() {
                     <Button className="sign-up-container">Sign up</Button>
                 </Container>
             </Navbar>
-            <Tabs defaultActiveKey="home" className="mb-3 nav-tabs navigation-container justify-content-end border-0"
+            <Tabs defaultActiveKey="program" className="mb-3 nav-tabs navigation-container justify-content-end border-0"
                   fill>
                 <Tab eventKey="home" title="Home">
                     <HomePage></HomePage>
                 </Tab>
                 <Tab eventKey="program" title="Program">
-                    Tab content for Profile
+                    <ProgramPage></ProgramPage>
                 </Tab>
                 <Tab eventKey="movies" title="Movies">
                     Tab content for Contact
@@ -31,7 +32,7 @@ function Header() {
                     Tab content for Contact
                 </Tab>
             </Tabs>
-        </Fragment>
+        </div>
     );
 }
 

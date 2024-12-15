@@ -14,14 +14,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import project.MovieScreeningApplication;
 import project.dtos.MovieDTO;
+import project.dtos.MovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
 import project.services.MovieHallService;
 import project.services.MovieScreeningService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +51,7 @@ public class MovieScreeningControllerTest {
     @MockBean
     private MovieControllerProxy movieControllerProxy;
     private MovieDTO movieDTO;
+    private MovieScreeningDTO movieScreeningDTO;
     private MovieScreening movieScreening;
     private static final int UUID = 0;
     private MovieHall movieHall;
@@ -61,11 +66,19 @@ public class MovieScreeningControllerTest {
                 .uuid(UUID)
                 .build();
 
+        movieScreeningDTO = MovieScreeningDTO.builder()
+//                .datetime(List.of(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")))))
+                .datetime(List.of(LocalDateTime.now()))
+                .movie_uuid(UUID)
+                .uuid(List.of(UUID))
+                .movieHall_uuid(UUID)
+                .build();
+
         movieScreening = MovieScreening.builder()
                 .date(LocalDate.now())
                 .time(LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))))
-                .movie_uuid(UUID)
                 .uuid(UUID)
+                .movie_uuid(UUID)
                 .movieHall(movieHall)
                 .build();
     }
@@ -74,7 +87,7 @@ public class MovieScreeningControllerTest {
     public void saveMovieScreening_returnsNoMovieFound() throws Exception {
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.message", is("Movie with id " + UUID + " doesn't exist")))
@@ -87,7 +100,7 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.responseType", is("ERROR")))
@@ -102,7 +115,7 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
@@ -117,7 +130,7 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Movie screening on " + movieScreening.getDate() + " at " + movieScreening.getTime() + " in movie hall with id " + UUID + " already exists")))

@@ -53,7 +53,8 @@ public class MovieHallControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].uuid", is(UUID)));
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 }

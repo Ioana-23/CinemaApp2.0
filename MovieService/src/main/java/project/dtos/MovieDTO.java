@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class MovieDTO {
-    private int id;
     private String title;
     private LocalDate date;
     private List<ActorDTO> actors;

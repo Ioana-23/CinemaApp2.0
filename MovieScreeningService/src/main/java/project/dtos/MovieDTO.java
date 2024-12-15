@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class MovieDTO {
-    private int id;
     private String title;
     private LocalDate date;
     @JsonIgnore

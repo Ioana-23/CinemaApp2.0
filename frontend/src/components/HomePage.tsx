@@ -9,7 +9,7 @@ function HomePage() {
                     <p style={{minWidth: '30rem'}}>Book tickets to movies
                         with just a few clicks! Pick your seats and method of payment and check your
                         email for the confirmation!</p>
-                    <Image  src="src/images/popcorn-1.png"/>
+                    <Image  src="src/images/popcorn.png"/>
                 </div>
                 {/*<CarouselCard></CarouselCard>*/}
             </Carousel.Item>

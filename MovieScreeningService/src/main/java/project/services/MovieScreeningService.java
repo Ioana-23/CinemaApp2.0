@@ -9,6 +9,7 @@ import project.repositories.MovieScreeningRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,10 @@ public class MovieScreeningService {
         movieScreeningToUpdate.setDate(movieScreeningFinal.getDate());
         movieScreeningToUpdate.setTime(movieScreeningFinal.getTime());
         movieScreeningRepository.save(movieScreeningToUpdate);
+    }
+
+    public List<MovieScreening> getMovieScreeningsByDate(LocalDate date)
+    {
+        return movieScreeningRepository.findMovieScreeningsByDate(date).orElse(null);
     }
 }

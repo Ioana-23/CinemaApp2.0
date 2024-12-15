@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SeatDTO {
-    private int id;
+    private int uuid;
     private int row_number;
     private int seat_number;
 }
