@@ -22,7 +22,7 @@ export const ReadMore = ({text, amountOfWords = 15 }: ReadMoreProps) => {
     }
 
     return (
-        <p style={{color: '#767676'}}>
+        <div style={{color: '#767676'}}>
             {beginText}
             {itCanOverflow && (
                 <>
@@ -48,6 +48,6 @@ export const ReadMore = ({text, amountOfWords = 15 }: ReadMoreProps) => {
           </span>
                 </>
             )}
-        </p>
+        </div>
     )
 }

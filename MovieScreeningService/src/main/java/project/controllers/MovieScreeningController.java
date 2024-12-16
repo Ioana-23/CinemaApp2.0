@@ -3,7 +3,6 @@ package project.controllers;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.controllers.response.Response;
@@ -17,12 +16,16 @@ import project.services.MovieScreeningService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("project/movie_screenings")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MovieScreeningController {
     private final MovieScreeningService movieScreeningService;
     private final MovieHallService movieHallService;
@@ -32,13 +35,15 @@ public class MovieScreeningController {
     @PostMapping("/movie_screening")
     public ResponseEntity<Response> saveMovieScreening(@RequestBody MovieScreeningDTO movieScreeningDTO) {
         List<MovieScreening> movieScreeningsToSave = new ArrayList<>();
-        MovieScreening movieScreeningToSave = modelMapper.map(movieScreeningDTO, MovieScreening.class);
-        for(int i = 0; i < movieScreeningDTO.getUuid().size(); i++)
-        {
+        MovieScreening movieScreeningToSave = MovieScreening.builder()
+                .movie_uuid(movieScreeningDTO.getMovie_uuid())
+                .date(movieScreeningDTO.getDate())
+                .build();
+        String message = "";
+        for (int i = 0; i < movieScreeningDTO.getUuid().size(); i++) {
             try {
                 movieScreeningToSave.setUuid(movieScreeningDTO.getUuid().get(i));
-                movieScreeningToSave.setDate(movieScreeningDTO.getDatetime().get(i).toLocalDate());
-                movieScreeningToSave.setTime(movieScreeningDTO.getDatetime().get(i).toLocalTime());
+                movieScreeningToSave.setTime(LocalTime.parse(movieScreeningDTO.getTimes().get(i).format(DateTimeFormatter.ofPattern("HH:mm"))));
                 MovieDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
                 if (movieFoundDTO == null) {
                     return new ResponseEntity<>(
@@ -48,12 +53,12 @@ public class MovieScreeningController {
                                     .build(),
                             HttpStatus.NO_CONTENT);
                 }
-                MovieHall movieHallFound = movieHallService.getMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid());
+                MovieHall movieHallFound = movieHallService.getMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid().get(i));
                 if (movieHallFound == null) {
                     return new ResponseEntity<>(
                             Response.builder()
                                     .responseType(ResponseType.ERROR)
-                                    .message("Movie hall with id " + movieScreeningDTO.getMovieHall_uuid() + " doesn't exist")
+                                    .message("Movie hall with id " + movieScreeningDTO.getMovieHall_uuid().get(i) + " doesn't exist")
                                     .build(),
                             HttpStatus.NO_CONTENT);
                 }
@@ -61,20 +66,32 @@ public class MovieScreeningController {
                 MovieScreening movieScreeningAlreadyExists = movieScreeningService.getMovieScreeningByDateAndTimeAndMovieHall(movieScreeningToSave.getDate(), movieScreeningToSave.getTime(), movieHallFound);
                 if (movieScreeningAlreadyExists == null) {
                     movieScreeningsToSave.add(movieScreeningService.saveMovieScreening(movieScreeningToSave));
+                    continue;
                 }
-                return new ResponseEntity<>(
-                        Response.builder()
-                                .responseType(ResponseType.ERROR)
-                                .message("Movie screening on " + movieScreeningToSave.getDate() + " at " + movieScreeningToSave.getTime() + " in movie hall with id " + movieHallFound.getUuid() + " already exists")
-                                .build(),
-                        HttpStatus.OK);
+                message = message + "Movie screening on " + movieScreeningToSave.getDate() + " at " + movieScreeningToSave.getTime() + " in movie hall with id " + movieHallFound.getUuid() + " already exists" + "\n";
+//                return new ResponseEntity<>(
+//                        Response.builder()
+//                                .responseType(ResponseType.ERROR)
+//                                .message("Movie screening on " + movieScreeningToSave.getDate() + " at " + movieScreeningToSave.getTime() + " in movie hall with id " + movieHallFound.getUuid() + " already exists")
+//                                .build(),
+//                        HttpStatus.OK);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+        if (movieScreeningsToSave.isEmpty()) {
+            return new ResponseEntity<>(
+                    Response.builder()
+                            .responseType(ResponseType.ERROR)
+                            .message(message)
+                            .build(),
+                    HttpStatus.OK
+            );
+        }
         return new ResponseEntity<>(
                 Response.builder()
                         .responseType(ResponseType.SUCCESS)
+                        .message(message)
                         .responseObject(movieScreeningsToSave)
                         .build(),
                 HttpStatus.CREATED
@@ -92,32 +109,44 @@ public class MovieScreeningController {
                             .build(),
                     HttpStatus.NO_CONTENT);
         }
-        MovieScreening movieScreeningFinal = modelMapper.map(movieScreeningDTO, MovieScreening.class);
-        MovieHall movieHallToUpdate = movieHallService.getMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid());
-        if (movieHallToUpdate == null) {
+        int index = movieScreeningDTO.getUuid().indexOf(id);
+        MovieScreening movieScreeningFinal = MovieScreening.builder()
+                .uuid(id)
+                .date(movieScreeningDTO.getDate())
+                .time(LocalTime.parse(movieScreeningDTO.getTimes().get(index).format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .movie_uuid(movieScreeningDTO.getMovie_uuid())
+                .build();
+        String message = "";
+        List<MovieScreening> movieScreeningsUpdated = new ArrayList<>();
+        for (int i = 0; i < movieScreeningDTO.getMovieHall_uuid().size(); i++) {
+            MovieHall movieHallToUpdate = movieHallService.getMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid().get(i));
+            if (movieHallToUpdate == null) {
+                message += "Movie hall with id " + movieScreeningDTO.getMovieHall_uuid().get(i) + " doesn't exist";
+                continue;
+            }
+            movieScreeningFinal.setMovieHall(movieHallToUpdate);
+            MovieScreening movieScreeningAlreadyExists = movieScreeningService.getMovieScreeningByDateAndTimeAndMovieHall(movieScreeningFinal.getDate(), movieScreeningFinal.getTime(), movieHallToUpdate);
+            if (movieScreeningAlreadyExists == null) {
+                movieScreeningService.updateMovieScreening(movieScreeningToUpdate, movieScreeningFinal);
+                MovieScreening newMovieScreening = movieScreeningService.getMovieScreeningByUuid(movieScreeningFinal.getUuid());
+                movieScreeningsUpdated.add(newMovieScreening);
+                continue;
+            }
+            message += "Movie screening on " + movieScreeningFinal.getDate() + " at " + movieScreeningFinal.getTime() + " in movie hall with id " + movieHallToUpdate.getUuid() + " already exists";
+        }
+        if (movieScreeningsUpdated.isEmpty()) {
             return new ResponseEntity<>(
                     Response.builder()
                             .responseType(ResponseType.ERROR)
-                            .message("Movie hall with id " + movieScreeningDTO.getMovieHall_uuid() + " doesn't exist")
+                            .message(message)
                             .build(),
-                    HttpStatus.NO_CONTENT);
-        }
-        movieScreeningFinal.setMovieHall(movieHallToUpdate);
-        MovieScreening movieScreeningAlreadyExists = movieScreeningService.getMovieScreeningByDateAndTimeAndMovieHall(movieScreeningFinal.getDate(), movieScreeningFinal.getTime(), movieHallToUpdate);
-        if (movieScreeningAlreadyExists == null) {
-            movieScreeningService.updateMovieScreening(movieScreeningToUpdate, movieScreeningFinal);
-            MovieScreening newMovieScreening = movieScreeningService.getMovieScreeningByUuid(movieScreeningFinal.getUuid());
-            return new ResponseEntity<>(
-                    Response.builder()
-                            .responseType(ResponseType.SUCCESS)
-                            .responseObject(newMovieScreening)
-                            .build(),
-                    HttpStatus.CREATED);
+                    HttpStatus.OK);
         }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseType(ResponseType.ERROR)
-                        .message("Movie screening on " + movieScreeningFinal.getDate() + " at " + movieScreeningFinal.getTime() + " in movie hall with id " + movieHallToUpdate.getUuid() + " already exists")
+                        .responseObject(movieScreeningsUpdated)
+                        .message(message)
+                        .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK);
     }
@@ -142,13 +171,11 @@ public class MovieScreeningController {
     }
 
     @GetMapping("/{date}")
-    public ResponseEntity<Response> getAllMovieScreeningFromDate(@PathVariable String date)
-    {
-        LocalDate localDate = LocalDate.parse(date);
+    public ResponseEntity<Response> findMovieScreeningsFromDate(@PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         List<MovieScreening> movieScreeningList = movieScreeningService.getMovieScreeningsByDate(localDate);
-        if(movieScreeningList == null)
-        {
+        if (movieScreeningList == null) {
             return new ResponseEntity<>(
                     Response.builder()
                             .message("No movie screenings at date " + date)
@@ -157,9 +184,33 @@ public class MovieScreeningController {
                     HttpStatus.OK
             );
         }
+        List<MovieScreeningDTO> movieScreeningDTOS = new ArrayList<>();
+        List<Integer> movieUUIDS = new ArrayList<>();
+        for (int i = 0; i < movieScreeningList.size(); i++) {
+            if (!movieUUIDS.contains(movieScreeningList.get(i).getMovie_uuid())) {
+                movieUUIDS.add(i);
+            }
+        }
+        List<Integer> movieHallUUIDS = new ArrayList<>();
+        for (int i = 0; i < movieScreeningList.size(); i++) {
+            if (!movieHallUUIDS.contains(movieScreeningList.get(i).getMovieHall().getUuid())) {
+                movieHallUUIDS.add(i);
+            }
+        }
+        for (int i = 0; i < movieUUIDS.size(); i++) {
+            int finalI = i;
+            MovieScreeningDTO movieScreeningDTO = MovieScreeningDTO.builder()
+                    .date(localDate)
+                    .uuid(movieUUIDS)
+                    .times(movieScreeningList.stream().filter(movieScreening -> movieScreening.getMovie_uuid() == movieScreeningList.get(movieUUIDS.get(finalI)).getMovie_uuid()).map(movieScreening -> LocalDateTime.of(movieScreening.getDate(), movieScreening.getTime())).toList())
+                    .movie_uuid(movieScreeningList.get(movieUUIDS.get(finalI)).getMovie_uuid())
+                    .movieHall_uuid(movieHallUUIDS)
+                    .build();
+            movieScreeningDTOS.add(movieScreeningDTO);
+        }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseObject(movieScreeningList)
+                        .responseObject(movieScreeningDTOS)
                         .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK

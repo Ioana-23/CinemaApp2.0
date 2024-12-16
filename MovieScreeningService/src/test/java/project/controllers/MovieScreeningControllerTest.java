@@ -1,5 +1,6 @@
 package project.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
@@ -68,10 +70,11 @@ public class MovieScreeningControllerTest {
 
         movieScreeningDTO = MovieScreeningDTO.builder()
 //                .datetime(List.of(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")))))
-                .datetime(List.of(LocalDateTime.now()))
+                .date(LocalDate.now())
+                .times(List.of(LocalDateTime.now()))
                 .movie_uuid(UUID)
                 .uuid(List.of(UUID))
-                .movieHall_uuid(UUID)
+                .movieHall_uuid(List.of(UUID))
                 .build();
 
         movieScreening = MovieScreening.builder()
@@ -97,7 +100,6 @@ public class MovieScreeningControllerTest {
     @Test
     public void saveMovieScreening_returnsNoMovieHallFound() throws Exception {
         Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieDTO);
-
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movieScreeningDTO)))
@@ -118,7 +120,7 @@ public class MovieScreeningControllerTest {
                         .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -133,7 +135,7 @@ public class MovieScreeningControllerTest {
                         .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message", is("Movie screening on " + movieScreening.getDate() + " at " + movieScreening.getTime() + " in movie hall with id " + UUID + " already exists")))
+                .andExpect(jsonPath("$.message", is("Movie screening on " + movieScreening.getDate() + " at " + movieScreening.getTime() + " in movie hall with id " + UUID + " already exists\n")))
                 .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
 
@@ -141,7 +143,7 @@ public class MovieScreeningControllerTest {
     public void updateMovieScreening_returnsMovieScreeningNotFound() throws Exception {
         mockMvc.perform(put("/project/movie_screenings/movie_screening/" + UUID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$.message", is("Movie screening with " + UUID + " doesn't exist")))
@@ -154,9 +156,9 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(put("/project/movie_screenings/movie_screening/" + UUID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Movie hall with id " + UUID + " doesn't exist")))
                 .andExpect(jsonPath("$.responseType", is("ERROR")));
     }
@@ -169,7 +171,7 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(put("/project/movie_screenings/movie_screening/" + UUID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Movie screening on " + movieScreening.getDate() + " at " + movieScreening.getTime() + " in movie hall with id " + UUID + " already exists")))
@@ -183,10 +185,10 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(put("/project/movie_screenings/movie_screening/" + UUID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreening)))
+                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
                 .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 

@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("project/movies")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MovieController {
     private final MovieService movieService;
     private final GenreService genreService;

@@ -1,5 +1,6 @@
 package project.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MovieScreeningDTO {
     private int movie_uuid;
-    @JsonIgnore
-    private List<LocalDateTime> datetime;
-    private int movieHall_uuid;
-    @JsonIgnore
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate date;
+    private List<LocalDateTime> times;
+    private List<Integer> movieHall_uuid;
     private List<Integer> uuid;
 }

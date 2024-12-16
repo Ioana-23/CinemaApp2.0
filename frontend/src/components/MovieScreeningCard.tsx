@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from "react-bootstrap/Card";
 import {Image, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
@@ -9,13 +9,27 @@ interface MovieScreeningPropsExt extends MovieScreeningProps {
     // onEdit: (_uuid: number) => void;
 }
 
+function getTimes(times: string[]) {
+    const timesAsDate: string[] = [];
+    for(let i = 0; i < times.length; i++)
+    {
+        const time = times[i].split('T')[1];
+        const hour = time.split(':')[0];
+        const minutes = time.split(':')[1];
+        timesAsDate.push(`${hour}:${minutes}`);
+    }
+    return timesAsDate;
+}
+
 const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
-                                                                  _uuids,
+                                                                  uuid,
                                                                   movie,
                                                                   movieHall_uuid,
-                                                                  datetime
+                                                                  date,
+                                                                  times
                                                               }) => {
 
+    const [timesAsDate] = useState(getTimes(times));
 
     return (
         <Card style={{width: '15rem', height: 'auto', padding: '0'}}>
@@ -46,12 +60,12 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                     )}
                             </div>
                         )}
-                        {datetime && (
+                        {timesAsDate && (
                             <div className="d-flex flex-row" style={{width: '100%', gap: '0.5rem'}}>
-                                {datetime
+                                {timesAsDate
                                     .map((date, index) =>
-                                        <Button  key={_uuids[index]} style={{backgroundColor: '#f64b4b'}}
-                                                className="border-0">{date.getHours()}:{date.getMinutes()}</Button>
+                                        <Button key={uuid[index]} style={{backgroundColor: '#f64b4b'}}
+                                                className="border-0">{date}</Button>
                                     )}
                             </div>
                         )}
@@ -60,28 +74,6 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
             </Row>
         </Card>
     );
-    //     <IonItem onClick={() => onEdit(_id)}>
-    //         <IonCol size="1">
-    //             <IonImg src={photo?.webviewPath}></IonImg>
-    //         </IonCol>
-    //         <IonCol>
-    //             <IonTitle title="titlu">
-    //                 <IonLabel>{title}</IonLabel>
-    //             </IonTitle>
-    //             <IonTitle title="data">
-    //                 <IonLabel>{date.toString().substring(0,10)}</IonLabel>
-    //             </IonTitle>
-    //             <IonTitle title="review">
-    //                 <IonLabel>{review}</IonLabel>
-    //             </IonTitle>
-    //             <IonTitle title="watched">
-    //                 <IonLabel aria-disabled={true}>
-    //                     <IonCheckbox aria-label="Label" checked={String(watched) == "true"}></IonCheckbox>
-    //                 </IonLabel>
-    //             </IonTitle>
-    //         </IonCol>
-    //     </IonItem>
-    // );
 };
 
 export default MovieScreeningCard;
