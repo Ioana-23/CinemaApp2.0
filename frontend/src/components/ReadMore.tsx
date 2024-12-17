@@ -33,7 +33,7 @@ export const ReadMore = ({text, amountOfWords = 15 }: ReadMoreProps) => {
                                 className={`${!isExpanded && 'hidden'}`}
                                 aria-hidden={!isExpanded}
                             >
-                        {endText}
+                        { } {endText}
                                           </span>
                         </>)}
                     <span

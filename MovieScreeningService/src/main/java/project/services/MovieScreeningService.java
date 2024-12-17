@@ -39,8 +39,8 @@ public class MovieScreeningService {
         movieScreeningRepository.save(movieScreeningToUpdate);
     }
 
-    public List<MovieScreening> getMovieScreeningsByDate(LocalDate date)
+    public List<MovieScreening> getMovieScreenings()
     {
-        return movieScreeningRepository.findMovieScreeningsByDate(date).orElse(null);
+        return movieScreeningRepository.findAll();
     }
 }

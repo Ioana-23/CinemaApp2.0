@@ -13,7 +13,7 @@ function getTimes(times: string[]) {
     const timesAsDate: string[] = [];
     for(let i = 0; i < times.length; i++)
     {
-        const time = times[i].split('T')[1];
+        const time = times[i].split(' ')[1];
         const hour = time.split(':')[0];
         const minutes = time.split(':')[1];
         timesAsDate.push(`${hour}:${minutes}`);
@@ -32,11 +32,12 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
     const [timesAsDate] = useState(getTimes(times));
 
     return (
-        <Card style={{width: '15rem', height: 'auto', padding: '0'}}>
+        <Card style={{height: 'auto', padding: '0'}}>
             <Row style={{width: '100%', height: '100%'}}>
                 <div style={{width: '25%', height: '100%'}}>
-                    <Card.Img style={{width: '80%', height: '100%', objectFit: 'cover'}}
-                              src="https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png"/>
+                    <Card.Img id="image" style={{width: '80%', height: '100%', objectFit: 'cover',backgroundImage: 'url(\'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png\')'}}
+                              src="https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpc"
+                    />
                 </div>
                 <div style={{width: '75%', height: '100%'}}>
                     <Card.Body style={{width: '100%', height: '100%'}}>

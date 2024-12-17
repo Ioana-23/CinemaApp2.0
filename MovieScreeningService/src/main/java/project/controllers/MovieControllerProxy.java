@@ -1,9 +1,12 @@
 package project.controllers;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
+import project.controllers.response.Response;
 import project.dtos.MovieDTO;
+import project.dtos.MovieInfoDTO;
 import project.dtos.MovieScreeningDTO;
 import project.dtos.SeatDTO;
 
@@ -19,7 +22,7 @@ import java.util.stream.Stream;
 @Service
 public class MovieControllerProxy {
     private static String ip_address = "";
-    public MovieDTO getMovieByUuid(int uuid) throws IOException, InterruptedException {
+    public MovieInfoDTO getMovieByUuid(int uuid) throws IOException, InterruptedException {
         if (ip_address.isBlank()) {
             if (isRunningInsideDocker()) {
                 ip_address = "host.docker.internal";
@@ -33,7 +36,8 @@ public class MovieControllerProxy {
         if (response.body().isBlank()) {
             return null;
         }
-        return mapper.readValue(response.body(), MovieDTO.class);
+        return mapper.readValue(response.body(), MovieDTO.class).getResponseObject();
+
     }
 
     private static void getIpAddress() throws UnknownHostException, SocketException {

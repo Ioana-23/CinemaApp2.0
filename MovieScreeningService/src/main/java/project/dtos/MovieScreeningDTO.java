@@ -18,8 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class MovieScreeningDTO {
     private int movie_uuid;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
     private List<LocalDateTime> times;
     private List<Integer> movieHall_uuid;
     private List<Integer> uuid;

@@ -16,6 +16,7 @@ export interface GenreProps{
 export interface MovieProps {
     _uuid: number;
     title: string;
+    poster_path: string;
     date: Date;
     actors: ActorProps[];
     overview: string;

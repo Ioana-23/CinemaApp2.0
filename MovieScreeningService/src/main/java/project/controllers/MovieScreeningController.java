@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import project.controllers.response.Response;
 import project.controllers.response.ResponseType;
 import project.dtos.MovieDTO;
+import project.dtos.MovieInfoDTO;
 import project.dtos.MovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
@@ -44,7 +45,7 @@ public class MovieScreeningController {
             try {
                 movieScreeningToSave.setUuid(movieScreeningDTO.getUuid().get(i));
                 movieScreeningToSave.setTime(LocalTime.parse(movieScreeningDTO.getTimes().get(i).format(DateTimeFormatter.ofPattern("HH:mm"))));
-                MovieDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
+                MovieInfoDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
                 if (movieFoundDTO == null) {
                     return new ResponseEntity<>(
                             Response.builder()
@@ -170,42 +171,34 @@ public class MovieScreeningController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/{date}")
-    public ResponseEntity<Response> findMovieScreeningsFromDate(@PathVariable String date) {
-        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-
-        List<MovieScreening> movieScreeningList = movieScreeningService.getMovieScreeningsByDate(localDate);
-        if (movieScreeningList == null) {
-            return new ResponseEntity<>(
-                    Response.builder()
-                            .message("No movie screenings at date " + date)
-                            .responseType(ResponseType.ERROR)
-                            .build(),
-                    HttpStatus.OK
-            );
-        }
+    @GetMapping
+    public ResponseEntity<Response> getAllMovieScreenings() {
+        List<MovieScreening> movieScreeningList = movieScreeningService.getMovieScreenings();
         List<MovieScreeningDTO> movieScreeningDTOS = new ArrayList<>();
-        List<Integer> movieUUIDS = new ArrayList<>();
-        for (int i = 0; i < movieScreeningList.size(); i++) {
-            if (!movieUUIDS.contains(movieScreeningList.get(i).getMovie_uuid())) {
-                movieUUIDS.add(i);
+        for(int i = 0; i < movieScreeningList.size(); i++)
+        {
+            List<Integer> preExistingUUIDs = new ArrayList<>(List.of(movieScreeningList.get(i).getUuid()));
+            List<Integer> preExistingMovie_halls = new ArrayList<>(List.of(movieScreeningList.get(i).getMovieHall().getUuid()));
+            List<LocalDateTime> preExistingTimes = new ArrayList<>(List.of(LocalDateTime.of(movieScreeningList.get(i).getDate(), movieScreeningList.get(i).getTime())));
+            for(int j = 0; j < movieScreeningDTOS.size(); j++)
+            {
+                if(movieScreeningDTOS.get(j).getMovie_uuid() == movieScreeningList.get(i).getMovie_uuid() && movieScreeningDTOS.get(j).getDate().equals(movieScreeningList.get(i).getDate()))
+                {
+                    preExistingTimes.addAll(movieScreeningDTOS.get(j).getTimes());
+                    preExistingMovie_halls.addAll(movieScreeningDTOS.get(j).getMovieHall_uuid());
+                    preExistingUUIDs.addAll(movieScreeningDTOS.get(j).getUuid());
+                    movieScreeningDTOS.remove(j);
+                    break;
+                }
             }
-        }
-        List<Integer> movieHallUUIDS = new ArrayList<>();
-        for (int i = 0; i < movieScreeningList.size(); i++) {
-            if (!movieHallUUIDS.contains(movieScreeningList.get(i).getMovieHall().getUuid())) {
-                movieHallUUIDS.add(i);
-            }
-        }
-        for (int i = 0; i < movieUUIDS.size(); i++) {
-            int finalI = i;
             MovieScreeningDTO movieScreeningDTO = MovieScreeningDTO.builder()
-                    .date(localDate)
-                    .uuid(movieUUIDS)
-                    .times(movieScreeningList.stream().filter(movieScreening -> movieScreening.getMovie_uuid() == movieScreeningList.get(movieUUIDS.get(finalI)).getMovie_uuid()).map(movieScreening -> LocalDateTime.of(movieScreening.getDate(), movieScreening.getTime())).toList())
-                    .movie_uuid(movieScreeningList.get(movieUUIDS.get(finalI)).getMovie_uuid())
-                    .movieHall_uuid(movieHallUUIDS)
+                    .uuid(preExistingUUIDs)
+                    .movie_uuid(movieScreeningList.get(i).getMovie_uuid())
+                    .date(movieScreeningList.get(i).getDate())
+                    .movieHall_uuid(preExistingMovie_halls)
+                    .times(preExistingTimes)
                     .build();
+
             movieScreeningDTOS.add(movieScreeningDTO);
         }
         return new ResponseEntity<>(

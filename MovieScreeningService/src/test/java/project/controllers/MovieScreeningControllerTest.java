@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import project.MovieScreeningApplication;
 import project.dtos.MovieDTO;
+import project.dtos.MovieInfoDTO;
 import project.dtos.MovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,6 +55,7 @@ public class MovieScreeningControllerTest {
     @MockBean
     private MovieControllerProxy movieControllerProxy;
     private MovieDTO movieDTO;
+    private MovieInfoDTO movieInfoDTO;
     private MovieScreeningDTO movieScreeningDTO;
     private MovieScreening movieScreening;
     private static final int UUID = 0;
@@ -60,8 +63,12 @@ public class MovieScreeningControllerTest {
 
     @BeforeEach
     public void init() {
-        movieDTO = MovieDTO.builder()
+        movieInfoDTO = MovieInfoDTO.builder()
                 .uuid(UUID)
+                .build();
+
+        movieDTO = MovieDTO.builder()
+                .responseObject(movieInfoDTO)
                 .build();
 
         movieHall = MovieHall.builder()
@@ -99,7 +106,7 @@ public class MovieScreeningControllerTest {
 
     @Test
     public void saveMovieScreening_returnsNoMovieHallFound() throws Exception {
-        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieDTO);
+        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieInfoDTO);
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movieScreeningDTO)))
@@ -111,7 +118,7 @@ public class MovieScreeningControllerTest {
 
     @Test
     public void saveMovieScreening_returnsMovieScreeningSaved() throws Exception {
-        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieDTO);
+        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieInfoDTO);
         Mockito.when(movieHallService.getMovieHallByUuid(UUID)).thenReturn(movieHall);
         Mockito.when(movieScreeningService.saveMovieScreening(any(MovieScreening.class))).thenReturn(movieScreening);
 
@@ -126,7 +133,7 @@ public class MovieScreeningControllerTest {
 
     @Test
     public void saveMovieScreening_returnsMovieScreeningAlreadyExists() throws Exception {
-        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieDTO);
+        Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieInfoDTO);
         Mockito.when(movieHallService.getMovieHallByUuid(UUID)).thenReturn(movieHall);
         Mockito.when(movieScreeningService.getMovieScreeningByDateAndTimeAndMovieHall(any(LocalDate.class), any(LocalTime.class), any(MovieHall.class))).thenReturn(movieScreening);
 
@@ -211,6 +218,75 @@ public class MovieScreeningControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.responseObject.uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
+    }
+
+    @Test
+    public void findAllMovieScreenings_returns1MovieWith1MovieScreenings() throws Exception {
+        Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening));
+
+        mockMvc.perform(get("/project/movie_screenings"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
+    }
+
+    @Test
+    public void findAllMovieScreenings_returns1MovieWith2MovieScreenings() throws Exception {
+        MovieScreening movieScreening1 = MovieScreening.builder()
+                .date(LocalDate.now())
+                .time(LocalTime.parse(LocalTime.now().withMinute(LocalTime.now().getMinute() + 1).format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .uuid(1)
+                .movie_uuid(UUID)
+                .movieHall(movieHall)
+                .build();
+        Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
+
+        mockMvc.perform(get("/project/movie_screenings"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(2)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
+    }
+
+    @Test
+    public void findAllMovieScreenings_returns2MoviesWith2MovieScreenings() throws Exception {
+        MovieScreening movieScreening1 = MovieScreening.builder()
+                .date(LocalDate.now())
+                .time(LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .uuid(1)
+                .movie_uuid(1)
+                .movieHall(movieHall)
+                .build();
+        Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
+
+        mockMvc.perform(get("/project/movie_screenings"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responseObject", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseType", is("SUCCESS")));
+    }
+
+    @Test
+    public void findAllMovieScreenings_returns1MovieWith2MovieScreeningDates() throws Exception {
+        MovieScreening movieScreening1 = MovieScreening.builder()
+                .date(LocalDate.now().withDayOfMonth(LocalDate.now().getDayOfMonth() + 1))
+                .time(LocalTime.parse(LocalTime.now().withMinute(LocalTime.now().getMinute() + 1).format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .uuid(1)
+                .movie_uuid(UUID)
+                .movieHall(movieHall)
+                .build();
+        Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
+
+        mockMvc.perform(get("/project/movie_screenings"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responseObject", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 }

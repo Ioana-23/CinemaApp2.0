@@ -17,7 +17,7 @@ function getDates() {
         const year = currentDayOfTheWeek.getFullYear();
         let disabled = false;
         if (currentDay > currentDayOfTheWeek) {
-            disabled = true;
+            disabled = false;
         }
         dates.push({
             'date': `${day}/${month}/${year}`,
@@ -33,7 +33,6 @@ function ProgramPage() {
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const currentDay = new Date().getDay();
     const [daySelected, setDaySelected] = useState<number>((currentDay + 6) % 7);
-    console.log({daysOfTheCurrentWeek});
     return (
         <Container id="day-selector">
             <div className="d-flex flex-row">
@@ -83,11 +82,10 @@ function ProgramPage() {
                     </Navbar>
                 </div>
                 <div className="d-flex flex-column movie-container">
-                    <MovieScreeningProvider dateToFilterBy={daysOfTheCurrentWeek[daySelected].full_date}>
-                    <MovieScreeningList
-                        dateToFilterBy={daysOfTheCurrentWeek[daySelected].full_date}></MovieScreeningList>
+                    <MovieScreeningProvider>
+                        <MovieScreeningList dateToFilterBy={daysOfTheCurrentWeek[daySelected].full_date}></MovieScreeningList>
                     </MovieScreeningProvider>
-                    </div>
+                </div>
             </div>
         </Container>
     );

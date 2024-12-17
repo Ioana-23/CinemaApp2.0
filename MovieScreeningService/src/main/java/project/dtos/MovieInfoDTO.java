@@ -1,25 +1,26 @@
 package project.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class MovieDTO {
+public class MovieInfoDTO {
     private String title;
     private LocalDate date;
-    private String poster_path;
-    private List<ActorDTO> actors;
+    @JsonIgnore
+    private Object actors;
     private String overview;
     private boolean adult;
     private String language;
-    private List<GenreDTO> genres;
+    @JsonIgnore
+    private Object genres;
     private int uuid;
 }

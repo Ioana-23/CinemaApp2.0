@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import project.controllers.response.ResponseType;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -13,14 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class MovieDTO {
-    private String title;
-    private LocalDate date;
-    @JsonIgnore
-    private Object actors;
-    private String overview;
-    private boolean adult;
-    private String language;
-    @JsonIgnore
-    private Object genres;
-    private int uuid;
+    private String message;
+    private MovieInfoDTO responseObject;
+    private ResponseType responseType;
 }

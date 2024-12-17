@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.MovieApplication;
 import project.controllers.response.Response;
 import project.controllers.response.ResponseType;
 import project.dtos.MovieDTO;
@@ -30,6 +31,7 @@ public class MovieController {
     private final ActorService actorService;
     private final ModelMapper modelMapper;
     private final TMDBControllerProxy tmdbControllerProxy;
+    private final MovieApplication movieApplication;
 
     @GetMapping("/api")
     public ResponseEntity<Response> getAllApiExternalApiMovies() throws IOException, InterruptedException {
@@ -86,7 +88,7 @@ public class MovieController {
         if (movieFound != null) {
             return new ResponseEntity<>(
                     Response.builder()
-                            .responseObject(movieFound)
+                            .responseObject(modelMapper.map(movieFound, MovieDTO.class))
                             .responseType(ResponseType.SUCCESS)
                             .build(),
                     HttpStatus.OK);

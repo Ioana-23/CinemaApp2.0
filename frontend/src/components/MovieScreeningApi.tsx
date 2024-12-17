@@ -2,10 +2,15 @@ import axios from 'axios';
 // import { authConfig, baseUrl, getLogger, withLogs } from '../core';
 import { MovieScreeningProps } from './MovieScreeningProps';
 
-const itemUrl = `http://localhost:8082/project/movie_screenings`;
+const movieScreeningUrl = `http://localhost:8082/project/movie_screenings`;
+const movieUrl = `http://localhost:8083/project/movies/movie`;
 
-export const getItems = (date: string): Promise<Response> => {
-    return axios.get(`${itemUrl}/${date}`);
+export const getMovieScreening = (): Promise<Response> => {
+    return axios.get(movieScreeningUrl);
+}
+
+export const getMovieInfo = (id: number): Promise<Response> => {
+    return axios.get(`${movieUrl}/${id}`);
 }
 export interface Response {
     responseObject: MovieScreeningProps[],
@@ -18,11 +23,11 @@ export enum ResponseType {
 }
 
 // export const createItem: (token: string, item: ItemProps) => Promise<ItemProps[]> = (token, item) => {
-//     return withLogs(axios.post(itemUrl, item, authConfig(token)), 'createItem');
+//     return withLogs(axios.post(movieScreeningUrl, item, authConfig(token)), 'createItem');
 // }
 //
 // export const updateItem: (token: string, item: ItemProps) => Promise<ItemProps[]> = (token, item) => {
-//     return withLogs(axios.put(`${itemUrl}/${item._id}`, item, authConfig(token)), 'updateItem');
+//     return withLogs(axios.put(`${movieScreeningUrl}/${item._id}`, item, authConfig(token)), 'updateItem');
 // }
 
 interface MessageData {
