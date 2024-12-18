@@ -1,6 +1,5 @@
 package project.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import project.MovieScreeningApplication;
 import project.dtos.MovieDTO;
 import project.dtos.MovieInfoDTO;
-import project.dtos.MovieScreeningDTO;
+import project.dtos.movie_screening.MovieScreeningDTO;
+import project.dtos.movie_screening.SaveMovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
 import project.services.MovieHallService;
@@ -27,8 +27,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -54,7 +52,7 @@ public class MovieScreeningControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private MovieControllerProxy movieControllerProxy;
-    private MovieDTO movieDTO;
+    private SaveMovieScreeningDTO saveMovieScreeningDTO;
     private MovieInfoDTO movieInfoDTO;
     private MovieScreeningDTO movieScreeningDTO;
     private MovieScreening movieScreening;
@@ -65,10 +63,6 @@ public class MovieScreeningControllerTest {
     public void init() {
         movieInfoDTO = MovieInfoDTO.builder()
                 .uuid(UUID)
-                .build();
-
-        movieDTO = MovieDTO.builder()
-                .responseObject(movieInfoDTO)
                 .build();
 
         movieHall = MovieHall.builder()
@@ -91,6 +85,13 @@ public class MovieScreeningControllerTest {
                 .movie_uuid(UUID)
                 .movieHall(movieHall)
                 .build();
+
+        saveMovieScreeningDTO = SaveMovieScreeningDTO.builder()
+                .date(LocalDate.now())
+                .times(List.of(LocalDateTime.now()))
+                .movie_uuid(UUID)
+                .movieHall_uuid(List.of(UUID))
+                .build();
     }
 
     @Test
@@ -109,9 +110,9 @@ public class MovieScreeningControllerTest {
         Mockito.when(movieControllerProxy.getMovieByUuid(UUID)).thenReturn(movieInfoDTO);
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
+                        .content(objectMapper.writeValueAsString(saveMovieScreeningDTO)))
                 .andDo(print())
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.responseType", is("ERROR")))
                 .andExpect(jsonPath("$.message", is("Movie hall with id " + UUID + " doesn't exist")));
     }
@@ -124,10 +125,10 @@ public class MovieScreeningControllerTest {
 
         mockMvc.perform(post("/project/movie_screenings/movie_screening")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(movieScreeningDTO)))
+                        .content(objectMapper.writeValueAsString(saveMovieScreeningDTO)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.responseObject[0].uuid", is(UUID)))
+                .andExpect(jsonPath("$.responseObject.uuid[0]", is(UUID)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -225,11 +226,11 @@ public class MovieScreeningControllerTest {
     public void findAllMovieScreenings_returns1MovieWith1MovieScreenings() throws Exception {
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening));
 
-        mockMvc.perform(get("/project/movie_screenings"))
+        mockMvc.perform(get("/project/movie_screenings/5/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject", hasSize(1)))
-                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -244,11 +245,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings"))
+        mockMvc.perform(get("/project/movie_screenings/5/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject", hasSize(1)))
-                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(2)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -263,11 +264,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings"))
+        mockMvc.perform(get("/project/movie_screenings/5/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject", hasSize(2)))
-                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -282,11 +283,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings"))
+        mockMvc.perform(get("/project/movie_screenings/5/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject", hasSize(2)))
-                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 }

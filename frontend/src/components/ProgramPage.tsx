@@ -37,7 +37,7 @@ function ProgramPage() {
         <Container id="day-selector">
             <div className="d-flex flex-row">
                 <div className="d-flex flex-column day-navbar">
-                    <Navbar>
+                    <Navbar sticky="top">
                         <Container className="d-flex justify-content-start">
                             <Nav defaultActiveKey={days[(currentDay + 6) % 7]} className="ml-5 border-0 flex-column"
                                  fill>

@@ -1,14 +1,10 @@
 package project.controllers;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
-import project.controllers.response.Response;
 import project.dtos.MovieDTO;
 import project.dtos.MovieInfoDTO;
-import project.dtos.MovieScreeningDTO;
-import project.dtos.SeatDTO;
 
 import java.io.IOException;
 import java.net.*;

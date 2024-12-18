@@ -18,6 +18,7 @@ CREATE TABLE movies
     date date NOT NULL,
     title VARCHAR(255) NOT NULL,
     uuid INTEGER UNIQUE NOT NULL,
+    poster_path VARCHAR(255),
     CONSTRAINT movies_pkey PRIMARY KEY (id)
 );
 

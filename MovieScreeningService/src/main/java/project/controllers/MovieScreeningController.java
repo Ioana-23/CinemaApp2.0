@@ -7,21 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.controllers.response.Response;
 import project.controllers.response.ResponseType;
-import project.dtos.MovieDTO;
 import project.dtos.MovieInfoDTO;
-import project.dtos.MovieScreeningDTO;
+import project.dtos.movie_screening.ListOfMovieScreeningsDTO;
+import project.dtos.movie_screening.MovieScreeningDTO;
+import project.dtos.movie_screening.SaveMovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
 import project.services.MovieHallService;
 import project.services.MovieScreeningService;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("project/movie_screenings")
@@ -32,19 +33,40 @@ public class MovieScreeningController {
     private final MovieHallService movieHallService;
     private final ModelMapper modelMapper;
     private final MovieControllerProxy movieControllerProxy;
+    private Random random = new Random();
+
+    private int generate_uuid() {
+        int final_uuid;
+        do {
+            int no_digits = random.nextInt(4, 7);
+            final_uuid = 1;
+            for (int i = 0; i < no_digits; i++) {
+                int current_digit = random.nextInt(0, 10);
+                final_uuid = final_uuid * 10 + current_digit;
+            }
+        } while (movieScreeningService.getMovieScreeningByUuid(final_uuid) != null);
+        return final_uuid;
+
+    }
 
     @PostMapping("/movie_screening")
-    public ResponseEntity<Response> saveMovieScreening(@RequestBody MovieScreeningDTO movieScreeningDTO) {
-        List<MovieScreening> movieScreeningsToSave = new ArrayList<>();
-        MovieScreening movieScreeningToSave = MovieScreening.builder()
-                .movie_uuid(movieScreeningDTO.getMovie_uuid())
-                .date(movieScreeningDTO.getDate())
+    public ResponseEntity<Response> saveMovieScreening(@RequestBody SaveMovieScreeningDTO saveMovieScreeningDTO) {
+        MovieScreeningDTO movieScreeningsToSave = MovieScreeningDTO.builder()
+                .movie_uuid(saveMovieScreeningDTO.getMovie_uuid())
+                .date(saveMovieScreeningDTO.getDate())
+                .times(saveMovieScreeningDTO.getTimes())
+                .movieHall_uuid(saveMovieScreeningDTO.getMovieHall_uuid())
+                .uuid(new ArrayList<>())
                 .build();
-        String message = "";
-        for (int i = 0; i < movieScreeningDTO.getUuid().size(); i++) {
+        MovieScreening movieScreeningToSave = MovieScreening.builder()
+                .movie_uuid(saveMovieScreeningDTO.getMovie_uuid())
+                .date(saveMovieScreeningDTO.getDate())
+                .build();
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < saveMovieScreeningDTO.getMovieHall_uuid().size(); i++) {
             try {
-                movieScreeningToSave.setUuid(movieScreeningDTO.getUuid().get(i));
-                movieScreeningToSave.setTime(LocalTime.parse(movieScreeningDTO.getTimes().get(i).format(DateTimeFormatter.ofPattern("HH:mm"))));
+                movieScreeningToSave.setUuid(generate_uuid());
+                movieScreeningToSave.setTime(LocalTime.parse(saveMovieScreeningDTO.getTimes().get(i).format(DateTimeFormatter.ofPattern("HH:mm"))));
                 MovieInfoDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
                 if (movieFoundDTO == null) {
                     return new ResponseEntity<>(
@@ -54,22 +76,21 @@ public class MovieScreeningController {
                                     .build(),
                             HttpStatus.NO_CONTENT);
                 }
-                MovieHall movieHallFound = movieHallService.getMovieHallByUuid(movieScreeningDTO.getMovieHall_uuid().get(i));
+                MovieHall movieHallFound = movieHallService.getMovieHallByUuid(saveMovieScreeningDTO.getMovieHall_uuid().get(i));
                 if (movieHallFound == null) {
-                    return new ResponseEntity<>(
-                            Response.builder()
-                                    .responseType(ResponseType.ERROR)
-                                    .message("Movie hall with id " + movieScreeningDTO.getMovieHall_uuid().get(i) + " doesn't exist")
-                                    .build(),
-                            HttpStatus.NO_CONTENT);
+                    message.append("Movie hall with id ").append(saveMovieScreeningDTO.getMovieHall_uuid().get(i)).append(" doesn't exist");
+                    continue;
                 }
                 movieScreeningToSave.setMovieHall(movieHallFound);
                 MovieScreening movieScreeningAlreadyExists = movieScreeningService.getMovieScreeningByDateAndTimeAndMovieHall(movieScreeningToSave.getDate(), movieScreeningToSave.getTime(), movieHallFound);
                 if (movieScreeningAlreadyExists == null) {
-                    movieScreeningsToSave.add(movieScreeningService.saveMovieScreening(movieScreeningToSave));
+                    MovieScreening movieScreeningSaved = movieScreeningService.saveMovieScreening(movieScreeningToSave);
+                    List<Integer> oldUUIDList =  movieScreeningsToSave.getUuid();
+                    oldUUIDList.add(movieScreeningSaved.getUuid());
+                    movieScreeningsToSave.setUuid(oldUUIDList);
                     continue;
                 }
-                message = message + "Movie screening on " + movieScreeningToSave.getDate() + " at " + movieScreeningToSave.getTime() + " in movie hall with id " + movieHallFound.getUuid() + " already exists" + "\n";
+                message.append("Movie screening on ").append(movieScreeningToSave.getDate()).append(" at ").append(movieScreeningToSave.getTime()).append(" in movie hall with id ").append(movieHallFound.getUuid()).append(" already exists").append("\n");
 //                return new ResponseEntity<>(
 //                        Response.builder()
 //                                .responseType(ResponseType.ERROR)
@@ -80,11 +101,11 @@ public class MovieScreeningController {
                 throw new RuntimeException(e);
             }
         }
-        if (movieScreeningsToSave.isEmpty()) {
+        if (movieScreeningsToSave.getUuid().isEmpty()) {
             return new ResponseEntity<>(
                     Response.builder()
                             .responseType(ResponseType.ERROR)
-                            .message(message)
+                            .message(message.toString())
                             .build(),
                     HttpStatus.OK
             );
@@ -92,7 +113,7 @@ public class MovieScreeningController {
         return new ResponseEntity<>(
                 Response.builder()
                         .responseType(ResponseType.SUCCESS)
-                        .message(message)
+                        .message(message.toString())
                         .responseObject(movieScreeningsToSave)
                         .build(),
                 HttpStatus.CREATED
@@ -171,11 +192,17 @@ public class MovieScreeningController {
                 HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Response> getAllMovieScreenings() {
+    @GetMapping("/{total_per_page}/{no_page}")
+    public ResponseEntity<Response> getAllMovieScreenings(@PathVariable int no_page, @PathVariable int total_per_page) {
         List<MovieScreening> movieScreeningList = movieScreeningService.getMovieScreenings();
         List<MovieScreeningDTO> movieScreeningDTOS = new ArrayList<>();
-        for(int i = 0; i < movieScreeningList.size(); i++)
+        int total_number = movieScreeningList.size();
+        int total_pages = total_number / total_per_page;
+        if(total_pages * total_per_page != total_number)
+        {
+            total_pages++;
+        }
+        for(int i = no_page; i < Math.min(no_page + total_per_page, total_number); i++)
         {
             List<Integer> preExistingUUIDs = new ArrayList<>(List.of(movieScreeningList.get(i).getUuid()));
             List<Integer> preExistingMovie_halls = new ArrayList<>(List.of(movieScreeningList.get(i).getMovieHall().getUuid()));
@@ -203,7 +230,11 @@ public class MovieScreeningController {
         }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseObject(movieScreeningDTOS)
+                        .responseObject(ListOfMovieScreeningsDTO.builder()
+                                .movieScreeningDTOS(movieScreeningDTOS)
+                                .currentPage(no_page)
+                                .totalPages(total_pages)
+                                .build())
                         .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK

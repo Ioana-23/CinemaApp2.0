@@ -1,24 +1,13 @@
 import React, {useState} from 'react';
 import Card from "react-bootstrap/Card";
-import {Image, Row} from "react-bootstrap";
+import {Image, NavLink, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ReadMore} from "./ReadMore.tsx";
 import {MovieScreeningProps} from "./MovieScreeningProps.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface MovieScreeningPropsExt extends MovieScreeningProps {
     // onEdit: (_uuid: number) => void;
-}
-
-function getTimes(times: string[]) {
-    const timesAsDate: string[] = [];
-    for(let i = 0; i < times.length; i++)
-    {
-        const time = times[i].split(' ')[1];
-        const hour = time.split(':')[0];
-        const minutes = time.split(':')[1];
-        timesAsDate.push(`${hour}:${minutes}`);
-    }
-    return timesAsDate;
 }
 
 const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
@@ -26,17 +15,25 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                                                   movie,
                                                                   movieHall_uuid,
                                                                   date,
-                                                                  times
+                                                                  times,
                                                               }) => {
-
-    const [timesAsDate] = useState(getTimes(times));
+    const [imgSrc, setImgSrc] = useState(movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png');
+    const navigate = useNavigate();
+    const handleMenuClick = () => navigate("/menu", { replace: false });
 
     return (
         <Card style={{height: 'auto', padding: '0'}}>
             <Row style={{width: '100%', height: '100%'}}>
                 <div style={{width: '25%', height: '100%'}}>
-                    <Card.Img id="image" style={{width: '80%', height: '100%', objectFit: 'cover',backgroundImage: 'url(\'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png\')'}}
-                              src="https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpc"
+                    <Card.Img className="poster" id="image" style={{
+                        width: '80%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        backgroundImage: 'url(\'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png\')'
+                    }}
+                              onError={() => setImgSrc("https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png")}
+                        // src="https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg"
+                              src={imgSrc}
                     />
                 </div>
                 <div style={{width: '75%', height: '100%'}}>
@@ -61,12 +58,17 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                     )}
                             </div>
                         )}
-                        {timesAsDate && (
+                        {times && (
                             <div className="d-flex flex-row" style={{width: '100%', gap: '0.5rem'}}>
-                                {timesAsDate
+                                {times
+                                    .sort((time1, time2) =>
+                                        new Date().setHours(parseInt(time1.split(":")[0])) < new Date().setHours(parseInt(time2.split(":")[0])) ? -1 :
+                                            new Date().setHours(parseInt(time1.split(":")[0])) == new Date().setHours(parseInt(time2.split(":")[0])) ?
+                                                new Date().setMinutes(parseInt(time1.split(":")[1])) < new Date().setMinutes(parseInt(time2.split(":")[1])) ? -1 : 1 : -1)
                                     .map((date, index) =>
                                         <Button key={uuid[index]} style={{backgroundColor: '#f64b4b'}}
-                                                className="border-0">{date}</Button>
+                                                className="border-0 btn"
+                                                onClick={() => handleMenuClick()}>{date.split(" ")[1]}</Button>
                                     )}
                             </div>
                         )}

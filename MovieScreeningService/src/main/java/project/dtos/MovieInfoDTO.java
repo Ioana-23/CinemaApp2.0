@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class MovieInfoDTO {
     private String title;
     private LocalDate date;
+    private String poster_path;
     @JsonIgnore
     private Object actors;
     private String overview;

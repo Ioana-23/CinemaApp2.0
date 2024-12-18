@@ -5,17 +5,29 @@ import { MovieScreeningProps } from './MovieScreeningProps';
 const movieScreeningUrl = `http://localhost:8082/project/movie_screenings`;
 const movieUrl = `http://localhost:8083/project/movies/movie`;
 
-export const getMovieScreening = (): Promise<Response> => {
-    return axios.get(movieScreeningUrl);
+export const getMovieScreening = (): Promise<ResponseListMovieScreenings> => {
+    return axios.get(`${movieScreeningUrl}/100/0`);
 }
 
 export const getMovieInfo = (id: number): Promise<Response> => {
     return axios.get(`${movieUrl}/${id}`);
 }
+export interface ResponseListMovieScreenings {
+    responseObject: ListOfMovieScreenings,
+    responseType: ResponseType,
+    message: string
+}
+
 export interface Response {
     responseObject: MovieScreeningProps[],
     responseType: ResponseType,
     message: string
+}
+
+export interface ListOfMovieScreenings {
+    totalPages: number,
+    currentPage: number,
+    movieScreeningDTOS: MovieScreeningProps[]
 }
 
 export enum ResponseType {

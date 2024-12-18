@@ -50,4 +50,7 @@ public class Movie {
 
     @Column(name = "uuid", unique = true, nullable = false)
     private int uuid;
+
+    @Column(name = "poster_path")
+    private String poster_path;
 }

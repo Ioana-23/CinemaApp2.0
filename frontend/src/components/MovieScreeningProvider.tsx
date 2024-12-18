@@ -45,7 +45,7 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
             case FETCH_MOVIE_SCREENING_STARTED:
                 return {...state, fetching: true, fetchingError: null};
             case FETCH_MOVIE_SCREENING_SUCCEEDED_FETCHING_MOVIE_INFO:
-                return {...state, items: payload.items.data.responseObject, fetching: false};
+                return {...state, items: payload.items.data.responseObject.movieScreeningDTOS, fetching: false};
             case FETCH_MOVIE_INFO_STARTED:
                 return {...state, fetching: true, fetchingError: null};
             case FETCH_MOVIE_INFO_FINISHED:
@@ -97,11 +97,9 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({c
                 dispatch({type: FETCH_MOVIE_INFO_STARTED});
                 // const stringDate = `${dateToFilterBy.getDate()}-${dateToFilterBy.getMonth()+1}-${dateToFilterBy.getFullYear()}`;
                 if (items) {
-                    console.log({items})
                     for (let i = 0; i < items.length; i++) {
                         if(!items[i].movie) {
                             const uuid: number = items[i].movie_uuid;
-                            console.log({items})
                             const movieInfo: Response = await getMovieInfo(uuid);
                             dispatch({type: FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING, payload: {item: movieInfo}});
                         }
