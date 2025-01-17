@@ -2,6 +2,7 @@ import MovieScreeningCard from './MovieScreeningCard.tsx';
 import {CardGroup} from "react-bootstrap";
 import React, {useContext, useEffect} from "react";
 import {MovieContext} from "./MovieScreeningProvider.tsx";
+import Button from "react-bootstrap/Button";
 
 interface MovieScreeningListProps {
     // children: PropTypes.ReactNodeLike,
@@ -9,23 +10,30 @@ interface MovieScreeningListProps {
 }
 
 const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy}) => {
-    const {items, fetching, fetchingError, paginationFunction} = useContext(MovieContext);
-    // useEffect(() => {
-    //     if(items) {
-    //         items.map(({times}, index) => console.log(`${index}:${times}\n`))
-    //     }
-    // }, [items]);
+    const {items, fetching, fetchingError, paginationFunction, currentPage} = useContext(MovieContext);
+    useEffect(() => {
+        if (items) {
+            // items.map(({times}, index) => console.log(`${index}:${times}\n`))
+            console.log({items})
+        }
+    }, [items]);
     return (
         <div>
             {items && !items.find(item => item.movie == null) && (
-                <CardGroup className="flex-column gap-3">
-                    {items
-                        .filter(movie_screening => parseInt(movie_screening.date.toString().split('/')[2]) === parseInt(dateToFilterBy.getFullYear().toString()) && parseInt(movie_screening.date.toString().split('/')[1]) - 1 === parseInt(dateToFilterBy.getMonth().toString()) && parseInt(movie_screening.date.toString().split('/')[0]) === parseInt(dateToFilterBy.getDate().toString()))
-                        .map(({uuid, date, times, movieHall_uuid, movie}, index) =>
-                            <MovieScreeningCard key={index} uuid={uuid} movie={movie}
-                                                movieHall_uuid={movieHall_uuid} date={date} times={times} />
-                        )}
-                </CardGroup>
+                <>
+                    <Button disabled={items.length === 0}
+                            onClick={() => paginationFunction ? paginationFunction() : console.log('')}>
+                        {currentPage + 1}
+                    </Button>
+                    <CardGroup className="flex-column gap-3">
+                        {items
+                            // .filter(movie_screening => movie_screening.date.toString() === dateToFilterBy.toLocaleDateString())
+                            .map(({uuid, date, times, movieHall_uuid, movie}, index) =>
+                                <MovieScreeningCard key={index} uuid={uuid} movie={movie}
+                                                    movieHall_uuid={movieHall_uuid} date={date} times={times}/>
+                            )}
+                    </CardGroup>
+                </>
             )}
         </div>
     );

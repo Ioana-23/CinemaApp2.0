@@ -226,11 +226,11 @@ public class MovieScreeningControllerTest {
     public void findAllMovieScreenings_returns1MovieWith1MovieScreenings() throws Exception {
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening));
 
-        mockMvc.perform(get("/project/movie_screenings/5/0"))
+        mockMvc.perform(get("/project/movie_screenings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(1)))
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -245,11 +245,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings/5/0"))
+        mockMvc.perform(get("/project/movie_screenings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(1)))
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(2)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -264,11 +264,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings/5/0"))
+        mockMvc.perform(get("/project/movie_screenings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(2)))
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 
@@ -283,11 +283,11 @@ public class MovieScreeningControllerTest {
                 .build();
         Mockito.when(movieScreeningService.getMovieScreenings()).thenReturn(List.of(movieScreening, movieScreening1));
 
-        mockMvc.perform(get("/project/movie_screenings/5/0"))
+        mockMvc.perform(get("/project/movie_screenings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS", hasSize(2)))
-                .andExpect(jsonPath("$.responseObject.movieScreeningDTOS[0].uuid", hasSize(1)))
+                .andExpect(jsonPath("$.responseObject", hasSize(2)))
+                .andExpect(jsonPath("$.responseObject[0].uuid", hasSize(1)))
                 .andExpect(jsonPath("$.responseType", is("SUCCESS")));
     }
 }

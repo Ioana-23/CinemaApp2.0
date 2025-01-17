@@ -6,7 +6,7 @@ const movieScreeningUrl = `http://localhost:8082/project/movie_screenings`;
 const movieUrl = `http://localhost:8083/project/movies/movie`;
 
 export const getMovieScreening = (): Promise<ResponseListMovieScreenings> => {
-    return axios.get(`${movieScreeningUrl}/100/0`);
+    return axios.get(movieScreeningUrl);
 }
 
 export const getMovieInfo = (id: number): Promise<Response> => {

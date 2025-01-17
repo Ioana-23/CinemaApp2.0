@@ -6,13 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieControllerProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieControllerProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/movie_service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user_service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieScreeningController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieScreeningController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/MovieInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/MovieInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/MovieScreeningDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/dtos/movie_screening/MovieScreeningDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieScreeningControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieScreeningControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/java/project/entities/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V1__Create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieService/src/main/resources/db/migration/V1__Create_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,10 +187,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.movie_screening_service.yml: Compose Deployment" />
         <item itemvalue="Docker.user_service.yml.db_1: Compose Deployment" />
         <item itemvalue="Docker.movie_service.yml.db_3: Compose Deployment" />
         <item itemvalue="Docker.movie_screening_service.yml.db_2: Compose Deployment" />
-        <item itemvalue="Docker.movie_screening_service.yml: Compose Deployment" />
         <item itemvalue="Docker.user_service.yml: Compose Deployment" />
       </list>
     </recent_temporary>
@@ -220,6 +223,11 @@
       <workItem from="1734349614501" duration="5725000" />
       <workItem from="1734455057975" duration="9026000" />
       <workItem from="1734539955506" duration="3556000" />
+      <workItem from="1734630834968" duration="2560000" />
+      <workItem from="1737039987571" duration="1915000" />
+      <workItem from="1737060690114" duration="70000" />
+      <workItem from="1737060767938" duration="3000" />
+      <workItem from="1737121168459" duration="1149000" />
     </task>
     <servers />
   </component>

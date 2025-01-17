@@ -6,6 +6,8 @@ services:
   db_3:
     image: 'postgres'
     container_name: db_3
+    volumes:
+      - ./movie_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

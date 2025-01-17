@@ -192,17 +192,18 @@ public class MovieScreeningController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/{total_per_page}/{no_page}")
-    public ResponseEntity<Response> getAllMovieScreenings(@PathVariable int no_page, @PathVariable int total_per_page) {
+    @GetMapping
+    public ResponseEntity<Response> getAllMovieScreenings() {
         List<MovieScreening> movieScreeningList = movieScreeningService.getMovieScreenings();
         List<MovieScreeningDTO> movieScreeningDTOS = new ArrayList<>();
-        int total_number = movieScreeningList.size();
-        int total_pages = total_number / total_per_page;
-        if(total_pages * total_per_page != total_number)
-        {
-            total_pages++;
-        }
-        for(int i = no_page; i < Math.min(no_page + total_per_page, total_number); i++)
+//        int total_number = movieScreeningList.size();
+//        int total_pages = total_number / total_per_page;
+//        if(total_pages * total_per_page != total_number)
+//        {
+//            total_pages++;
+//        }
+//        for(int i = no_page; i < Math.min(no_page + total_per_page, total_number); i++)
+        for(int i = 0; i < movieScreeningList.size(); i++)
         {
             List<Integer> preExistingUUIDs = new ArrayList<>(List.of(movieScreeningList.get(i).getUuid()));
             List<Integer> preExistingMovie_halls = new ArrayList<>(List.of(movieScreeningList.get(i).getMovieHall().getUuid()));
@@ -230,11 +231,7 @@ public class MovieScreeningController {
         }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseObject(ListOfMovieScreeningsDTO.builder()
-                                .movieScreeningDTOS(movieScreeningDTOS)
-                                .currentPage(no_page)
-                                .totalPages(total_pages)
-                                .build())
+                        .responseObject(movieScreeningDTOS)
                         .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK

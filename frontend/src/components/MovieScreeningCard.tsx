@@ -18,6 +18,7 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                                                   times,
                                                               }) => {
     const [imgSrc, setImgSrc] = useState(movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png');
+
     const navigate = useNavigate();
     const handleMenuClick = () => navigate("/menu", { replace: false });
 
@@ -33,7 +34,7 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                     }}
                               onError={() => setImgSrc("https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png")}
                         // src="https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg"
-                              src={imgSrc}
+                              src={movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png'}
                     />
                 </div>
                 <div style={{width: '75%', height: '100%'}}>

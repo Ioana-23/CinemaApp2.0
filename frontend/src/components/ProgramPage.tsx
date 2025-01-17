@@ -12,12 +12,20 @@ function getDates() {
     const dates = [];
     for (let i = 0; i < 7; i++) {
         currentDayOfTheWeek.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7 + i);
-        const month = currentDayOfTheWeek.getMonth() + 1;
-        const day = currentDayOfTheWeek.getDate();
-        const year = currentDayOfTheWeek.getFullYear();
+        let month: string = (currentDayOfTheWeek.getMonth() + 1).toString();
+        let day: string = currentDayOfTheWeek.getDate().toString();
+        const year: string = currentDayOfTheWeek.getFullYear().toString();
         let disabled = false;
         if (currentDay > currentDayOfTheWeek) {
             disabled = false;
+        }
+        if(month.length === 1)
+        {
+            month = `0${month}`
+        }
+        if(day.length === 1)
+        {
+            day = `0${day}`
         }
         dates.push({
             'date': `${day}/${month}/${year}`,
@@ -82,7 +90,7 @@ function ProgramPage() {
                     </Navbar>
                 </div>
                 <div className="d-flex flex-column movie-container">
-                    <MovieScreeningProvider>
+                    <MovieScreeningProvider currentDate={daysOfTheCurrentWeek[daySelected].full_date}>
                         <MovieScreeningList dateToFilterBy={daysOfTheCurrentWeek[daySelected].full_date}></MovieScreeningList>
                     </MovieScreeningProvider>
                 </div>
