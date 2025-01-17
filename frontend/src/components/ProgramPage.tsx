@@ -40,14 +40,16 @@ function ProgramPage() {
     const [daysOfTheCurrentWeek] = useState(getDates());
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const currentDay = new Date().getDay();
-    const [daySelected, setDaySelected] = useState<number>((currentDay + 6) % 7);
+    // const [daySelected, setDaySelected] = useState<number>((currentDay + 6) % 7);
+    const [daySelected, setDaySelected] = useState<number>(3);
     return (
         <Container id="day-selector">
             <div className="d-flex flex-row">
                 <div className="d-flex flex-column day-navbar">
                     <Navbar sticky="top">
                         <Container className="d-flex justify-content-start">
-                            <Nav defaultActiveKey={days[(currentDay + 6) % 7]} className="ml-5 border-0 flex-column"
+                            {/*<Nav defaultActiveKey={days[(currentDay + 6) % 7]} className="ml-5 border-0 flex-column"*/}
+                            <Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"
                                  fill>
 
                                 <Nav.Link onFocus={() => {

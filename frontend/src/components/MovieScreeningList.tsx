@@ -1,8 +1,7 @@
 import MovieScreeningCard from './MovieScreeningCard.tsx';
-import {CardGroup} from "react-bootstrap";
+import {CardGroup, Pagination} from "react-bootstrap";
 import React, {useContext, useEffect} from "react";
 import {MovieContext} from "./MovieScreeningProvider.tsx";
-import Button from "react-bootstrap/Button";
 
 interface MovieScreeningListProps {
     // children: PropTypes.ReactNodeLike,
@@ -15,24 +14,26 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
         if (items) {
             // items.map(({times}, index) => console.log(`${index}:${times}\n`))
             console.log({items})
+            console.log({currentPage})
         }
-    }, [items]);
+    }, [items, currentPage]);
     return (
         <div>
             {items && !items.find(item => item.movie == null) && (
                 <>
-                    <Button disabled={items.length === 0}
-                            onClick={() => paginationFunction ? paginationFunction() : console.log('')}>
-                        {currentPage + 1}
-                    </Button>
                     <CardGroup className="flex-column gap-3">
                         {items
-                            // .filter(movie_screening => movie_screening.date.toString() === dateToFilterBy.toLocaleDateString())
                             .map(({uuid, date, times, movieHall_uuid, movie}, index) =>
                                 <MovieScreeningCard key={index} uuid={uuid} movie={movie}
                                                     movieHall_uuid={movieHall_uuid} date={date} times={times}/>
                             )}
                     </CardGroup>
+                    <Pagination>
+                        <Pagination.Item key="0" active={currentPage === 0}
+                                         onClick={() => paginationFunction?.(0)}>1</Pagination.Item>
+                        <Pagination.Item key="1" active={currentPage === 1}
+                                         onClick={() => paginationFunction?.(1)}>2</Pagination.Item>
+                    </Pagination>
                 </>
             )}
         </div>

@@ -2,10 +2,10 @@ import React, {useCallback, useEffect, useReducer} from 'react';
 import PropTypes from 'prop-types';
 import {MovieScreeningProps} from './MovieScreeningProps';
 import {getMovieInfo, getMovieScreening} from "./MovieScreeningApi.tsx";
-import {all} from "axios";
+import {usePreferences} from "./usePreferences.ts";
 
 type SaveMovieFn = (movie_screening: MovieScreeningProps) => Promise<any>;
-type PaginationFunction = () => void;
+type PaginationFunction = (page_no: number) => void;
 type MoviesFn = (movie_screening: MovieScreeningProps[]) => void;
 
 export const NUMBER_OF_MOVIES_PER_PAGE = 1;
@@ -20,12 +20,14 @@ export interface MovieScreeningState {
     saveItem?: SaveMovieFn,
     paginationFunction?: PaginationFunction,
     setItems?: MoviesFn,
-    currentPage: number
+    currentPage: number,
+    tab_no?: number,
+    total_pages?: number
 }
 
 interface ActionProps {
     type: string,
-    payload?: any,
+    payload?: any
 }
 
 export const initialStateItems: MovieScreeningState = {
@@ -41,6 +43,7 @@ const FETCH_MOVIE_SCREENING_SUCCEEDED_FETCHING_MOVIE_INFO = 'FETCH_MOVIE_SCREENI
 const FETCH_MOVIE_INFO_STARTED = 'FETCH_MOVIE_INFO_STARTED';
 const FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING = 'FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING';
 const FETCH_MOVIE_INFO_FINISHED = 'FETCH_MOVIE_INFO_FINISHED';
+const FETCH_MOVIE_INFO_ERROR = 'FETCH_MOVIE_INFO_ERROR';
 const FETCH_MOVIE_SCREENING_FINISHED = 'FETCH_MOVIE_SCREENING_FINISHED';
 const PAGINATION_FINISHED = 'PAGINATION_FINISHED'
 const PAGINATION_ERROR = 'PAGINATION_ERROR'
@@ -51,13 +54,13 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                 return {...state, fetching: true, fetchingError: null};
             case PAGINATION_FINISHED: {
                 const allItems = [...(state.allItems || [])];
-                console.log(state.currentPage)
                 return {
                     ...state,
-                    currentPage: state.currentPage + 1,
-                    items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice((state.currentPage + 1) * NUMBER_OF_MOVIES_PER_PAGE, (state.currentPage + 2) * NUMBER_OF_MOVIES_PER_PAGE + NUMBER_OF_MOVIES_PER_PAGE),
+                    currentPage: payload.page_no,
+                    items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(payload.page_no * NUMBER_OF_MOVIES_PER_PAGE, payload.page_no * NUMBER_OF_MOVIES_PER_PAGE + NUMBER_OF_MOVIES_PER_PAGE),
                     fetching: false
-                };}
+                };
+            }
             case
             PAGINATION_ERROR:
                 return {...state, fetchingError: payload.error};
@@ -67,26 +70,22 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                     ...state,
                     allItems: payload.allItems.data.responseObject,
                     fetching: false
-                };}
+                };
+            }
             case
             FETCH_MOVIE_INFO_STARTED:
-                return {...state, fetching: true, fetchingError: null};
+                return {...state, tab_no: (payload.date.getDay() + 6) % 7, fetching: true, fetchingError: null};
             case
             FETCH_MOVIE_INFO_FINISHED: {
                 const allItems = [...(state.allItems || [])];
-                let page_no = state.currentPage;
-                const items = [...(state.items || [])];
-                if(items.length !== 0 && items[0].date !== payload.date)
-                {
-                    page_no = 0;
-                }
                 return {
                     ...state,
                     allItems: payload.allItems,
-                    items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(page_no * NUMBER_OF_MOVIES_PER_PAGE, page_no * NUMBER_OF_MOVIES_PER_PAGE + NUMBER_OF_MOVIES_PER_PAGE),
-                    currentPage: page_no,
+                    items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(payload.page_no * NUMBER_OF_MOVIES_PER_PAGE, payload.page_no * NUMBER_OF_MOVIES_PER_PAGE + NUMBER_OF_MOVIES_PER_PAGE),
+                    currentPage: payload.page_no,
                     fetching: false
-                };}
+                };
+            }
             case
             FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING: {
                 const allItems = [...(state.allItems || [])];
@@ -98,9 +97,11 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                     }
                     index++;
                 }
-                console.log([...(state.allItems || [])])
+                // console.log([...(state.allItems || [])])
                 return {...state, allItems, fetching: true, fetchingError: null};
             }
+            case FETCH_MOVIE_INFO_ERROR:
+                return {...state};
             default:
                 return state;
         }
@@ -113,12 +114,13 @@ interface MovieScreeningProviderProps {
 
 export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({children, currentDate}) => {
     const [state, dispatch] = useReducer(reducer, initialStateItems);
-    const {items, allItems, fetching, fetchingError, saving, savingError, currentPage} = state;
+    const {items, allItems, fetching, fetchingError, saving, savingError, currentPage, tab_no} = state;
+    const {get, set} = usePreferences();
     useEffect(getMoviesEffect, []);
     useEffect(getMovieInformation, [allItems, currentDate])
-    const paginationFunction = useCallback<PaginationFunction>(paginationCallBack, [allItems, currentPage]);
+    const paginationFunction = useCallback<PaginationFunction>(paginationCallBack, [allItems, currentDate]);
     const setItems = useCallback<MoviesFn>(setItemsCallback, []);
-    const value = {items, fetching, fetchingError, paginationFunction, setItems, currentPage};
+    const value = {items, fetching, fetchingError, paginationFunction, setItems, currentPage, tab_no};
     return (
         <MovieContext.Provider value={value}>
             {children}
@@ -133,24 +135,24 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({c
         }
     }
 
-    function paginationCallBack() {
-        let canceled1 = false;
+    function paginationCallBack(page_no: number) {
+        let canceled = false;
         fetchPaginationData();
         return () => {
-            canceled1 = true;
+            canceled = true;
         }
 
         async function fetchPaginationData() {
             try {
-                const items_on_page: MovieScreeningProps[] = [];
-                console.log('heree')
-                if (allItems) {
-                    for (let i = currentPage * NUMBER_OF_MOVIES_PER_PAGE; i < Math.min(currentPage * NUMBER_OF_MOVIES_PER_PAGE + NUMBER_OF_MOVIES_PER_PAGE, allItems.length); i++) {
-                        items_on_page.push(allItems[i])
-                    }
-                    if (!canceled1) {
-                        console.log({items_on_page})
-                        dispatch({type: PAGINATION_FINISHED, payload: {items: items_on_page, date: currentDate}});
+                if (allItems && tab_no) {
+                    if (!canceled) {
+                        const replace_pages_string = await get('current_page');
+                        const replace_pages = (replace_pages_string ? JSON.parse(replace_pages_string) : [])
+                        if (replace_pages && replace_pages.length !== 0) {
+                            replace_pages[tab_no] = page_no;
+                            await set('current_page', JSON.stringify(replace_pages))
+                            dispatch({type: PAGINATION_FINISHED, payload: {date: currentDate, page_no: page_no}});
+                        }
                     }
                 }
             } catch (error) {
@@ -160,30 +162,47 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({c
     }
 
     function getMovieInformation() {
-        let canceled1 = false;
+        let canceled = false;
         fetchMovieInformation();
         return () => {
-            canceled1 = true;
+            canceled = true;
         }
 
         async function fetchMovieInformation() {
             try {
-                dispatch({type: FETCH_MOVIE_INFO_STARTED});
-                // const stringDate = `${dateToFilterBy.getDate()}-${dateToFilterBy.getMonth()+1}-${dateToFilterBy.getFullYear()}`;
-                if (allItems) {
-                    for (let i = 0; i < allItems.length; i++) {
-                        if (!allItems[i].movie && allItems[i].date.toString() === currentDate.toLocaleDateString()) {
-                            const uuid: number = allItems[i].movie_uuid;
-                            const movieInfo: Response = await getMovieInfo(uuid);
-                            dispatch({type: FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING, payload: {item: movieInfo}});
+                dispatch({type: FETCH_MOVIE_INFO_STARTED, payload: {date: currentDate}});
+                let page_no = currentPage;
+                const tab_no = (currentDate.getDay() + 6) % 7;
+                if (tab_no) {
+                    const saved_page_json = await get('current_page')
+                    const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
+                    if (saved_page && saved_page.length !== 0) {
+                        page_no = saved_page[tab_no]
+                    }
+                    if (saved_page && saved_page.length === 0) {
+                        await set('current_page', JSON.stringify([0, 0, 0, 0, 0, 0, 0]))
+                    }
+                    if (allItems) {
+                        for (let i = 0; i < allItems.length; i++) {
+                            if (!allItems[i].movie && allItems[i].date.toString() === currentDate.toLocaleDateString()) {
+                                const uuid: number = allItems[i].movie_uuid!;
+                                const movieInfo = await getMovieInfo(uuid);
+                                dispatch({
+                                    type: FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING,
+                                    payload: {item: movieInfo}
+                                });
+                            }
                         }
                     }
-                }
-                if (!canceled1) {
-                    dispatch({type: FETCH_MOVIE_INFO_FINISHED, payload: {allItems: allItems, date: currentDate}});
+                    if (!canceled) {
+                        dispatch({
+                            type: FETCH_MOVIE_INFO_FINISHED,
+                            payload: {allItems: allItems, date: currentDate, page_no: page_no}
+                        });
+                    }
                 }
             } catch (error) {
-                dispatch({type: FETCH_MOVIE_INFO_FINISHED, payload: {error}});
+                dispatch({type: FETCH_MOVIE_INFO_ERROR, payload: {error}});
             }
         }
     }
@@ -198,7 +217,6 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({c
         async function fetchItemsConnected() {
             try {
                 dispatch({type: FETCH_MOVIE_SCREENING_STARTED});
-                // const stringDate = `${dateToFilterBy.getDate()}-${dateToFilterBy.getMonth()+1}-${dateToFilterBy.getFullYear()}`;
                 const moviesAux = await getMovieScreening();
                 if (!canceled) {
                     dispatch({
@@ -207,7 +225,7 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({c
                     });
                 }
             } catch (error) {
-                dispatch({type: FETCH_MOVIE_INFO_FINISHED, payload: {error}});
+                dispatch({type: FETCH_MOVIE_INFO_ERROR, payload: {error}});
             }
         }
     }
