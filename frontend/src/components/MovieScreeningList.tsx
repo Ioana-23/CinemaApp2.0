@@ -1,6 +1,6 @@
 import MovieScreeningCard from './MovieScreeningCard.tsx';
 import {CardGroup, Pagination} from "react-bootstrap";
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {MovieContext} from "./MovieScreeningProvider.tsx";
 
 interface MovieScreeningListProps {
@@ -9,17 +9,18 @@ interface MovieScreeningListProps {
 }
 
 const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy}) => {
-    const {items, fetching, fetchingError, paginationFunction, currentPage} = useContext(MovieContext);
+    const {items, fetching, fetchingError, paginationFunction, currentPage, tab_no, total_pages, pagination_ribbon} = useContext(MovieContext);
     useEffect(() => {
         if (items) {
             // items.map(({times}, index) => console.log(`${index}:${times}\n`))
-            console.log({items})
-            console.log({currentPage})
+            // console.log({items})
+            // console.log({currentPage})
+            // console.log({pagination_ribbon})
         }
-    }, [items, currentPage]);
+    }, [items, currentPage, pagination_ribbon]);
     return (
         <div>
-            {items && !items.find(item => item.movie == null) && (
+            {items && !items.find(item => item.movie == null) && pagination_ribbon && (
                 <>
                     <CardGroup className="flex-column gap-3">
                         {items
@@ -29,12 +30,12 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
                             )}
                     </CardGroup>
                     <Pagination>
-                        <Pagination.Item key="0" active={currentPage === 0}
-                                         onClick={() => paginationFunction?.(0)}>1</Pagination.Item>
-                        <Pagination.Item key="1" active={currentPage === 1}
-                                         onClick={() => paginationFunction?.(1)}>2</Pagination.Item>
+                        {pagination_ribbon}
                     </Pagination>
                 </>
+            )}
+            {items && items.length === 0 && (
+                <p>There are no shows available for the date selected!</p>
             )}
         </div>
     );
