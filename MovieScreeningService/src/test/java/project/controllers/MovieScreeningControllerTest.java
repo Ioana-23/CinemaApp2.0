@@ -238,7 +238,7 @@ public class MovieScreeningControllerTest {
     public void findAllMovieScreenings_returns1MovieWith2MovieScreenings() throws Exception {
         MovieScreening movieScreening1 = MovieScreening.builder()
                 .date(LocalDate.now())
-                .time(LocalTime.parse(LocalTime.now().withMinute(LocalTime.now().getMinute() + 1).format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .time(LocalTime.parse(LocalTime.now().withMinute((LocalTime.now().getMinute() + 1) % 60).format(DateTimeFormatter.ofPattern("HH:mm"))))
                 .uuid(1)
                 .movie_uuid(UUID)
                 .movieHall(movieHall)
@@ -276,7 +276,7 @@ public class MovieScreeningControllerTest {
     public void findAllMovieScreenings_returns1MovieWith2MovieScreeningDates() throws Exception {
         MovieScreening movieScreening1 = MovieScreening.builder()
                 .date(LocalDate.now().withDayOfMonth(LocalDate.now().getDayOfMonth() + 1))
-                .time(LocalTime.parse(LocalTime.now().withMinute(LocalTime.now().getMinute() + 1).format(DateTimeFormatter.ofPattern("HH:mm"))))
+                .time(LocalTime.parse(LocalTime.now().withMinute((LocalTime.now().getMinute() + 1) % 60).format(DateTimeFormatter.ofPattern("HH:mm"))))
                 .uuid(1)
                 .movie_uuid(UUID)
                 .movieHall(movieHall)

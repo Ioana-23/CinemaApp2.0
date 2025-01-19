@@ -2,6 +2,19 @@
     display: flex;
 }
 
+.card-movie-screening{
+    background-color: #767676;
+    color: #2B2E4A;
+}
+
+.reserve-button{
+    color: #2B2E4A;
+}
+
+.reserve-button:hover{
+    color: #767676;
+}
+
 .logo {
     height: 6em;
     padding: 1.5em;

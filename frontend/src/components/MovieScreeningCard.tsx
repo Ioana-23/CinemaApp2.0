@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import Card from "react-bootstrap/Card";
-import {Image, NavLink, Row} from "react-bootstrap";
+import {Image, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {ReadMore} from "./ReadMore.tsx";
 import {MovieScreeningProps} from "./MovieScreeningProps.tsx";
 import {useNavigate} from "react-router-dom";
-
+import '../css/MovieScreeningCard.css';
 interface MovieScreeningPropsExt extends MovieScreeningProps {
     // onEdit: (_uuid: number) => void;
 }
@@ -20,10 +20,10 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
     const [imgSrc, setImgSrc] = useState(movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png');
 
     const navigate = useNavigate();
-    const handleMenuClick = () => navigate("/menu", { replace: false });
+    const handleMenuClick = (uuid: number) => navigate(`/reserve?uuid=${uuid}`, {replace: false});
 
     return (
-        <Card style={{height: 'auto', padding: '0'}}>
+        <Card style={{height: 'auto', padding: '0'}} className="card-movie-screening">
             <Row style={{width: '100%', height: '100%'}}>
                 <div style={{width: '25%', height: '100%'}}>
                     <Card.Img className="poster" id="image" style={{
@@ -68,8 +68,8 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                                 new Date().setMinutes(parseInt(time1.split(":")[1])) < new Date().setMinutes(parseInt(time2.split(":")[1])) ? -1 : 1 : -1)
                                     .map((date, index) =>
                                         <Button key={uuid[index]} style={{backgroundColor: '#f64b4b'}}
-                                                className="border-0 btn"
-                                                onClick={() => handleMenuClick()}>{date.split(" ")[1]}</Button>
+                                                className="border-0 btn reserve-button"
+                                                onClick={() => handleMenuClick(uuid[index])}>{date.split(" ")[1]}</Button>
                                     )}
                             </div>
                         )}

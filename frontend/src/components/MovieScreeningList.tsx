@@ -2,7 +2,7 @@ import MovieScreeningCard from './MovieScreeningCard.tsx';
 import {CardGroup, Pagination} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {MovieContext} from "./MovieScreeningProvider.tsx";
-
+import '../css/MovieScreeningList.css';
 interface MovieScreeningListProps {
     // children: PropTypes.ReactNodeLike,
     dateToFilterBy: Date
@@ -13,7 +13,7 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
     useEffect(() => {
         if (items) {
             // items.map(({times}, index) => console.log(`${index}:${times}\n`))
-            // console.log({items})
+            console.log({items})
             // console.log({currentPage})
             // console.log({pagination_ribbon})
         }
@@ -21,7 +21,7 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
     return (
         <div>
             {items && !items.find(item => item.movie == null) && pagination_ribbon && (
-                <>
+                <div>
                     <CardGroup className="flex-column gap-3">
                         {items
                             .map(({uuid, date, times, movieHall_uuid, movie}, index) =>
@@ -29,10 +29,10 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
                                                     movieHall_uuid={movieHall_uuid} date={date} times={times}/>
                             )}
                     </CardGroup>
-                    <Pagination>
+                    <Pagination className="pagination-ribbon">
                         {pagination_ribbon}
                     </Pagination>
-                </>
+                </div>
             )}
             {items && items.length === 0 && (
                 <p>There are no shows available for the date selected!</p>

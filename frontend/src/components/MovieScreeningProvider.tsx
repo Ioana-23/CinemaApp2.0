@@ -100,6 +100,7 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
             FETCH_MOVIE_INFO_FINISHED: {
                 const allItems = [...(state.allItems || [])];
                 const newItems = allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString());
+                console.log({newItems})
                 const new_total_pages = Math.round(newItems.length / payload.number_movies_per_page);
                 const newPagination = [];
                 // const first_page_seen = Math.max(payload.page_no - 1, 0);
@@ -143,7 +144,7 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
 
 interface MovieScreeningProviderProps {
     children: PropTypes.ReactNodeLike,
-    currentDate: Date,
+    currentDate?: Date,
     number_movies_per_page: number
 }
 
@@ -171,6 +172,7 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
     const paginationFunction = useCallback<PaginationFunction>(paginationCallBack, [allItems, currentDate, number_movies_per_page]);
     const setItems = useCallback<MoviesFn>(setItemsCallback, []);
     const value = {
+        allItems,
         items,
         fetching,
         fetchingError,
@@ -238,48 +240,53 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
 
         async function fetchMovieInformation() {
             try {
-                dispatch({type: FETCH_MOVIE_INFO_STARTED, payload: {date: currentDate}});
-                let page_no = currentPage;
-                const tab_no = (currentDate.getDay() + 6) % 7;
-                if (tab_no) {
-                    const saved_page_json = await get('current_page')
-                    const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
-                    if (saved_page && saved_page.length !== 0) {
-                        page_no = saved_page[tab_no]
-                    }
-                    if (saved_page && saved_page.length === 0) {
-                        await set('current_page', JSON.stringify([0, 0, 0, 0, 0, 0, 0]))
-                    }
-                    if (allItems) {
-                        for (let i = 0; i < allItems.length; i++) {
-                            if (!allItems[i].movie && allItems[i].date.toString() === currentDate.toLocaleDateString()) {
-                                const uuid: number = allItems[i].movie_uuid!;
-                                const movieInfo = await getMovieInfo(uuid);
-                                dispatch({
-                                    type: FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING,
-                                    payload: {item: movieInfo}
-                                });
-                            }
+                if (currentDate) {
+                    dispatch({type: FETCH_MOVIE_INFO_STARTED, payload: {date: currentDate}});
+                    let page_no = currentPage;
+
+                    const tab_no = (currentDate.getDay() + 6) % 7;
+                    console.log({tab_no})
+                    if (tab_no >= 0) {
+                        console.log({currentDate})
+                        const saved_page_json = await get('current_page')
+                        const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
+                        if (saved_page && saved_page.length !== 0) {
+                            page_no = saved_page[tab_no]
                         }
-                        if (!canceled) {
-                            if (page_no * (number_movies_per_page + 1) >= allItems!.filter(movie_screening => movie_screening.date.toString() === currentDate.toLocaleDateString()).length) {
-                                page_no = 0;
-                                const saved_page_json = await get('current_page')
-                                const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
-                                saved_page[tab_no] = 0;
-                                await set('current_page', JSON.stringify(saved_page));
-                            }
+                        if (saved_page && saved_page.length === 0) {
+                            await set('current_page', JSON.stringify([0, 0, 0, 0, 0, 0, 0]))
                         }
-                        dispatch({
-                            type: FETCH_MOVIE_INFO_FINISHED,
-                            payload: {
-                                allItems: allItems,
-                                date: currentDate,
-                                page_no: page_no,
-                                paginationFunction: paginationFunction,
-                                number_movies_per_page: number_movies_per_page
+                        if (allItems) {
+                            for (let i = 0; i < allItems.length; i++) {
+                                if (!allItems[i].movie && allItems[i].date.toString() === currentDate.toLocaleDateString()) {
+                                    const uuid: number = allItems[i].movie_uuid!;
+                                    const movieInfo = await getMovieInfo(uuid);
+                                    dispatch({
+                                        type: FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING,
+                                        payload: {item: movieInfo}
+                                    });
+                                }
                             }
-                        });
+                            if (!canceled) {
+                                if (page_no * (number_movies_per_page + 1) >= allItems!.filter(movie_screening => movie_screening.date.toString() === currentDate.toLocaleDateString()).length) {
+                                    page_no = 0;
+                                    const saved_page_json = await get('current_page')
+                                    const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
+                                    saved_page[tab_no] = 0;
+                                    await set('current_page', JSON.stringify(saved_page));
+                                }
+                            }
+                            dispatch({
+                                type: FETCH_MOVIE_INFO_FINISHED,
+                                payload: {
+                                    allItems: allItems,
+                                    date: currentDate,
+                                    page_no: page_no,
+                                    paginationFunction: paginationFunction,
+                                    number_movies_per_page: number_movies_per_page
+                                }
+                            });
+                        }
                     }
                 }
             } catch
@@ -301,7 +308,6 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
                 dispatch({type: FETCH_MOVIE_SCREENING_STARTED});
                 const moviesAux = await getMovieScreening();
                 if (!canceled) {
-                    console.log({moviesAux})
                     dispatch({
                         type: FETCH_MOVIE_SCREENING_SUCCEEDED_FETCHING_MOVIE_INFO,
                         payload: {allItems: moviesAux}
