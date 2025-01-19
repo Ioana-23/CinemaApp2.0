@@ -4,108 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_control" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/postmaster.pid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1247" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1247" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1249" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1249" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1249_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1249_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1255" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1255" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1255_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1255_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1255_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1255_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/1259" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/1259" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16385" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16389" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16390" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16391" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16393" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16394" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16395" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16395_fsm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16400" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16401" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16405" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16407" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16408" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16412" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16414" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16416" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/16428" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2224" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2224" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2579" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2579" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2604" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2604" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2606" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2606" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2608" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2608" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2609" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2609" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2609_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2609_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2610" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2610" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2610_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2610_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2615" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2615" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2615_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2615_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2619" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2619" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2619_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2619_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2619_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2619_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2620" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2620" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2656" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2656" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2657" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2657" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2658" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2658" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2659" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2659" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2662" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2662" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2663" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2663" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2664" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2664" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2665" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2665" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2666" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2666" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2667" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2667" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2673" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2673" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2674" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2674" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2678" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2678" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2679" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2679" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2684" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2684" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2685" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2685" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2690" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2690" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2691" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2691" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2696" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2696" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2699" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2699" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2701" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2701" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2702" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2702" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2703" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2703" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2704" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2704" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2840" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2840" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2840_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2840_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2841" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2841" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/3394" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/3394" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/3394_vm" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/3394_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/3455" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/3455" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/5002" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/5002" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/global/2396" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/2396" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_control" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_xact/0000" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/pg_xact/0000" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/postmaster.pid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_control" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_internal.init" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/postmaster.pid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieHallController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/controllers/MovieHallController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/SeatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/repositories/SeatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/SeatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/java/project/services/SeatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/main/resources/db/migration/V2__Configure_movie_hall_seating.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieHallControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieHallControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieScreeningControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../MovieScreeningService/src/test/java/project/controllers/MovieScreeningControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/css/MovieCard.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/css/MovieScreeningCard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/css/ProgramPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/css/ProgramPage.css" afterDir="false" />
-    </list>
+    <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -318,7 +217,7 @@
       <workItem from="1737060767938" duration="3000" />
       <workItem from="1737121168459" duration="1764000" />
       <workItem from="1737206689379" duration="1607000" />
-      <workItem from="1737281949280" duration="5672000" />
+      <workItem from="1737281949280" duration="5679000" />
     </task>
     <servers />
   </component>
