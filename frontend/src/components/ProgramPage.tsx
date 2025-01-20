@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import {Col, Dropdown, DropdownButton, Nav} from "react-bootstrap";
 import '../css/ProgramPage.css';
 import MovieScreeningList from "./MovieScreeningList.tsx";
-import {MovieScreeningProvider} from "./MovieScreeningProvider.tsx";
+import {MovieScreeningProvider} from "./providers/MovieScreeningProvider.tsx";
 import {usePreferences} from "./usePreferences.ts";
 
 function getDates(year: number, month:number, day:number) {

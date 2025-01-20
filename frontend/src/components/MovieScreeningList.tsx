@@ -1,7 +1,7 @@
 import MovieScreeningCard from './MovieScreeningCard.tsx';
 import {CardGroup, Pagination} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
-import {MovieContext} from "./MovieScreeningProvider.tsx";
+import {MovieContext} from "./providers/MovieScreeningProvider.tsx";
 import '../css/MovieScreeningList.css';
 interface MovieScreeningListProps {
     // children: PropTypes.ReactNodeLike,

@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="" />
+    <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_control" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/pg_stat/pgstat.stat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2619" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2619" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/2696" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/2696" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_control" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_stat/pgstat.stat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_control" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/pg_stat/pgstat.stat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/providers/MovieScreeningProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ReservationSelectSeats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ReservationSelectSeats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/css/ReservationSelectSeats.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/css/ReservationSelectSeats.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -218,6 +244,7 @@
       <workItem from="1737121168459" duration="1764000" />
       <workItem from="1737206689379" duration="1607000" />
       <workItem from="1737281949280" duration="5679000" />
+      <workItem from="1737379805184" duration="1267000" />
     </task>
     <servers />
   </component>

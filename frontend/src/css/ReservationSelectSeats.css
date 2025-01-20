@@ -22,14 +22,32 @@
 .seat-link-selected{
     background-color: #f64b4b;
     align-content: center;
-    color: #767676;
+    color: #2B2E4A;
 }
+
+.continue_btn{
+    background-color: #f64b4b;
+    color: #2B2E4A;
+    border: none;
+}
+
+.continue_btn:hover{
+    background-color: #f64b4b;
+    color: #2B2E4A;
+    border: none;
+    box-shadow:  0 10px 10px 0 rgba(0, 0, 0,0.2),0 6px 10px 0 rgba(0, 0, 0,0.19)}
 
 .seat-link-selected:hover {
     cursor: pointer;
-    color: #767676;
+    color: #2B2E4A;
     box-shadow:  0 10px 10px 0 rgba(0, 0, 0,0.2),0 6px 10px 0 rgba(0, 0, 0,0.19)}
 
+.continue_btn_disabled{
+    background-color: #53354A !important;
+    color: #767676 !important;
+    border: none;
+    cursor: default;
+}
 
 .seat-link:hover{
     background-color: #767676;

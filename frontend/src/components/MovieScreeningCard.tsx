@@ -6,6 +6,8 @@ import {ReadMore} from "./ReadMore.tsx";
 import {MovieScreeningProps} from "./MovieScreeningProps.tsx";
 import {useNavigate} from "react-router-dom";
 import '../css/MovieScreeningCard.css';
+import {usePreferences} from "./usePreferences.ts";
+
 interface MovieScreeningPropsExt extends MovieScreeningProps {
     // onEdit: (_uuid: number) => void;
 }
@@ -18,9 +20,14 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                                                   times,
                                                               }) => {
     const [imgSrc, setImgSrc] = useState(movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png');
-
+    const {get, set} = usePreferences();
     const navigate = useNavigate();
-    const handleMenuClick = (uuid: number) => navigate(`/reserve?uuid=${uuid}`, {replace: false});
+    const handleMenuClick = ((uuid: number) => {
+            const setInLocalStorage = (async () => await set('selected_seats', JSON.stringify([])));
+            setInLocalStorage();
+            navigate(`/reserve?uuid=${uuid}`, {replace: false});
+        }
+    );
 
     return (
         <Card style={{height: 'auto', padding: '0'}} className="card-movie-screening">
