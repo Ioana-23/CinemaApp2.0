@@ -7,12 +7,16 @@ import MovieScreeningList from "./MovieScreeningList.tsx";
 import {MovieScreeningProvider} from "./providers/MovieScreeningProvider.tsx";
 import {usePreferences} from "./usePreferences.ts";
 
-function getDates(year: number, month:number, day:number) {
-    const currentDay = new Date(year, month, day);
-    const currentDayOfTheWeek = new Date(year, month, day);
+function getDates(year: number, month: number, day: number) {
+    const currentDay = year ? new Date(year, month, day) : new Date();
+    let currentDayOfTheWeek = year ? new Date(year, month, day) : new Date();
+    const startOfWeek = new Date();
+    const oneDayOffset = 86400000;
+    startOfWeek.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7)
     const dates = [];
     for (let i = 0; i < 7; i++) {
-        currentDayOfTheWeek.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7 + i);
+        // currentDayOfTheWeek.setDate(startOfWeek.getDate() + i);
+        currentDayOfTheWeek = new Date(+startOfWeek + i*oneDayOffset)
         let month_aux: string = (currentDayOfTheWeek.getMonth() + 1).toString();
         let day_aux: string = currentDayOfTheWeek.getDate().toString();
         const year_aux: string = currentDayOfTheWeek.getFullYear().toString();
@@ -35,10 +39,18 @@ function getDates(year: number, month:number, day:number) {
     return dates;
 }
 
+export function transformStringToDate(dateAsString: string)
+{
+    const year = parseInt(dateAsString.split('/')[2])
+    const month = parseInt(dateAsString.split('/')[1])
+    const day = parseInt(dateAsString.split('/')[0])
+    return new Date(year, month-1, day)
+}
 function ProgramPage() {
     const [daysOfTheCurrentWeek] = useState(getDates(2025, 0, 16));
+    // const [daysOfTheCurrentWeek] = useState(getDates());
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    //const currentDay = new Date().getDay();
+    // const currentDay = new Date().getDay();
     const currentDay = new Date(2025, 0, 16).getDay();
     // const [daySelected, setDaySelected] = useState<number>((currentDay + 6) % 7);
     const [daySelected, setDaySelected] = useState<number>(3);
@@ -46,6 +58,15 @@ function ProgramPage() {
     const [movies_per_page] = useState<number[]>([1, 2, 3]);
     const {get, set} = usePreferences();
     useEffect(setMoviesPerPage, [no_movies_per_page]);
+    useEffect(() => {
+        if(daySelected)
+        {
+            const save_current_date = (async () => {
+                await set('current_date', JSON.stringify(daysOfTheCurrentWeek[daySelected].full_date))
+            })
+            // save_current_date()
+        }
+    }, [daySelected]);
 
     function setMoviesPerPage() {
         let canceled = false;
@@ -88,45 +109,45 @@ function ProgramPage() {
                                     </DropdownButton>
                                     <p className="paragraph"> Movies per page</p>
                                 </div>
-                            {/*    /*<Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"*/}
-                            {/*           fill>*/}
+                                {/*    /*<Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"*/}
+                                {/*           fill>*/}
 
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(1);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[1].full_date)*/}
-                            {/*    }} eventKey={days[1]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[1].disabled}>Monday {"\n"} {daysOfTheCurrentWeek[1].date} </Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(2);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[2].full_date)*/}
-                            {/*    }} eventKey={days[2]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[2].disabled}>Tuesday {"\n"} {daysOfTheCurrentWeek[2].date}</Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(3);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[3].full_date)*/}
-                            {/*    }} eventKey={days[3]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[3].disabled}>Wednesday {"\n"} {daysOfTheCurrentWeek[3].date}</Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(4);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[4].full_date)*/}
-                            {/*    }} eventKey={days[4]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[4].disabled}>Thursday {"\n"} {daysOfTheCurrentWeek[4].date}</Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(5);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[5].full_date)*/}
-                            {/*    }} eventKey={days[5]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[5].disabled}>Friday {"\n"} {daysOfTheCurrentWeek[5].date}</Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(6);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[6].full_date)*/}
-                            {/*    }} eventKey={days[6]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[6].disabled}>Saturday {"\n"} {daysOfTheCurrentWeek[6].date}</Nav.Link>*/}
-                            {/*    <Nav.Link onFocus={() => {*/}
-                            {/*        setDaySelected(7);*/}
-                            {/*        console.log(daysOfTheCurrentWeek[7].full_date)*/}
-                            {/*    }} eventKey={days[7]}*/}
-                            {/*              disabled={daysOfTheCurrentWeek[7].disabled}>Sunday {"\n"} {daysOfTheCurrentWeek[7].date}</Nav.Link>*/}
-                            {/*</Nav>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(1);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[1].full_date)*/}
+                                {/*    }} eventKey={days[1]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[1].disabled}>Monday {"\n"} {daysOfTheCurrentWeek[1].date} </Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(2);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[2].full_date)*/}
+                                {/*    }} eventKey={days[2]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[2].disabled}>Tuesday {"\n"} {daysOfTheCurrentWeek[2].date}</Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(3);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[3].full_date)*/}
+                                {/*    }} eventKey={days[3]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[3].disabled}>Wednesday {"\n"} {daysOfTheCurrentWeek[3].date}</Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(4);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[4].full_date)*/}
+                                {/*    }} eventKey={days[4]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[4].disabled}>Thursday {"\n"} {daysOfTheCurrentWeek[4].date}</Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(5);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[5].full_date)*/}
+                                {/*    }} eventKey={days[5]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[5].disabled}>Friday {"\n"} {daysOfTheCurrentWeek[5].date}</Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(6);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[6].full_date)*/}
+                                {/*    }} eventKey={days[6]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[6].disabled}>Saturday {"\n"} {daysOfTheCurrentWeek[6].date}</Nav.Link>*/}
+                                {/*    <Nav.Link onFocus={() => {*/}
+                                {/*        setDaySelected(7);*/}
+                                {/*        console.log(daysOfTheCurrentWeek[7].full_date)*/}
+                                {/*    }} eventKey={days[7]}*/}
+                                {/*              disabled={daysOfTheCurrentWeek[7].disabled}>Sunday {"\n"} {daysOfTheCurrentWeek[7].date}</Nav.Link>*/}
+                                {/*</Nav>*/}
                                 <Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"
                                      fill>
                                     <Nav.Link onFocus={() => {

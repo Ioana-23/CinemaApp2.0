@@ -13,7 +13,7 @@ const MovieScreeningList: React.FC<MovieScreeningListProps> = ({dateToFilterBy})
     useEffect(() => {
         if (items) {
             // items.map(({times}, index) => console.log(`${index}:${times}\n`))
-            console.log({items})
+            // console.log({items})
             // console.log({currentPage})
             // console.log({pagination_ribbon})
         }

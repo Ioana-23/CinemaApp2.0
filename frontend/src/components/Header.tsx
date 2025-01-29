@@ -9,7 +9,7 @@ import '../css/Header.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {MovieScreeningProvider} from "./providers/MovieScreeningProvider.tsx";
 import ReservationSelectSeats from "./ReservationSelectSeats.tsx";
-import ConfirmReservation from "./ConfirmReservation.tsx";
+import ConfirmSeatSelection from "./ConfirmSeatSelection.tsx";
 import {ReservationProvider} from "./providers/ReservationProvider.tsx";
 
 function Header() {
@@ -48,9 +48,9 @@ function Header() {
                             <Route path="/reserve/" render={props => {
                                 return <ReservationSelectSeats {...props} />;
                             }} element={<ReservationSelectSeats/>}/>
-                            <Route path="/confirm-reservation/" render={props => {
-                                return <ConfirmReservation {...props} />;
-                            }} element={<ConfirmReservation/>}/>
+                            <Route path="/confirm-reservation" render={props => {
+                                return <ConfirmSeatSelection {...props} />;
+                            }} element={<ConfirmSeatSelection/>}/>
                         </Routes>
                     </BrowserRouter>
                 </ReservationProvider>

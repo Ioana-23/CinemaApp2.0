@@ -33,7 +33,7 @@ export interface ActionProps {
 export const initialStateItems: MovieScreeningState = {
     fetching: false,
     saving: false,
-    currentPage: 0,
+    currentPage: 0
 };
 
 export const MovieContext = React.createContext<MovieScreeningState>(initialStateItems);
@@ -57,28 +57,18 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                 const newPagination = [];
                 // const first_page_seen = Math.max(payload.page_no - 1, 0);
                 const first_page_seen = 0;
-                const last_page_seen = state.total_pages!;
-                // const last_page_seen = Math.min(payload.page_no + 2, state.total_pages!);
-                // if(first_page_seen !== 0)
-                // {
-                //     newPagination.push(<Pagination.Prev></Pagination.Prev>);
-                // }
+                const last_page_seen = payload.total_pages;
                 for (let i = first_page_seen; i < last_page_seen; i++) {
                     newPagination.push(<Pagination.Item key={i} active={payload.page_no === i}
                                                         onClick={() => payload.paginationFunction?.(i)}>{i + 1}</Pagination.Item>)
                 }
-                // if(last_page_seen !== state.total_pages! && last_page_seen < state.total_pages! + 1)
-                // {
-                //     newPagination.push(<Pagination.Ellipsis></Pagination.Ellipsis>)
-                //     newPagination.push(<Pagination.Item key={state.total_pages!-1} active={payload.page_no === state.total_pages!-1}
-                //                                         onClick={() => payload.paginationFunction?.(state.total_pages!-1)}>{state.total_pages!}</Pagination.Item>)
-                //     newPagination.push(<Pagination.Next></Pagination.Next>)
-                // }
+                console.log({'': allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(payload.page_no * payload.number_movies_per_page, payload.page_no * payload.number_movies_per_page + payload.number_movies_per_page)})
                 return {
                     ...state,
                     currentPage: payload.page_no,
                     items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(payload.page_no * payload.number_movies_per_page, payload.page_no * payload.number_movies_per_page + payload.number_movies_per_page),
                     pagination_ribbon: newPagination,
+                    total_pages: payload.total_pages,
                     fetching: false
                 };
             }
@@ -90,7 +80,7 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                 return {
                     ...state,
                     allItems: payload.allItems.data.responseObject,
-                    fetching: false
+                    fetching: false,
                 };
             }
             case
@@ -100,10 +90,8 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
             FETCH_MOVIE_INFO_FINISHED: {
                 const allItems = [...(state.allItems || [])];
                 const newItems = allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString());
-                console.log({newItems})
                 const new_total_pages = Math.round(newItems.length / payload.number_movies_per_page);
                 const newPagination = [];
-                // const first_page_seen = Math.max(payload.page_no - 1, 0);
                 const first_page_seen = 0;
                 const last_page_seen = new_total_pages;
                 for (let i = first_page_seen; i < last_page_seen; i++) {
@@ -132,7 +120,6 @@ const reducer: (state: MovieScreeningState, action: ActionProps) => MovieScreeni
                     }
                     index++;
                 }
-                // console.log([...(state.allItems || [])])
                 return {...state, allItems, fetching: true, fetchingError: null};
             }
             case FETCH_MOVIE_INFO_ERROR:
@@ -164,11 +151,11 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
         currentPage,
         tab_no,
         total_pages,
-        pagination_ribbon
+        pagination_ribbon,
     } = state;
     const {get, set} = usePreferences();
     useEffect(getMoviesEffect, []);
-    useEffect(getMovieInformation, [allItems, currentDate, number_movies_per_page])
+    useEffect(getMovieInformation, [currentDate, allItems, number_movies_per_page])
     const paginationFunction = useCallback<PaginationFunction>(paginationCallBack, [allItems, currentDate, number_movies_per_page]);
     const setItems = useCallback<MoviesFn>(setItemsCallback, []);
     const value = {
@@ -181,7 +168,7 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
         currentPage,
         tab_no,
         total_pages,
-        pagination_ribbon
+        pagination_ribbon,
     };
     return (
         <MovieContext.Provider value={value}>
@@ -208,24 +195,26 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
             try {
                 if (allItems && tab_no) {
                     if (!canceled) {
+                        dispatch({
+                            type: PAGINATION_FINISHED,
+                            payload: {
+                                date: currentDate,
+                                page_no: page_no,
+                                total_pages: total_pages,
+                                paginationFunction: paginationFunction,
+                                number_movies_per_page: number_movies_per_page
+                            }
+                        });
                         const replace_pages_string = await get('current_page');
                         const replace_pages = (replace_pages_string ? JSON.parse(replace_pages_string) : [])
                         if (replace_pages && replace_pages.length !== 0) {
                             replace_pages[tab_no] = page_no;
                             await set('current_page', JSON.stringify(replace_pages))
-                            dispatch({
-                                type: PAGINATION_FINISHED,
-                                payload: {
-                                    date: currentDate,
-                                    page_no: page_no,
-                                    paginationFunction: paginationFunction,
-                                    number_movies_per_page: number_movies_per_page
-                                }
-                            });
                         }
                     }
                 }
-            } catch (error) {
+            } catch
+                (error) {
                 dispatch({type: PAGINATION_ERROR, payload: {error}});
             }
         }
@@ -243,11 +232,8 @@ export const MovieScreeningProvider: React.FC<MovieScreeningProviderProps> = ({
                 if (currentDate) {
                     dispatch({type: FETCH_MOVIE_INFO_STARTED, payload: {date: currentDate}});
                     let page_no = currentPage;
-
                     const tab_no = (currentDate.getDay() + 6) % 7;
-                    console.log({tab_no})
                     if (tab_no >= 0) {
-                        console.log({currentDate})
                         const saved_page_json = await get('current_page')
                         const saved_page = (saved_page_json ? JSON.parse(saved_page_json) : [])
                         if (saved_page && saved_page.length !== 0) {

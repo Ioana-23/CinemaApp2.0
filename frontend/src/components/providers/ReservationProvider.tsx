@@ -1,15 +1,16 @@
-import React, {useCallback, useEffect, useReducer} from 'react';
+import React, {useCallback, useContext, useEffect, useReducer} from 'react';
 import PropTypes from 'prop-types';
 import {MovieScreeningProps} from '../MovieScreeningProps.tsx';
 import {usePreferences} from "../usePreferences.ts";
 import {SeatProps} from "../SeatProps.tsx";
-import {ActionProps} from './MovieScreeningProvider.tsx';
+import {ActionProps, MovieContext} from './MovieScreeningProvider.tsx';
 import {getMovieHallSeats} from "../MovieHallApi.tsx";
 import {Col, Row} from "react-bootstrap";
+import {getMovieInfo} from "../MovieScreeningApi.tsx";
 
-type SaveMovieFn = (movie_screening: MovieScreeningProps) => Promise<any>;
+type ConfirmSeats = () => void;
 type SelectSeatFn = (seat_uuid: number) => void;
-type GetSeatsFn = (movie_hall_uuid: number) => void;
+type GetSeatsFn = (uuid: number) => void;
 
 export interface ReservationState {
     seats?: SeatProps[],
@@ -17,19 +18,21 @@ export interface ReservationState {
     fetchingError?: Error | null,
     saving: boolean,
     savingError?: Error | null,
-    saveItem?: SaveMovieFn,
     selectedSeats: SeatProps[],
-    movie_screening_id?: number,
+    movie_screening?: MovieScreeningProps,
     getSeats?: GetSeatsFn,
     selectSeats?: SelectSeatFn,
-    movie_hall_configuration: Element[]
+    movie_hall_configuration: Element[],
+    index?: number,
+    confirmation_configuration: Element[],
 }
 
 export const initialStateReservations: ReservationState = {
     fetching: false,
     saving: false,
     selectedSeats: [],
-    movie_hall_configuration: []
+    movie_hall_configuration: [],
+    confirmation_configuration: []
 };
 
 export const ReservationContext = React.createContext<ReservationState>(initialStateReservations);
@@ -38,21 +41,38 @@ const FETCH_SEATS_STARTED = 'FETCH_SEATS_STARTED';
 const FETCH_SEATS_FINISHED = 'FETCH_SEATS_FINISHED';
 const ADD_OR_REMOVE_SEAT_TO_SELECTION = 'ADD_OR_REMOVE_SEAT_TO_SELECTION';
 const CONFIGURE_MOVIE_HALL = 'CONFIGURE_MOVIE_HALL';
-const PAGINATION_FINISHED = 'PAGINATION_FINISHED'
-const PAGINATION_ERROR = 'PAGINATION_ERROR'
+const FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE = 'FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE';
 const reducer: (state: ReservationState, action: ActionProps) => ReservationState =
     (state, {type, payload}) => {
         switch (type) {
             case FETCH_SEATS_STARTED:
                 return {...state, fetching: true, fetchingError: null};
             case FETCH_SEATS_FINISHED: {
+                let movie_screening = payload.movie_screening;
+                movie_screening.movie = payload.movieInfo.data.responseObject;
                 return {
                     ...state,
                     fetching: false,
                     seats: payload.seats.data.responseObject,
                     movie_hall_configuration: payload.movie_hall_configuration,
+                    movie_screening: payload.movie_screening,
+                    index: payload.index
+                };
+            }
+            case FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE: {
+                const confirmation_configuration = [];
+                let movie_info: string = "";
+                if(payload.movie_screening)
+                {
+                    movie_info = payload.movie_screening.title;
+                }
+                confirmation_configuration.push(<Row>Movie: {payload.movie_screening}</Row>)
+                return {
+                    ...state,
                     selectedSeats: payload.selectedSeats,
-                    movie_screening_id: payload.movie_screening_id
+                    index: payload.index,
+                    movie_screening: payload.movie_screening,
+                    confirmation_configuration: confirmation_configuration
                 };
             }
             case ADD_OR_REMOVE_SEAT_TO_SELECTION: {
@@ -70,91 +90,6 @@ const reducer: (state: ReservationState, action: ActionProps) => ReservationStat
             }
             case CONFIGURE_MOVIE_HALL:
                 return {...state, movie_hall_configuration: payload.movie_hall_configuration};
-            //     case PAGINATION_FINISHED: {
-            //         const allItems = [...(state.allItems || [])];
-            //         const newPagination = [];
-            //         // const first_page_seen = Math.max(payload.page_no - 1, 0);
-            //         const first_page_seen = 0;
-            //         const last_page_seen = state.total_pages!;
-            //         // const last_page_seen = Math.min(payload.page_no + 2, state.total_pages!);
-            //         // if(first_page_seen !== 0)
-            //         // {
-            //         //     newPagination.push(<Pagination.Prev></Pagination.Prev>);
-            //         // }
-            //         for (let i = first_page_seen; i < last_page_seen; i++) {
-            //             newPagination.push(<Pagination.Item key={i} active={payload.page_no === i}
-            //                                                 onClick={() => payload.paginationFunction?.(i)}>{i + 1}</Pagination.Item>)
-            //         }
-            //         // if(last_page_seen !== state.total_pages! && last_page_seen < state.total_pages! + 1)
-            //         // {
-            //         //     newPagination.push(<Pagination.Ellipsis></Pagination.Ellipsis>)
-            //         //     newPagination.push(<Pagination.Item key={state.total_pages!-1} active={payload.page_no === state.total_pages!-1}
-            //         //                                         onClick={() => payload.paginationFunction?.(state.total_pages!-1)}>{state.total_pages!}</Pagination.Item>)
-            //         //     newPagination.push(<Pagination.Next></Pagination.Next>)
-            //         // }
-            //         return {
-            //             ...state,
-            //             currentPage: payload.page_no,
-            //             items: allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString()).slice(payload.page_no * payload.number_movies_per_page, payload.page_no * payload.number_movies_per_page + payload.number_movies_per_page),
-            //             pagination_ribbon: newPagination,
-            //             fetching: false
-            //         };
-            //     }
-            //     case
-            //     PAGINATION_ERROR:
-            //         return {...state, fetchingError: payload.error};
-            //     case
-            //     FETCH_MOVIE_SCREENING_SUCCEEDED_FETCHING_MOVIE_INFO: {
-            //         return {
-            //             ...state,
-            //             allItems: payload.allItems.data.responseObject,
-            //             fetching: false
-            //         };
-            //     }
-            //     case
-            //     FETCH_MOVIE_INFO_STARTED:
-            //         return {...state, tab_no: (payload.date.getDay() + 6) % 7, fetching: true, fetchingError: null};
-            //     case
-            //     FETCH_MOVIE_INFO_FINISHED: {
-            //         const allItems = [...(state.allItems || [])];
-            //         const newItems = allItems.filter(movie_screening => movie_screening.date.toString() === payload.date.toLocaleDateString());
-            //         console.log({newItems})
-            //         const new_total_pages = Math.round(newItems.length / payload.number_movies_per_page);
-            //         const newPagination = [];
-            //         // const first_page_seen = Math.max(payload.page_no - 1, 0);
-            //         const first_page_seen = 0;
-            //         const last_page_seen = new_total_pages;
-            //         for (let i = first_page_seen; i < last_page_seen; i++) {
-            //             newPagination.push(<Pagination.Item key={i} active={payload.page_no === i}
-            //                                                 onClick={() => payload.paginationFunction?.(i)}>{i + 1}</Pagination.Item>)
-            //         }
-            //         const new_pagination_items = newItems.slice(payload.page_no * payload.number_movies_per_page, payload.page_no * payload.number_movies_per_page + payload.number_movies_per_page);
-            //         return {
-            //             ...state,
-            //             allItems: payload.allItems,
-            //             items: new_pagination_items,
-            //             currentPage: payload.page_no,
-            //             total_pages: new_total_pages,
-            //             pagination_ribbon: newPagination,
-            //             fetching: false
-            //         };
-            //     }
-            //     case
-            //     FETCH_MOVIE_INFORMATION_FOR_MOVIE_SCREENING: {
-            //         const allItems = [...(state.allItems || [])];
-            //         const item = payload.item.data.responseObject
-            //         let index = allItems.findIndex(it => it.movie_uuid === item.uuid);
-            //         while (index != -1 && index < allItems.length) {
-            //             if (allItems[index].movie_uuid === item.uuid) {
-            //                 allItems[index].movie = item;
-            //             }
-            //             index++;
-            //         }
-            //         // console.log([...(state.allItems || [])])
-            //         return {...state, allItems, fetching: true, fetchingError: null};
-            //     }
-            //     case FETCH_MOVIE_INFO_ERROR:
-            //         return {...state};
             default:
                 return state;
         }
@@ -167,15 +102,47 @@ interface ReservationProviderProps {
 export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                                                                             children
                                                                         }) => {
+    const {allItems} = useContext(MovieContext);
     const [state, dispatch] = useReducer(reducer, initialStateReservations);
-    const {seats, fetching, fetchingError, saving, savingError, saveItem, selectedSeats, movie_screening_id, movie_hall_configuration} = state;
+    const {
+        seats,
+        fetching,
+        fetchingError,
+        saving,
+        savingError,
+        selectedSeats,
+        movie_screening,
+        movie_hall_configuration,
+        index,
+        confirmation_configuration
+    } = state;
     const {get, set} = usePreferences();
-    const getSeats = useCallback<GetSeatsFn>(getSeatsFromDatabase, [movie_screening_id]);
-    const selectSeats = useCallback<SelectSeatFn>(selectSeatByUuid, [seats]);
+    useEffect(() => {
+        const getSeatsFromLocal = (async () => {
+            const selected_seats_json = await get('selected_seats');
+            const selected_seats_local: SeatProps[] = (selected_seats_json ? JSON.parse(selected_seats_json) : [])
+            const movie_screening_json = await get('movie_screening');
+            const movie_screening_local: MovieScreeningProps = (movie_screening_json ? JSON.parse(movie_screening_json) : null)
+            const index_json = await get('index');
+            const index_local: number = (index_json ? JSON.parse(index_json) : -1)
+            dispatch({
+                type: FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE,
+                payload: {
+                    selectedSeats: selected_seats_local,
+                    set: set,
+                    movie_screening: movie_screening_local,
+                    index: index_local
+                }
+            })
+        })
+        getSeatsFromLocal();
+    }, [seats]);
+    const getSeats = useCallback<GetSeatsFn>(getSeatsFromDatabase, [allItems]);
+    const selectSeats = useCallback<SelectSeatFn>(selectSeatByUuid, [seats, allItems]);
+
 
     function configure_movie_hall() {
-        if(seats && selectSeats)
-        {
+        if (seats && selectSeats) {
             const hall_configuration = [];
             const row_no = seats[seats.length - 1].row_number;
             const col_no = seats[seats.length - 1].seat_number;
@@ -236,8 +203,9 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
 
     useEffect(() => {
         configure_movie_hall();
-    }, [seats, selectedSeats]);
-    function getSeatsFromDatabase(movie_hall_id: number) {
+    }, [seats, selectedSeats, allItems]);
+
+    function getSeatsFromDatabase(uuid: number) {
         let canceled = false;
         getSeatsAsync();
         return () => {
@@ -247,17 +215,32 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
         async function getSeatsAsync() {
             try {
                 dispatch({type: FETCH_SEATS_STARTED})
-                if (movie_hall_id >= 0) {
-                    const seats = await getMovieHallSeats(movie_hall_id)
-                    const selected_seats_json = await get('selected_seats');
-                    const selected_seats_local: SeatProps[] = (selected_seats_json ? JSON.parse(selected_seats_json) : [])
-                    if (!canceled) {
-                        dispatch({
-                            type: FETCH_SEATS_FINISHED,
-                            payload: {seats: seats, movie_screening_id: movie_screening_id, selectSeats: selectSeats, selectedSeats: selected_seats_local}
-                        })
+                if (allItems) {
+                    const movie_screening = allItems!.find(movie_screening => movie_screening.uuid.includes(uuid))
+                    if (movie_screening) {
+                        const movieInfo = await getMovieInfo(movie_screening.movie_uuid);
+                        const index = movie_screening.uuid.indexOf(uuid)
+                        await set('movie_screening', JSON.stringify(movie_screening))
+                        await set('index', JSON.stringify(index))
+                        const movie_hall_id = movie_screening.movieHall_uuid[index]
+                        if (movie_hall_id >= 0) {
+                            const seats = await getMovieHallSeats(movie_hall_id)
+                            if (!canceled) {
+                                dispatch({
+                                    type: FETCH_SEATS_FINISHED,
+                                    payload: {
+                                        seats: seats,
+                                        movie_screening: movie_screening,
+                                        selectSeats: selectSeats,
+                                        index: index,
+                                        movieInfo: movieInfo
+                                    }
+                                })
+                            }
+                        }
                     }
                 }
+
             } catch (error) {
                 console.log({error})
             }
@@ -280,16 +263,16 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
             }
         }
     }
+
     const value = {
         seats,
         fetching,
         fetchingError,
         saving,
         savingError,
-        saveItem,
         selectedSeats,
-        movie_screening_id,
-        getSeats, selectSeats, movie_hall_configuration
+        movie_screening,
+        getSeats, selectSeats, movie_hall_configuration, index,confirmation_configuration
     };
     return (
         <ReservationContext.Provider value={value}>

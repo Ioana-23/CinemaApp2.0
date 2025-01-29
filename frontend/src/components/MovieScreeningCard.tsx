@@ -23,7 +23,9 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
     const {get, set} = usePreferences();
     const navigate = useNavigate();
     const handleMenuClick = ((uuid: number) => {
-            const setInLocalStorage = (async () => await set('selected_seats', JSON.stringify([])));
+            const setInLocalStorage = (async () => {
+                await set('selected_seats', JSON.stringify([]))
+            });
             setInLocalStorage();
             navigate(`/reserve?uuid=${uuid}`, {replace: false});
         }

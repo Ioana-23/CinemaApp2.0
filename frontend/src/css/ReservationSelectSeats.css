@@ -25,14 +25,16 @@
     color: #2B2E4A;
 }
 
-.continue_btn{
-    background-color: #f64b4b;
+.continue_btn,
+.continue_btn:focus-visible,
+.continue_btn:active{
+    background-color: #f64b4b; !important;
     color: #2B2E4A;
     border: none;
 }
 
 .continue_btn:hover{
-    background-color: #f64b4b;
+    background-color: #f64b4b; !important;
     color: #2B2E4A;
     border: none;
     box-shadow:  0 10px 10px 0 rgba(0, 0, 0,0.2),0 6px 10px 0 rgba(0, 0, 0,0.19)}
