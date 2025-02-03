@@ -8,8 +8,8 @@ import ProgramPage from "./ProgramPage.tsx";
 import '../css/Header.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {MovieScreeningProvider} from "./providers/MovieScreeningProvider.tsx";
-import ReservationSelectSeats from "./ReservationSelectSeats.tsx";
-import ConfirmSeatSelection from "./ConfirmSeatSelection.tsx";
+import ReservationSelectSeats from "./pages/reservation/ReservationSelectSeats.tsx";
+import ConfirmReservation from "./pages/reservation/ConfirmReservation.tsx";
 import {ReservationProvider} from "./providers/ReservationProvider.tsx";
 
 function Header() {
@@ -49,8 +49,8 @@ function Header() {
                                 return <ReservationSelectSeats {...props} />;
                             }} element={<ReservationSelectSeats/>}/>
                             <Route path="/confirm-reservation" render={props => {
-                                return <ConfirmSeatSelection {...props} />;
-                            }} element={<ConfirmSeatSelection/>}/>
+                                return <ConfirmReservation {...props} />;
+                            }} element={<ConfirmReservation/>}/>
                         </Routes>
                     </BrowserRouter>
                 </ReservationProvider>

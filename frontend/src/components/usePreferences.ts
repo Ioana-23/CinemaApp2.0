@@ -12,5 +12,10 @@ export function usePreferences() {
     []
   );
 
-  return { get, set };
+  const remove = useCallback<(key: string) => Promise<void>>(
+      (key) => Preferences.remove({ key }),
+      []
+  );
+
+  return { get, set , remove};
 }

@@ -1,16 +1,18 @@
 import React, {useCallback, useContext, useEffect, useReducer} from 'react';
 import PropTypes from 'prop-types';
-import {MovieScreeningProps} from '../MovieScreeningProps.tsx';
+import {MovieScreeningProps} from '../props/movie_screening/MovieScreeningProps.tsx';
 import {usePreferences} from "../usePreferences.ts";
-import {SeatProps} from "../SeatProps.tsx";
+import {SeatProps} from "../props/reservation/SeatProps.tsx";
 import {ActionProps, MovieContext} from './MovieScreeningProvider.tsx';
-import {getMovieHallSeats} from "../MovieHallApi.tsx";
+import {getMovieHallSeats} from "../apis/reservation/MovieHallApi.tsx";
 import {Col, Row} from "react-bootstrap";
-import {getMovieInfo} from "../MovieScreeningApi.tsx";
+import {getMovieInfo} from "../apis/movie_screening/MovieScreeningApi.tsx";
+import {ReservationProps} from "../props/reservation/ReservationProps.tsx";
 
 type ConfirmSeats = () => void;
 type SelectSeatFn = (seat_uuid: number) => void;
 type GetSeatsFn = (uuid: number) => void;
+type SaveReservationFn = (reservation: ReservationProps) => void;
 
 export interface ReservationState {
     seats?: SeatProps[],
@@ -25,6 +27,7 @@ export interface ReservationState {
     movie_hall_configuration: Element[],
     index?: number,
     confirmation_configuration: Element[],
+    reservation?: ReservationProps
 }
 
 export const initialStateReservations: ReservationState = {
@@ -42,14 +45,15 @@ const FETCH_SEATS_FINISHED = 'FETCH_SEATS_FINISHED';
 const ADD_OR_REMOVE_SEAT_TO_SELECTION = 'ADD_OR_REMOVE_SEAT_TO_SELECTION';
 const CONFIGURE_MOVIE_HALL = 'CONFIGURE_MOVIE_HALL';
 const FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE = 'FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE';
+const FETCH_RESERVATION_FROM_LOCAL_STORAGE = 'FETCH_RESERVATION_FROM_LOCAL_STORAGE';
 const reducer: (state: ReservationState, action: ActionProps) => ReservationState =
     (state, {type, payload}) => {
         switch (type) {
             case FETCH_SEATS_STARTED:
                 return {...state, fetching: true, fetchingError: null};
-            case FETCH_SEATS_FINISHED: {
-                let movie_screening = payload.movie_screening;
-                movie_screening.movie = payload.movieInfo.data.responseObject;
+            case FETCH_RESERVATION_FROM_LOCAL_STORAGE:
+                return {...state, reservation: payload.reservation};
+            case FETCH_SEATS_FINISHED:
                 return {
                     ...state,
                     fetching: false,
@@ -58,12 +62,10 @@ const reducer: (state: ReservationState, action: ActionProps) => ReservationStat
                     movie_screening: payload.movie_screening,
                     index: payload.index
                 };
-            }
             case FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE: {
                 const confirmation_configuration = [];
                 let movie_info: string = "";
-                if(payload.movie_screening)
-                {
+                if (payload.movie_screening) {
                     movie_info = payload.movie_screening.title;
                 }
                 confirmation_configuration.push(<Row>Movie: {payload.movie_screening}</Row>)
@@ -114,26 +116,41 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
         movie_screening,
         movie_hall_configuration,
         index,
-        confirmation_configuration
+        confirmation_configuration,
+        reservation
     } = state;
     const {get, set} = usePreferences();
     useEffect(() => {
         const getSeatsFromLocal = (async () => {
-            const selected_seats_json = await get('selected_seats');
-            const selected_seats_local: SeatProps[] = (selected_seats_json ? JSON.parse(selected_seats_json) : [])
-            const movie_screening_json = await get('movie_screening');
-            const movie_screening_local: MovieScreeningProps = (movie_screening_json ? JSON.parse(movie_screening_json) : null)
-            const index_json = await get('index');
-            const index_local: number = (index_json ? JSON.parse(index_json) : -1)
-            dispatch({
-                type: FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE,
-                payload: {
-                    selectedSeats: selected_seats_local,
-                    set: set,
-                    movie_screening: movie_screening_local,
-                    index: index_local
-                }
-            })
+            const reservation_json = await get('reservation');
+            const reservation_local: ReservationProps = (reservation_json ? JSON.parse(reservation_json) : null)
+            if(reservation_local)
+            {
+                dispatch({
+                    type: FETCH_RESERVATION_FROM_LOCAL_STORAGE,
+                    payload: {
+                        reservation: reservation_local
+                    }
+                })
+            }
+            else
+            {
+                const selected_seats_json = await get('selected_seats');
+                const selected_seats_local: SeatProps[] = (selected_seats_json ? JSON.parse(selected_seats_json) : [])
+                const movie_screening_json = await get('movie_screening');
+                const movie_screening_local: MovieScreeningProps = (movie_screening_json ? JSON.parse(movie_screening_json) : null)
+                const index_json = await get('index');
+                const index_local: number = (index_json ? JSON.parse(index_json) : -1)
+                dispatch({
+                    type: FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE,
+                    payload: {
+                        selectedSeats: selected_seats_local,
+                        set: set,
+                        movie_screening: movie_screening_local,
+                        index: index_local
+                    }
+                })
+            }
         })
         getSeatsFromLocal();
     }, [seats]);
@@ -218,7 +235,9 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                 if (allItems) {
                     const movie_screening = allItems!.find(movie_screening => movie_screening.uuid.includes(uuid))
                     if (movie_screening) {
-                        const movieInfo = await getMovieInfo(movie_screening.movie_uuid);
+                        await getMovieInfo(movie_screening.movie_uuid!).then(result => {
+                            movie_screening.movie = result.data.responseObject
+                        });
                         const index = movie_screening.uuid.indexOf(uuid)
                         await set('movie_screening', JSON.stringify(movie_screening))
                         await set('index', JSON.stringify(index))
@@ -232,8 +251,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                                         seats: seats,
                                         movie_screening: movie_screening,
                                         selectSeats: selectSeats,
-                                        index: index,
-                                        movieInfo: movieInfo
+                                        index: index
                                     }
                                 })
                             }
@@ -272,7 +290,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
         savingError,
         selectedSeats,
         movie_screening,
-        getSeats, selectSeats, movie_hall_configuration, index,confirmation_configuration
+        getSeats, selectSeats, movie_hall_configuration, index, confirmation_configuration, reservation
     };
     return (
         <ReservationContext.Provider value={value}>

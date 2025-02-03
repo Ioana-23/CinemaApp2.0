@@ -5,30 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8897e11-50e7-4a10-bdfe-b8ebcc315a16" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../frontend/src/components/pages/reservation/ConfirmReservation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/base/16384/pg_internal.init" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_control" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_data/pg_stat/pgstat.stat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/movie_data/postmaster.pid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/base/16384/pg_internal.init" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_control" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_stat/pgstat.stat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_screening_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/movie_screening_data/postmaster.pid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/base/16384/pg_internal.init" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_control" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_data/global/pg_internal.init" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/global/pg_internal.init" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_data/pg_stat/pgstat.stat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_data/postmaster.pid" beforeDir="false" afterPath="$PROJECT_DIR$/user_data/postmaster.pid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ConfirmReservation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ConfirmSeatSelection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ConfirmSeatSelection.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ListGroup.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/apis/movie_screening/MovieApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieHallApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/apis/reservation/MovieHallApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/props/movie_screening/MovieProps.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/apis/movie_screening/MovieScreeningApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/pages/movie_screening/MovieScreeningCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/pages/movie_screening/MovieScreeningList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/MovieScreeningProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/props/movie_screening/MovieScreeningProps.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ProgramPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ReservationSelectSeats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/ReservationSelectSeats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/ReservationSelectSeats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/pages/reservation/ReservationSelectSeats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/SeatProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/props/reservation/SeatProps.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/providers/MovieScreeningProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/providers/MovieScreeningProvider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/components/providers/ReservationProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/providers/ReservationProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/css/ReservationSelectSeats.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/css/ReservationSelectSeats.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +106,7 @@
     &quot;Docker.user_service.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projects/CinemaApp/Configurations/user_service.yml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/CinemaApp/Configurations&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -245,6 +253,8 @@
       <workItem from="1737281949280" duration="5679000" />
       <workItem from="1737379805184" duration="1596000" />
       <workItem from="1738141848492" duration="1591000" />
+      <workItem from="1738331945089" duration="1715000" />
+      <workItem from="1738585403360" duration="1962000" />
     </task>
     <servers />
   </component>

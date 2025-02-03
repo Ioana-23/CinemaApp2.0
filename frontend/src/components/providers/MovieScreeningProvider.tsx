@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useReducer} from 'react';
 import PropTypes from 'prop-types';
-import {MovieScreeningProps} from '../MovieScreeningProps.tsx';
-import {getMovieInfo, getMovieScreening} from "../MovieScreeningApi.tsx";
+import {MovieScreeningProps} from '../props/movie_screening/MovieScreeningProps.tsx';
+import {getMovieInfo, getMovieScreening} from "../apis/movie_screening/MovieScreeningApi.tsx";
 import {usePreferences} from "../usePreferences.ts";
 import {Pagination} from "react-bootstrap";
 

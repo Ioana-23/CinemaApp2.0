@@ -3,14 +3,14 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import {Col, Dropdown, DropdownButton, Nav} from "react-bootstrap";
 import '../css/ProgramPage.css';
-import MovieScreeningList from "./MovieScreeningList.tsx";
+import MovieScreeningList from "./pages/movie_screening/MovieScreeningList.tsx";
 import {MovieScreeningProvider} from "./providers/MovieScreeningProvider.tsx";
 import {usePreferences} from "./usePreferences.ts";
 
 function getDates(year: number, month: number, day: number) {
     const currentDay = year ? new Date(year, month, day) : new Date();
     let currentDayOfTheWeek = year ? new Date(year, month, day) : new Date();
-    const startOfWeek = new Date();
+    const startOfWeek = year ? new Date(year, month, day) : new Date();
     const oneDayOffset = 86400000;
     startOfWeek.setDate(currentDay.getDate() - (currentDay.getDay() + 6) % 7)
     const dates = [];
@@ -109,45 +109,6 @@ function ProgramPage() {
                                     </DropdownButton>
                                     <p className="paragraph"> Movies per page</p>
                                 </div>
-                                {/*    /*<Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"*/}
-                                {/*           fill>*/}
-
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(1);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[1].full_date)*/}
-                                {/*    }} eventKey={days[1]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[1].disabled}>Monday {"\n"} {daysOfTheCurrentWeek[1].date} </Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(2);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[2].full_date)*/}
-                                {/*    }} eventKey={days[2]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[2].disabled}>Tuesday {"\n"} {daysOfTheCurrentWeek[2].date}</Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(3);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[3].full_date)*/}
-                                {/*    }} eventKey={days[3]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[3].disabled}>Wednesday {"\n"} {daysOfTheCurrentWeek[3].date}</Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(4);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[4].full_date)*/}
-                                {/*    }} eventKey={days[4]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[4].disabled}>Thursday {"\n"} {daysOfTheCurrentWeek[4].date}</Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(5);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[5].full_date)*/}
-                                {/*    }} eventKey={days[5]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[5].disabled}>Friday {"\n"} {daysOfTheCurrentWeek[5].date}</Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(6);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[6].full_date)*/}
-                                {/*    }} eventKey={days[6]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[6].disabled}>Saturday {"\n"} {daysOfTheCurrentWeek[6].date}</Nav.Link>*/}
-                                {/*    <Nav.Link onFocus={() => {*/}
-                                {/*        setDaySelected(7);*/}
-                                {/*        console.log(daysOfTheCurrentWeek[7].full_date)*/}
-                                {/*    }} eventKey={days[7]}*/}
-                                {/*              disabled={daysOfTheCurrentWeek[7].disabled}>Sunday {"\n"} {daysOfTheCurrentWeek[7].date}</Nav.Link>*/}
-                                {/*</Nav>*/}
                                 <Nav defaultActiveKey={days[daySelected]} className="ml-5 border-0 flex-column"
                                      fill>
                                     <Nav.Link onFocus={() => {
