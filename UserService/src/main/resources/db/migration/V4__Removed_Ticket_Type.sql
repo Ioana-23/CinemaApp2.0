@@ -1,0 +1,5 @@
+DELETE FROM tickets WHERE id >= 0;
+ALTER TABLE tickets
+    DROP COLUMN ticket_type;
+ALTER TABLE tickets
+    ADD COLUMN uuid INTEGER UNIQUE NOT NULL

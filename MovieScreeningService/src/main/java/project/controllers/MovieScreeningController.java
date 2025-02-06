@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.controllers.response.Response;
 import project.controllers.response.ResponseType;
-import project.dtos.MovieInfoDTO;
-import project.dtos.movie_screening.ListOfMovieScreeningsDTO;
+import project.dtos.MovieDTO;
+import project.dtos.movie_screening.FindMovieScreeningDTO;
 import project.dtos.movie_screening.MovieScreeningDTO;
 import project.dtos.movie_screening.SaveMovieScreeningDTO;
 import project.entities.MovieHall;
@@ -67,7 +67,7 @@ public class MovieScreeningController {
             try {
                 movieScreeningToSave.setUuid(generate_uuid());
                 movieScreeningToSave.setTime(LocalTime.parse(saveMovieScreeningDTO.getTimes().get(i).format(DateTimeFormatter.ofPattern("HH:mm"))));
-                MovieInfoDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
+                MovieDTO movieFoundDTO = movieControllerProxy.getMovieByUuid(movieScreeningToSave.getMovie_uuid());
                 if (movieFoundDTO == null) {
                     return new ResponseEntity<>(
                             Response.builder()
@@ -186,7 +186,13 @@ public class MovieScreeningController {
         }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseObject(movieScreeningFound)
+                        .responseObject(FindMovieScreeningDTO.builder()
+                                .movieHall_uuid(movieScreeningFound.getMovieHall().getUuid())
+                                .date(movieScreeningFound.getDate())
+                                .time(movieScreeningFound.getTime())
+                                .movie_uuid(movieScreeningFound.getMovie_uuid())
+                                .uuid(movieScreeningFound.getUuid())
+                                .build())
                         .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK);

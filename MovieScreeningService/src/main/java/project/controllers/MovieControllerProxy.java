@@ -3,8 +3,8 @@ package project.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
+import project.controllers.response.Response;
 import project.dtos.MovieDTO;
-import project.dtos.MovieInfoDTO;
 
 import java.io.IOException;
 import java.net.*;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Service
 public class MovieControllerProxy {
     private static String ip_address = "";
-    public MovieInfoDTO getMovieByUuid(int uuid) throws IOException, InterruptedException {
+    public MovieDTO getMovieByUuid(int uuid) throws IOException, InterruptedException {
         if (ip_address.isBlank()) {
             if (isRunningInsideDocker()) {
                 ip_address = "host.docker.internal";
@@ -32,7 +32,7 @@ public class MovieControllerProxy {
         if (response.body().isBlank()) {
             return null;
         }
-        return mapper.readValue(response.body(), MovieDTO.class).getResponseObject();
+        return mapper.readValue(mapper.writeValueAsString(mapper.readValue(response.body(), Response.class).getResponseObject()), MovieDTO.class);
 
     }
 

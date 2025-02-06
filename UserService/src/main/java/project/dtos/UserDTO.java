@@ -10,7 +10,6 @@ import project.entities.UserRole;
 @Data
 @AllArgsConstructor
 public class UserDTO {
-    private int id;
     private String first_name;
     private String last_name;
     private UserRole user_role;

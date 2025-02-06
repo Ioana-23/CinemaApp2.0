@@ -20,11 +20,11 @@ const MovieScreeningCard: React.FC<MovieScreeningPropsExt> = ({
                                                                   times,
                                                               }) => {
     const [imgSrc, setImgSrc] = useState(movie.poster_path || 'https://digitalreach.asia/wp-content/uploads/2021/11/placeholder-image.png');
-    const {get, set} = usePreferences();
+    const {get, remove} = usePreferences();
     const navigate = useNavigate();
     const handleMenuClick = ((uuid: number) => {
             const setInLocalStorage = (async () => {
-                await set('selected_seats', JSON.stringify([]))
+                await remove('reservation')
             });
             setInLocalStorage();
             navigate(`/reserve?uuid=${uuid}`, {replace: false});

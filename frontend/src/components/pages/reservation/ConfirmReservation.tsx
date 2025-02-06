@@ -14,16 +14,12 @@ interface ReservationSelectSeatsExt extends RouteComponentProps {
 
 const ConfirmReservation: React.FC<ReservationSelectSeatsExt> = ({history, match}) => {
     const {allItems} = useContext(MovieContext);
-    const {selectedSeats, movie_screening, getSeats, index} = useContext(ReservationContext);
+    const {selectedSeats, movie_screening, getSeats, index, reservation, saveReservationToDB} = useContext(ReservationContext);
     const {get, set} = usePreferences();
-    useEffect(() => {
-        if (selectedSeats && movie_screening && index >= 0) {
-        }
-    }, [selectedSeats, movie_screening, index]);
     const alphabet: string[] = "abcdefghijklmnopqrstuvw".toUpperCase().split('')
     return (
         <div>
-            {selectedSeats && movie_screening?.movie && index! >= 0 && (
+            {reservation && reservation.uuid == null && selectedSeats && movie_screening?.movie && index! >= 0 && saveReservationToDB && (
                 <Container>
                     <CardTitle style={{color: '#767676'}}>Reservation Details</CardTitle>
                     <FormGroup className="confirm_reservation_container">
@@ -41,24 +37,27 @@ const ConfirmReservation: React.FC<ReservationSelectSeatsExt> = ({history, match
                         </Form>
                         <Form>
                             <Form.Label className="form_label">Movie hall:</Form.Label>
-                            <Form.Label type="text">&nbsp;{selectedSeats[0].movieHall.id}</Form.Label>
+                            <Form.Label type="text">&nbsp;{movie_screening.movieHall_uuid[index!]}</Form.Label>
                         </Form>
                         <Form>
                             <Form.Label className="form_label">Seats:</Form.Label>
                             {
                                 selectedSeats.map(({row_number, seat_number}) =>
                                     <Form.Label
-                                        type="text">&nbsp;{alphabet[row_number-1].toUpperCase() + '/' + seat_number}</Form.Label>
+                                        type="text">&nbsp;{alphabet[row_number-1].toUpperCase() + '/' + `${seat_number-1}`}</Form.Label>
                                 )
                             }
                         </Form>
-                        <Button className="confirmation_button" onClick={() => console.log('')}>Make reservation</Button>
+                        <button className="confirmation_button" onClick={() => reservation ? saveReservationToDB(reservation) : {}}>Make reservation</button>
                     </FormGroup>
 
                 </Container>
             )}
-            {!selectedSeats && (
+            {reservation && reservation.uuid == null && !selectedSeats && (
                 <p>Select at least a seat!</p>
+            )}
+            {reservation && reservation.uuid != null && (
+                <p>Congrats!</p>
             )}
         </div>
     )

@@ -1,14 +1,16 @@
 package project.dtos;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import project.entities.TicketType;
 
 @Data
 @AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class TicketDTO {
-    private int id;
     private int uuid;
-    private TicketType ticketType;
     private int seat_uuid;
 }

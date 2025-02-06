@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.controllers.response.Response;
 import project.controllers.response.ResponseType;
+import project.dtos.SeatDTO;
 import project.entities.Seat;
 import project.services.SeatService;
 
@@ -31,7 +32,12 @@ public class SeatController {
         }
         return new ResponseEntity<>(
                 Response.builder()
-                        .responseObject(seatFound)
+                        .responseObject(SeatDTO.builder()
+                                .uuid(seatFound.getUuid())
+                                .seat_number(seatFound.getSeat_number())
+                                .available(seatFound.isAvailable())
+                                .row_number(seatFound.getRow_number())
+                                .build())
                         .responseType(ResponseType.SUCCESS)
                         .build(),
                 HttpStatus.OK);

@@ -2,7 +2,6 @@ package project.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -21,6 +20,7 @@ import project.entities.Ticket;
 import project.entities.User;
 import project.entities.UserRole;
 import project.services.ReservationService;
+import project.services.TicketService;
 import project.services.UserService;
 
 import java.util.List;
@@ -30,7 +30,8 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ReservationController.class)
 @ContextConfiguration(classes = UserApplication.class)
@@ -40,6 +41,8 @@ public class ReservationControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private UserService userService;
+    @MockBean
+    private TicketService ticketService;
     @MockBean
     private ReservationService reservationService;
     @MockBean
@@ -52,7 +55,7 @@ public class ReservationControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     private MovieScreeningDTO movieScreeningDTO;
-    private SeatDTO seatDTO1;
+    private SeatDTO seatDTO;
 
     @BeforeEach
     public void init() {
@@ -60,7 +63,7 @@ public class ReservationControllerTest {
                 .uuid(UUID)
                 .build();
 
-        seatDTO1 = SeatDTO.builder()
+        seatDTO = SeatDTO.builder()
                 .available(true)
                 .uuid(UUID)
                 .build();
@@ -111,9 +114,11 @@ public class ReservationControllerTest {
 
     @Test
     public void saveReservation_returnsReservationSaved() throws Exception {
+        Mockito.when(userService.getUserByUuid(any(Integer.class))).thenReturn(user);
         Mockito.when(movieControllerProxy.getMovieScreeningByUuid(reservation.getMovie_screening_uuid())).thenReturn(movieScreeningDTO);
-        Mockito.when(movieControllerProxy.getSeatByUuid(UUID)).thenReturn(seatDTO1);
+        Mockito.when(movieControllerProxy.getSeatByUuid(any(Integer.class))).thenReturn(seatDTO);
         Mockito.when(reservationService.saveReservation(any(Reservation.class))).thenReturn(reservation);
+        Mockito.when(ticketService.saveTicket(any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/project/reservations/reservation")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -126,8 +131,10 @@ public class ReservationControllerTest {
 
     @Test
     public void saveReservation_returnsNoTickets() throws Exception {
-        reservation.setTickets(null);
+        reservation.setTickets(List.of());
 
+        Mockito.when(ticketService.saveTicket(any(Ticket.class))).thenReturn(ticket);
+        Mockito.when(userService.getUserByUuid(any(Integer.class))).thenReturn(user);
         Mockito.when(movieControllerProxy.getMovieScreeningByUuid(reservation.getMovie_screening_uuid())).thenReturn(movieScreeningDTO);
         Mockito.when(reservationService.saveReservation(reservation)).thenReturn(reservation);
 
@@ -141,9 +148,22 @@ public class ReservationControllerTest {
     }
 
     @Test
+    public void saveReservation_returnsNoUserFound() throws Exception {
+        mockMvc.perform(post("/project/reservations/reservation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(reservation)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is("User with uuid: " + UUID + " does not exist")))
+                .andExpect(jsonPath("$.responseType", is("ERROR")));
+    }
+
+    @Test
     public void saveReservation_returnsSeatNotFound() throws Exception {
+        Mockito.when(userService.getUserByUuid(any(Integer.class))).thenReturn(user);
         Mockito.when(movieControllerProxy.getMovieScreeningByUuid(reservation.getMovie_screening_uuid())).thenReturn(movieScreeningDTO);
         Mockito.when(reservationService.saveReservation(reservation)).thenReturn(reservation);
+        Mockito.when(ticketService.saveTicket(any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/project/reservations/reservation")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -156,11 +176,13 @@ public class ReservationControllerTest {
 
     @Test
     public void saveReservation_returnsSeatNotAvailable() throws Exception {
-        seatDTO1.setAvailable(false);
+        seatDTO.setAvailable(false);
 
+        Mockito.when(userService.getUserByUuid(any(Integer.class))).thenReturn(user);
         Mockito.when(movieControllerProxy.getMovieScreeningByUuid(reservation.getMovie_screening_uuid())).thenReturn(movieScreeningDTO);
         Mockito.when(reservationService.saveReservation(reservation)).thenReturn(reservation);
-        Mockito.when(movieControllerProxy.getSeatByUuid(UUID)).thenReturn(seatDTO1);
+        Mockito.when(movieControllerProxy.getSeatByUuid(UUID)).thenReturn(seatDTO);
+        Mockito.when(ticketService.saveTicket(any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/project/reservations/reservation")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -173,7 +195,9 @@ public class ReservationControllerTest {
 
     @Test
     public void saveReservation_returnsMovieScreeningNotFound() throws Exception {
+        Mockito.when(userService.getUserByUuid(any(Integer.class))).thenReturn(user);
         Mockito.when(movieControllerProxy.getMovieScreeningByUuid(reservation.getMovie_screening_uuid())).thenReturn(null);
+        Mockito.when(ticketService.saveTicket(any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/project/reservations/reservation")
                         .contentType(MediaType.APPLICATION_JSON)

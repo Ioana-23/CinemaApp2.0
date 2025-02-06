@@ -17,9 +17,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ticket_type")
-    private TicketType ticketType;
+    @Column(name = "uuid", unique = true, nullable = false)
+    private int uuid;
 
     @Column(name = "seat_uuid")
     private int seat_uuid;

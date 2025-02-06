@@ -13,9 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import project.MovieScreeningApplication;
-import project.dtos.MovieDTO;
-import project.dtos.MovieInfoDTO;
 import project.dtos.movie_screening.MovieScreeningDTO;
+import project.dtos.MovieDTO;
 import project.dtos.movie_screening.SaveMovieScreeningDTO;
 import project.entities.MovieHall;
 import project.entities.MovieScreening;
@@ -53,7 +52,7 @@ public class MovieScreeningControllerTest {
     @MockBean
     private MovieControllerProxy movieControllerProxy;
     private SaveMovieScreeningDTO saveMovieScreeningDTO;
-    private MovieInfoDTO movieInfoDTO;
+    private MovieDTO movieInfoDTO;
     private MovieScreeningDTO movieScreeningDTO;
     private MovieScreening movieScreening;
     private static final int UUID = 0;
@@ -61,7 +60,7 @@ public class MovieScreeningControllerTest {
 
     @BeforeEach
     public void init() {
-        movieInfoDTO = MovieInfoDTO.builder()
+        movieInfoDTO = MovieDTO.builder()
                 .uuid(UUID)
                 .build();
 

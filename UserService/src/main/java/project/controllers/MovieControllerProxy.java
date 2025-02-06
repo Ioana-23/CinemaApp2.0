@@ -3,6 +3,7 @@ package project.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
+import project.controllers.response.Response;
 import project.dtos.MovieScreeningDTO;
 import project.dtos.SeatDTO;
 
@@ -31,7 +32,7 @@ public class MovieControllerProxy {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         if (!response.body().isBlank()) {
-            return mapper.readValue(response.body(), MovieScreeningDTO.class);
+            return mapper.readValue(mapper.writeValueAsString(mapper.readValue(response.body(), Response.class).getResponseObject()), MovieScreeningDTO.class);
         }
         return null;
     }
@@ -66,7 +67,7 @@ public class MovieControllerProxy {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         if (!response.body().isBlank()) {
-            return mapper.readValue(response.body(), SeatDTO.class);
+            return mapper.readValue(mapper.writeValueAsString(mapper.readValue(response.body(), Response.class).getResponseObject()), SeatDTO.class);
         }
         return null;
     }

@@ -15,7 +15,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class MovieDTO {
-    private String message;
-    private MovieInfoDTO responseObject;
-    private ResponseType responseType;
+    private String title;
+    private LocalDate date;
+    private String poster_path;
+    @JsonIgnore
+    private Object actors;
+    private String overview;
+    private boolean adult;
+    private String language;
+    @JsonIgnore
+    private Object genres;
+    private int uuid;
 }

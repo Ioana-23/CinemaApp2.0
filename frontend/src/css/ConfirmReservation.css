@@ -17,14 +17,23 @@ form{
     padding: 0 0 0 0.7rem;
 }
 
-.confirmation_button{
+.confirmation_button,
+.confirmation_button:active{
     width: 50%;
     margin-bottom: 0.7rem;
     margin-left: 0.7rem;
     background-color: #f64b4b;
+    text-align: center;
     border: none;
     color: #2B2E4A;
 }
+
+.confirmation_button:hover{
+    background-color: #f64b4b; !important;
+    color: #2B2E4A;
+    border: none;
+    box-shadow:  0 10px 10px 0 rgba(0, 0, 0,0.2),0 6px 10px 0 rgba(0, 0, 0,0.19)}
+
 
 .logo {
     height: 6em;

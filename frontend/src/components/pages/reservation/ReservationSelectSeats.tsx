@@ -12,7 +12,7 @@ interface ReservationSelectSeatsExt extends RouteComponentProps {
 }
 
 const ReservationSelectSeats: React.FC<ReservationSelectSeatsExt> = ({history, match}) => {
-    const {selectedSeats, getSeats, movie_hall_configuration, movie_screening} = useContext(ReservationContext);
+    const {selectedSeats, getSeats, movie_hall_configuration, movie_screening, index} = useContext(ReservationContext);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [movie_screening_id] = useState<number>(parseInt(searchParams.get('uuid')!.toString()) || -1)
@@ -24,13 +24,14 @@ const ReservationSelectSeats: React.FC<ReservationSelectSeatsExt> = ({history, m
     }, [getSeats, movie_screening_id]);
 
     function confirmSeats() {
-        if (movie_screening_id) {
-            const reservation: ReservationProps = {'uuid': -1, 'seats': selectedSeats, 'movie_screening': movie_screening!, 'user': {'uuid': 0}}
+        if (movie_screening && index >= 0) {
+            const reservation: ReservationProps = {tickets: selectedSeats, movie_screening: movie_screening, movie_screening_uuid: movie_screening.uuid[index], user: {uuid: 16589}}
             const setInLocalStorage = (async () => {
                 await set('reservation', JSON.stringify(reservation))
                 await remove('movie_screening')
                 await remove('selected_seats')
             });
+
             setInLocalStorage();
             navigate(`/confirm-reservation`, {replace: false});
         }

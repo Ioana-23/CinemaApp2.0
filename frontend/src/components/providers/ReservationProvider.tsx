@@ -8,6 +8,7 @@ import {getMovieHallSeats} from "../apis/reservation/MovieHallApi.tsx";
 import {Col, Row} from "react-bootstrap";
 import {getMovieInfo} from "../apis/movie_screening/MovieScreeningApi.tsx";
 import {ReservationProps} from "../props/reservation/ReservationProps.tsx";
+import {saveReservation} from "../apis/reservation/ReservationApi.tsx";
 
 type ConfirmSeats = () => void;
 type SelectSeatFn = (seat_uuid: number) => void;
@@ -27,7 +28,8 @@ export interface ReservationState {
     movie_hall_configuration: Element[],
     index?: number,
     confirmation_configuration: Element[],
-    reservation?: ReservationProps
+    reservation?: ReservationProps,
+    saveReservationToDB?: SaveReservationFn,
 }
 
 export const initialStateReservations: ReservationState = {
@@ -46,13 +48,14 @@ const ADD_OR_REMOVE_SEAT_TO_SELECTION = 'ADD_OR_REMOVE_SEAT_TO_SELECTION';
 const CONFIGURE_MOVIE_HALL = 'CONFIGURE_MOVIE_HALL';
 const FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE = 'FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE';
 const FETCH_RESERVATION_FROM_LOCAL_STORAGE = 'FETCH_RESERVATION_FROM_LOCAL_STORAGE';
+const RESERVATION_SAVED = 'RESERVATION_SAVED';
 const reducer: (state: ReservationState, action: ActionProps) => ReservationState =
     (state, {type, payload}) => {
         switch (type) {
             case FETCH_SEATS_STARTED:
                 return {...state, fetching: true, fetchingError: null};
             case FETCH_RESERVATION_FROM_LOCAL_STORAGE:
-                return {...state, reservation: payload.reservation};
+                return {...state, reservation: payload.reservation, movie_screening: payload.reservation.movie_screening, selectedSeats: payload.reservation.tickets, index: payload.index};
             case FETCH_SEATS_FINISHED:
                 return {
                     ...state,
@@ -92,6 +95,8 @@ const reducer: (state: ReservationState, action: ActionProps) => ReservationStat
             }
             case CONFIGURE_MOVIE_HALL:
                 return {...state, movie_hall_configuration: payload.movie_hall_configuration};
+            case RESERVATION_SAVED:
+                return {...state, reservation: {...state.reservation, uuid: payload.uuid}};
             default:
                 return state;
         }
@@ -122,14 +127,18 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
     const {get, set} = usePreferences();
     useEffect(() => {
         const getSeatsFromLocal = (async () => {
+            const index_json = await get('index');
+            const index_local: number = (index_json ? JSON.parse(index_json) : -1)
             const reservation_json = await get('reservation');
             const reservation_local: ReservationProps = (reservation_json ? JSON.parse(reservation_json) : null)
             if(reservation_local)
             {
+                await set('selected_seats', JSON.stringify(reservation_local.tickets));
                 dispatch({
                     type: FETCH_RESERVATION_FROM_LOCAL_STORAGE,
                     payload: {
-                        reservation: reservation_local
+                        reservation: reservation_local,
+                        index: index_local
                     }
                 })
             }
@@ -139,8 +148,6 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                 const selected_seats_local: SeatProps[] = (selected_seats_json ? JSON.parse(selected_seats_json) : [])
                 const movie_screening_json = await get('movie_screening');
                 const movie_screening_local: MovieScreeningProps = (movie_screening_json ? JSON.parse(movie_screening_json) : null)
-                const index_json = await get('index');
-                const index_local: number = (index_json ? JSON.parse(index_json) : -1)
                 dispatch({
                     type: FETCH_SELECTED_SEATS_FROM_LOCAL_STORAGE,
                     payload: {
@@ -156,6 +163,18 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
     }, [seats]);
     const getSeats = useCallback<GetSeatsFn>(getSeatsFromDatabase, [allItems]);
     const selectSeats = useCallback<SelectSeatFn>(selectSeatByUuid, [seats, allItems]);
+    const saveReservationToDB = useCallback<SaveReservationFn>(saveReservationToDatabase, []);
+
+    async function saveReservationToDatabase(reservation: ReservationProps) {
+        const savedReservation = await saveReservation(reservation).then((result) => {
+            if(result.data.message !== "")
+            {
+                dispatch({type:
+                RESERVATION_SAVED, payload: {uuid: result.data.responseObject.uuid}})
+            }
+        });
+    }
+
 
 
     function configure_movie_hall() {
@@ -170,12 +189,12 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                 for (let j = 0; j < col_no; j++) {
                     const height = 100 / row_no;
                     if (seats[count].available) {
-                        if (selectedSeats.length != 0 && selectedSeats.findIndex(seat => seat.row_number == seats[count].row_number && seat.seat_number == seats[count].seat_number) !== -1) {
+                        if (selectedSeats.length != 0 && selectedSeats.findIndex(seat => seat.uuid == seats[count].uuid) !== -1) {
                             row.push(<Col style={{paddingLeft: '1rem', alignItems: 'center'}}
                                           className="d-flex flex-column seat-box" key={seats[count].uuid}>
                                 <a
                                     id={count.toString()}
-                                    className="seat-link-selected" data-key={seats[count].id}
+                                    className="seat-link-selected" data-key={seats[count].uuid}
                                     onClick={(event) => {
                                         selectSeats(event.target.id)
                                     }}
@@ -211,7 +230,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
                     }
                     count++;
                 }
-                hall_configuration.push(<Row className="d-flex flex-row">{row}</Row>)
+                hall_configuration.push(<Row className="d-flex flex-row" key={i}>{row}</Row>)
             }
             dispatch({type: CONFIGURE_MOVIE_HALL, payload: {movie_hall_configuration: hall_configuration}})
         }
@@ -290,7 +309,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({
         savingError,
         selectedSeats,
         movie_screening,
-        getSeats, selectSeats, movie_hall_configuration, index, confirmation_configuration, reservation
+        getSeats, selectSeats, movie_hall_configuration, index, confirmation_configuration, reservation, saveReservationToDB
     };
     return (
         <ReservationContext.Provider value={value}>

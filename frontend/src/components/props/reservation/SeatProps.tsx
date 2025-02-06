@@ -4,10 +4,8 @@ export interface MovieHallProps{
 }
 
 export interface SeatProps {
-    id: number,
     uuid: number,
     available: boolean,
     row_number: number,
-    seat_number: number,
-    movieHall: MovieHallProps
+    seat_number: number
 }
